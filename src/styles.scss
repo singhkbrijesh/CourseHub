@@ -33,7 +33,7 @@
 //     @include mat.all-component-colors($dark-theme);
 // }
 
-// src/styles.scss
+
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 // Optional dark mode override
@@ -41,5 +41,13 @@ body.dark-theme {
     background-color: #121212;
     color: white;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}

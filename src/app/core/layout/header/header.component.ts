@@ -7,17 +7,19 @@ import {MatMenuModule} from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { BreadcrumbComponent } from "../../../shared/breadcrumb/breadcrumb.component";
 
 
 @Component({
   selector: 'app-header',
-  imports: [MatTooltip, MatIconModule, MatMenuModule, MatButtonModule, CommonModule, MatToolbarModule],
+  imports: [MatTooltip, MatIconModule, MatMenuModule, MatButtonModule, CommonModule, MatToolbarModule, BreadcrumbComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
 
   isDarkMode = false;
+  isCustomTheme = false;
   isBrowser: boolean;
   user = { name: '', role: '' };
   private router = inject(Router);

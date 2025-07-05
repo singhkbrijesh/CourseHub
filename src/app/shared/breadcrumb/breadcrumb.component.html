@@ -1,1 +1,6 @@
-<p>breadcrumb works!</p>
+<nav class="breadcrumb-nav" *ngIf="breadcrumbs.length">
+    <ng-container *ngFor="let crumb of breadcrumbs; let last = last; let i = index">
+      <span>{{ crumb | titlecase }}</span>
+      <span *ngIf="!last"> / </span>
+    </ng-container>
+  </nav>
