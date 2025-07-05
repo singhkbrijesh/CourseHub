@@ -1,0 +1,30 @@
+<!-- <app-header (sidebarToggle)="sidebarShow = true"></app-header>
+
+<app-sidebar [isSliderOpen]="sidebarShow" (closeSidebar)="sidebarShow = false"></app-sidebar>
+
+<router-outlet></router-outlet>
+
+<app-footer></app-footer>
+
+<app-loader></app-loader> -->
+
+    <header >
+    <app-header class="app-header" (sidebarToggle)="sidebarShow = true"></app-header>
+    </header>
+     
+    <div class="app-layout">
+    <aside>
+    <app-sidebar [isSliderOpen]="sidebarShow" (closeSidebar)="sidebarShow = false"></app-sidebar>
+    </aside>
+     
+      <main class="app-main-content">
+    <router-outlet></router-outlet>
+    </main>
+    </div>
+     
+    <footer class="app-footer">
+    <app-footer></app-footer>
+    </footer>
+    
+
+

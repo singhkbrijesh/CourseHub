@@ -1,0 +1,29 @@
+<mat-toolbar color="primary" class="header-container">
+
+  <button mat-icon-button class="sidebar-opener" (click)="onSidebarToggle()" aria-label="Open sidebar">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="logo" style="margin-left: 8px;">CourseHub</span>
+
+  <span class="spacer" style="flex: 1 1 auto;"></span>
+
+  <span class="user-info" *ngIf="user.name">{{ user.name }} ({{ user.role }})</span>
+
+  <button mat-icon-button (click)="toggleTheme()" [matTooltip]="'Toggle Theme'" aria-label="Toggle theme">
+    <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="userMenu">Menu</button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+
+  <!--
+  <button mat-icon-button color="warn" (click)="logout()" [matTooltip]="'Logout'" aria-label="Logout">
+    <mat-icon>logout</mat-icon>
+  </button>
+  -->
+  
+</mat-toolbar>

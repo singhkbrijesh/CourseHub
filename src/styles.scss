@@ -1,0 +1,45 @@
+// // src/styles.scss
+
+// @use '@angular/material' as mat;
+
+// // Import the core styles
+// @include mat.core();
+
+// // Define your light theme
+// $light-primary: mat.define-palette(mat.$indigo-palette);
+// $light-accent: mat.define-palette(mat.$pink-palette);
+// $light-theme: mat.define-light-theme((color: (primary: $light-primary,
+//                 accent: $light-accent,
+//             ),
+//         ));
+
+// // Define your dark theme
+// $dark-primary: mat.define-palette(mat.$blue-grey-palette);
+// $dark-accent: mat.define-palette(mat.$amber-palette);
+// $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
+//                 accent: $dark-accent,
+//             ),
+//         ));
+
+// // Apply default theme styles globally (light theme)
+// @include mat.all-component-themes($light-theme);
+
+// // Add theme switching classes
+// .light-theme {
+//     @include mat.all-component-colors($light-theme);
+// }
+
+// .dark-theme {
+//     @include mat.all-component-colors($dark-theme);
+// }
+
+// src/styles.scss
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Optional dark mode override
+body.dark-theme {
+    background-color: #121212;
+    color: white;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
