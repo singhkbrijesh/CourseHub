@@ -8,13 +8,15 @@
 
 <app-loader></app-loader> -->
 
+    <app-loader *ngIf="loading"></app-loader>
+
     <header >
     <app-header class="app-header" (sidebarToggle)="sidebarShow = true"></app-header>
     </header>
      
     <div class="app-layout">
     <aside>
-    <app-sidebar [isSliderOpen]="sidebarShow" (closeSidebar)="sidebarShow = false"></app-sidebar>
+    <app-sidebar [isSliderOpen]="sidebarShow" [user]="user" (closeSidebar)="sidebarShow = false"></app-sidebar>
     </aside>
      
       <main class="app-main-content">

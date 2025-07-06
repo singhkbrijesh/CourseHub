@@ -3,18 +3,18 @@
         "email": "admin@example.com",
         "password": "admin123",
         "role": "admin",
-        "name": "Admin User"
+        "name": "John Doe"
     },
     {
         "email": "instructor@example.com",
         "password": "instructor123",
         "role": "instructor",
-        "name": "Instructor User"
+        "name": "Sanjay Tyagi"
     },
     {
         "email": "student@example.com",
         "password": "student123",
         "role": "student",
-        "name": "Student User"
+        "name": "Rohan Rastogi"
     }
 ]

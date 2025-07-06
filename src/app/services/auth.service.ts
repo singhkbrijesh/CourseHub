@@ -16,6 +16,7 @@ export class AuthService {
         const user = users.find(u => u.email === email && u.password === password);
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
+          window.dispatchEvent(new Event('userChanged'));
           return user;
         }
         throw new Error('Invalid credentials');
@@ -29,5 +30,6 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('user');
+    window.dispatchEvent(new Event('userChanged')); // Add this line
   }
 }

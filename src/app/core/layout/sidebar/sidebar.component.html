@@ -3,12 +3,12 @@
         X
     </div>
     <div class="sidebar-content">
-        <h2>Sidebar</h2>
-        <div>Home Page</div>
-        <div>About Us</div>
-        <div>Services</div>
-        <div>Prices</div>
-        <div>Downloads</div>
-        <div>Contact Us</div>
+        <h2 *ngIf="user.name"><span style="font-size: 1em;">({{ user.role | titlecase }})</span></h2>
+        <h2 *ngIf="!user.name">Menu</h2>
+        <ng-container *ngFor="let item of menuItems">
+            <button class="sidebar-link" type="button" (click)="onMenuClick(item.route)">
+                {{ item.label }}
+            </button>
+        </ng-container>
     </div>
 </div>

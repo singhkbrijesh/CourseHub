@@ -2,12 +2,13 @@ import { Component, EventEmitter, inject, Inject, Output, PLATFORM_ID } from '@a
 import { isPlatformBrowser } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
-import {MatMenuModule} from '@angular/material/menu';
+import { NavigationEnd, Router } from '@angular/router';
+import { MatMenuModule} from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule} from '@angular/material/toolbar';
 import { BreadcrumbComponent } from "../../../shared/breadcrumb/breadcrumb.component";
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class HeaderComponent {
   user = { name: '', role: '' };
   private router = inject(Router);
   sidebarShow: boolean = false;
-  
+  isLoginPage = false;
 
   @Output() sidebarToggle = new EventEmitter<boolean>();
 
@@ -35,6 +36,15 @@ export class HeaderComponent {
       const storedTheme = localStorage.getItem('theme');
       this.isDarkMode = storedTheme === 'dark';
       this.applyTheme();
+
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe(() => {
+          const userData = localStorage.getItem('user');
+          this.user = userData ? JSON.parse(userData) : { name: '', role: '' };
+          this.checkIfLoginPage();
+        });
+        this.checkIfLoginPage();
     }
   }
 
@@ -45,6 +55,10 @@ export class HeaderComponent {
         this.user = JSON.parse(userData);
       }
     }
+  }
+
+  checkIfLoginPage() {
+    this.isLoginPage = this.router.url === '/auth';
   }
 
   onSidebarToggle() {
@@ -72,5 +86,9 @@ export class HeaderComponent {
       localStorage.clear();
       this.router.navigate(['/auth']);
     }
+  }
+
+  goToLogin() {
+    this.router.navigate(['/auth']);
   }
 }
