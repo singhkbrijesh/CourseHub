@@ -179,6 +179,225 @@ private loadMockData() {
           order: 5
         }
       ]
+    },
+    // New courses added below
+    {
+      id: 'Python-Data-Science',
+      title: 'Python for Data Science',
+      description: 'Learn Python programming for data analysis and machine learning with hands-on projects.',
+      instructor: 'Dr. Sarah Chen',
+      instructorId: 'instructor4',
+      category: 'Data Science',
+      level: 'Intermediate',
+      duration: 60,
+      price: 149.99,
+      rating: 4.7,
+      enrollmentCount: 280,
+      thumbnail: 'assets/images/digital-marketing.jpeg',
+      status: 'approved',
+      createdAt: new Date('2024-01-04'),
+      updatedAt: new Date('2024-01-04'),
+      lessons: [
+        {
+          id: '1',
+          title: 'Python Fundamentals for Data Science',
+          description: 'Learn Python basics and libraries essential for data science.',
+          videoUrl: 'https://example.com/video1',
+          duration: 45,
+          order: 1
+        },
+        {
+          id: '2',
+          title: 'Data Manipulation with Pandas',
+          description: 'Master data manipulation and analysis using Pandas library.',
+          videoUrl: 'https://example.com/video2',
+          duration: 50,
+          order: 2
+        },
+        {
+          id: '3',
+          title: 'Data Visualization with Matplotlib & Seaborn',
+          description: 'Create stunning visualizations for data insights.',
+          videoUrl: 'https://example.com/video3',
+          duration: 40,
+          order: 3
+        }
+      ]
+    },
+    {
+      id: 'Advanced-JavaScript',
+      title: 'Advanced JavaScript ES6+',
+      description: 'Master modern JavaScript features and advanced concepts for professional development.',
+      instructor: 'Alex Rodriguez',
+      instructorId: 'instructor5',
+      category: 'Programming',
+      level: 'Advanced',
+      duration: 45,
+      price: 179.99,
+      rating: 4.8,
+      enrollmentCount: 190,
+      thumbnail: 'assets/images/digital-marketing.jpeg',
+      status: 'approved',
+      createdAt: new Date('2024-01-05'),
+      updatedAt: new Date('2024-01-05'),
+      lessons: [
+        {
+          id: '1',
+          title: 'ES6+ Features Deep Dive',
+          description: 'Explore arrow functions, destructuring, modules, and more.',
+          videoUrl: 'https://example.com/video1',
+          duration: 40,
+          order: 1
+        },
+        {
+          id: '2',
+          title: 'Asynchronous JavaScript',
+          description: 'Master Promises, async/await, and event loop concepts.',
+          videoUrl: 'https://example.com/video2',
+          duration: 45,
+          order: 2
+        }
+      ]
+    },
+    {
+      id: 'UX-UI-Design',
+      title: 'UX/UI Design Fundamentals',
+      description: 'Learn user experience and interface design principles with practical projects.',
+      instructor: 'Maria Garcia',
+      instructorId: 'instructor6',
+      category: 'Design',
+      level: 'Beginner',
+      duration: 40,
+      price: 119.99,
+      rating: 4.5,
+      enrollmentCount: 420,
+      thumbnail: 'assets/images/digital-marketing.jpeg',
+      status: 'approved',
+      createdAt: new Date('2024-01-06'),
+      updatedAt: new Date('2024-01-06'),
+      lessons: [
+        {
+          id: '1',
+          title: 'Introduction to UX Design',
+          description: 'Understanding user experience design principles and methodologies.',
+          videoUrl: 'https://example.com/video1',
+          duration: 35,
+          order: 1
+        },
+        {
+          id: '2',
+          title: 'UI Design Principles',
+          description: 'Learn visual design, typography, and color theory.',
+          videoUrl: 'https://example.com/video2',
+          duration: 40,
+          order: 2
+        }
+      ]
+    },
+    {
+      id: 'Machine-Learning',
+      title: 'Machine Learning with TensorFlow',
+      description: 'Build and deploy machine learning models using TensorFlow and Python.',
+      instructor: 'Dr. Michael Chen',
+      instructorId: 'instructor7',
+      category: 'Data Science',
+      level: 'Advanced',
+      duration: 80,
+      price: 299.99,
+      rating: 4.9,
+      enrollmentCount: 150,
+      thumbnail: 'assets/images/digital-marketing.jpeg',
+      status: 'approved',
+      createdAt: new Date('2024-01-07'),
+      updatedAt: new Date('2024-01-07'),
+      lessons: [
+        {
+          id: '1',
+          title: 'Introduction to Machine Learning',
+          description: 'Understanding ML concepts, algorithms, and applications.',
+          videoUrl: 'https://example.com/video1',
+          duration: 50,
+          order: 1
+        },
+        {
+          id: '2',
+          title: 'Neural Networks with TensorFlow',
+          description: 'Build your first neural network using TensorFlow.',
+          videoUrl: 'https://example.com/video2',
+          duration: 60,
+          order: 2
+        }
+      ]
+    },
+    {
+      id: 'Business-Strategy',
+      title: 'Strategic Business Planning',
+      description: 'Learn strategic planning, market analysis, and business development techniques.',
+      instructor: 'Robert Williams',
+      instructorId: 'instructor8',
+      category: 'Business',
+      level: 'Intermediate',
+      duration: 35,
+      price: 159.99,
+      rating: 4.4,
+      enrollmentCount: 240,
+      thumbnail: 'assets/images/digital-marketing.jpeg',
+      status: 'approved',
+      createdAt: new Date('2024-01-08'),
+      updatedAt: new Date('2024-01-08'),
+      lessons: [
+        {
+          id: '1',
+          title: 'Strategic Planning Fundamentals',
+          description: 'Learn the basics of strategic business planning.',
+          videoUrl: 'https://example.com/video1',
+          duration: 40,
+          order: 1
+        },
+        {
+          id: '2',
+          title: 'Market Analysis Techniques',
+          description: 'Understand market research and competitive analysis.',
+          videoUrl: 'https://example.com/video2',
+          duration: 35,
+          order: 2
+        }
+      ]
+    },
+    {
+      id: 'Web-Development',
+      title: 'Full Stack Web Development',
+      description: 'Complete web development course covering front-end and back-end technologies.',
+      instructor: 'Jennifer Lee',
+      instructorId: 'instructor9',
+      category: 'Programming',
+      level: 'Beginner',
+      duration: 70,
+      price: 199.99,
+      rating: 4.6,
+      enrollmentCount: 380,
+      thumbnail: 'assets/images/digital-marketing.jpeg',
+      status: 'approved',
+      createdAt: new Date('2024-01-09'),
+      updatedAt: new Date('2024-01-09'),
+      lessons: [
+        {
+          id: '1',
+          title: 'HTML & CSS Fundamentals',
+          description: 'Learn the building blocks of web development.',
+          videoUrl: 'https://example.com/video1',
+          duration: 45,
+          order: 1
+        },
+        {
+          id: '2',
+          title: 'JavaScript for Web Development',
+          description: 'Add interactivity to your websites with JavaScript.',
+          videoUrl: 'https://example.com/video2',
+          duration: 50,
+          order: 2
+        }
+      ]
     }
   ];
   

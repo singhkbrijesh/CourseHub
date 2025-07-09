@@ -37,8 +37,16 @@ export class AuthService {
     return false;
   }
 
+  getCurrentUser(): any {
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = localStorage.getItem('user');
+      return userData ? JSON.parse(userData) : null;
+    }
+    return null;
+  }
+
   logout(): void {
     localStorage.removeItem('user');
-    window.dispatchEvent(new Event('userChanged')); // Add this line
+    window.dispatchEvent(new Event('userChanged'));
   }
 }

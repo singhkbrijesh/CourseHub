@@ -61,6 +61,7 @@
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    align-items: center;
 
     .filter-select {
         padding: 10px 15px;
@@ -75,6 +76,19 @@
         &:focus {
             outline: none;
             border-color: #1976d2;
+        }
+    }
+}
+
+.view-toggle {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+
+    button {
+        &.active {
+            background-color: var(--primary-color);
+            color: white;
         }
     }
 }
@@ -208,6 +222,28 @@
         color: #2e7d32;
     }
 
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .view-btn {
+        background: #fff;
+        color: #1976d2;
+        border: 2px solid #1976d2;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+            background: #1976d2;
+            color: #fff;
+        }
+    }
+
     .enroll-btn {
         background: #1976d2;
         color: #fff;
@@ -227,6 +263,66 @@
         &:active {
             transform: translateY(0);
         }
+    }
+}
+
+// Material Table Styles
+.courses-table {
+    .mat-mdc-table {
+        width: 100%;
+        background: var(--card-background);
+    }
+
+    .course-title-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .course-thumbnail-small {
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    }
+
+    .rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        mat-icon {
+            color: #ffd700;
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .price {
+        font-weight: 700;
+        color: #2e7d32;
+    }
+
+    .table-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .level-beginner {
+        background-color: #e8f5e8 !important;
+        color: #2e7d32 !important;
+    }
+
+    .level-intermediate {
+        background-color: #fff3e0 !important;
+        color: #f57c00 !important;
+    }
+
+    .level-advanced {
+        background-color: #ffebee !important;
+        color: #d32f2f !important;
     }
 }
 
@@ -335,6 +431,28 @@ body.dark-theme {
         }
     }
 
+    .courses-table {
+        .mat-mdc-table {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .level-beginner {
+            background-color: #2e5c2e !important;
+            color: #81c784 !important;
+        }
+
+        .level-intermediate {
+            background-color: #5c4a00 !important;
+            color: #ffb74d !important;
+        }
+
+        .level-advanced {
+            background-color: #5c1e1e !important;
+            color: #e57373 !important;
+        }
+    }
+
     .no-courses p {
         color: #ccc;
     }
@@ -364,6 +482,12 @@ body.dark-theme {
 
     .filter-controls {
         justify-content: center;
+        flex-wrap: wrap;
+
+        .view-toggle {
+            margin-left: 0;
+            margin-top: 10px;
+        }
     }
 
     .courses-grid {
@@ -382,9 +506,21 @@ body.dark-theme {
         gap: 15px;
         align-items: stretch;
 
-        .enroll-btn {
+        .action-buttons {
             width: 100%;
-            text-align: center;
+
+            .view-btn,
+            .enroll-btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    }
+
+    .courses-table {
+        .table-actions {
+            flex-direction: column;
+            gap: 4px;
         }
     }
 }
@@ -459,70 +595,248 @@ body.dark-theme {
     box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
 }
 
-// Add these styles to the existing file
 
-.course-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
+.courses-table {
+    .mat-mdc-table {
+        width: 100%;
+        background: var(--card-background);
 
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-    }
+        .mat-mdc-header-cell {
+            font-weight: 600;
+            color: var(--text-color);
+        }
 
-    .view-btn {
-        background: #fff;
-        color: #1976d2;
-        border: 2px solid #1976d2;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
+        .mat-mdc-cell {
+            border-bottom: 1px solid var(--border-color);
+        }
 
-        &:hover {
-            background: #1976d2;
-            color: #fff;
+        .mat-mdc-row:hover {
+            background-color: rgba(0, 0, 0, 0.04);
         }
     }
 
-    .enroll-btn {
-        background: #1976d2;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
+    .mat-mdc-paginator {
+        background: var(--card-background);
+        border-top: 1px solid var(--border-color);
+    }
+
+    // Sort header styling
+    .mat-sort-header-arrow {
+        color: var(--primary-color);
+    }
+
+    .mat-sort-header-sorted {
+        color: var(--primary-color);
+    }
+
+    .course-title-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .course-thumbnail-small {
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    }
+
+    .rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        mat-icon {
+            color: #ffd700;
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .price {
+        font-weight: 700;
+        color: #2e7d32;
+    }
+
+    .table-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .level-beginner {
+        background-color: #e8f5e8 !important;
+        color: #2e7d32 !important;
+    }
+
+    .level-intermediate {
+        background-color: #fff3e0 !important;
+        color: #f57c00 !important;
+    }
+
+    .level-advanced {
+        background-color: #ffebee !important;
+        color: #d32f2f !important;
+    }
+}
+
+.grid-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .filter-select {
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
         border-radius: 8px;
         font-size: 0.95rem;
-        font-weight: 600;
+        background: #fff;
         cursor: pointer;
-        transition: background 0.3s, transform 0.2s;
+        transition: border-color 0.3s;
+        min-width: 150px;
 
-        &:hover {
-            background: #1565c0;
-            transform: translateY(-1px);
+        &:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+    }
+
+    // Style for sort selects
+    select[ng-reflect-model*="grid"] {
+        background-color: #f8f9fa;
+        border-color: #1976d2;
+    }
+}
+
+// Grid paginator styling
+.grid-view-container .mat-mdc-paginator {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .filter-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+
+        .filter-select {
+            min-width: auto;
+            width: 100%;
+        }
+
+        .view-toggle {
+            align-self: center;
+            margin-left: 0;
+            margin-top: 10px;
+        }
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .grid-view-container .mat-mdc-paginator {
+        .mat-mdc-paginator-range-actions {
+            flex-direction: column;
+            gap: 10px;
         }
     }
 }
 
-// Responsive updates
-@media (max-width: 768px) {
-    .course-actions {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
-
-        .action-buttons {
-            width: 100%;
-
-            .view-btn,
-            .enroll-btn {
-                flex: 1;
-                text-align: center;
-            }
+@media (max-width: 480px) {
+    .grid-view-container .mat-mdc-paginator {
+        .mat-mdc-paginator-page-size {
+            display: none; // Hide page size selector on very small screens
         }
+    }
+}
+
+// Dark theme support for new elements
+body.dark-theme {
+    .filter-controls {
+        select[ng-reflect-model*="grid"] {
+            background-color: #333;
+            color: #fff;
+            border-color: #1976d2;
+        }
+    }
+
+    .grid-view-container .mat-mdc-paginator {
+        background: #2d2d2d;
+        border-color: #555;
+        color: #fff;
+    }
+}
+
+// Add loading state for grid pagination
+.grid-view-container.loading {
+    .courses-grid {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+}
+
+.courses-grid {
+    transition: opacity 0.3s ease;
+}
+
+.course-card {
+    animation: fadeInUp 0.4s ease-out;
+    animation-fill-mode: both;
+
+    &:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    &:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    &:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    &:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    &:nth-child(6) {
+        animation-delay: 0.6s;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
