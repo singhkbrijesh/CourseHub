@@ -1,12 +1,36 @@
 .breadcrumb-nav {
     font-size: 0.95rem;
-    color: #888;
+    color: lightblue;
     margin-left: 16px;
     margin-bottom: 0;
     display: flex;
     align-items: center;
 
-    span {
-        color: #888;
+    .breadcrumb-item {
+        color: lightblue;
+
+        &.clickable {
+            cursor: pointer;
+            text-decoration: underline;
+            transition: all 0.2s ease;
+
+            &:hover {
+                color: #87ceeb;
+                text-decoration: none;
+                opacity: 0.8;
+            }
+        }
+
+        &.current {
+            color: #ffffff;
+            font-weight: 500;
+            cursor: default;
+        }
+    }
+
+    .breadcrumb-separator {
+        color: lightblue;
+        margin: 0 8px;
+        user-select: none;
     }
 }

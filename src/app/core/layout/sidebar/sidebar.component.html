@@ -5,10 +5,12 @@
     <div class="sidebar-content">
         <h2 *ngIf="user.name"><span style="font-size: 1em;">({{ user.role | titlecase }})</span></h2>
         <h2 *ngIf="!user.name">Menu</h2>
-        <ng-container *ngFor="let item of menuItems">
-            <button class="sidebar-link" type="button" (click)="onMenuClick(item.route)">
+        <div *ngFor="let item of menuItems">
+            <button class="sidebar-link" 
+                    [class.active]="item.isActive"
+                    (click)="onMenuClick(item.route)">
                 {{ item.label }}
             </button>
-        </ng-container>
+        </div>
     </div>
 </div>

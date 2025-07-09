@@ -4,32 +4,43 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span class="logo" style="margin-left: 8px;">CourseHub</span>
+  <span class="logo">CourseHub</span>
 
   <app-breadcrumb *ngIf="!isLoginPage"></app-breadcrumb>
 
   <span class="spacer" style="flex: 1 1 auto;"></span>
 
-  <!-- <span class="user-info" *ngIf="user.name">{{ user.name }} ({{ user.role }})</span> -->
-
-  <button mat-icon-button (click)="toggleTheme()" [matTooltip]="'Toggle Theme'" aria-label="Toggle theme">
-    <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+  <!-- Theme Menu Button -->
+  <button mat-icon-button [matMenuTriggerFor]="themeMenu" [matTooltip]="'Select Theme'" aria-label="Select theme">
+    <mat-icon>{{ currentTheme.icon }}</mat-icon>
   </button>
+
+  <!-- Theme Selection Menu -->
+  <mat-menu #themeMenu="matMenu" xPosition="before">
+    <button mat-menu-item 
+            *ngFor="let theme of availableThemes" 
+            (click)="selectTheme(theme)"
+            [class.selected-theme]="currentTheme.name === theme.name">
+      <mat-icon>{{ theme.icon }}</mat-icon>
+      <span>{{ theme.displayName }}</span>
+      <mat-icon *ngIf="currentTheme.name === theme.name" class="check-icon">check</mat-icon>
+    </button>
+  </mat-menu>
 
   <button *ngIf="user.name" mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-icon-btn" aria-label="Profile">
     <span class="profile-circle">
       <mat-icon>person</mat-icon>
     </span>
   </button>
-<mat-menu #profileMenu="matMenu" xPosition="before">
-  <button mat-menu-item color="warn" (click)="logout()" [matTooltip]="'Logout'" aria-label="Logout">
-    <span>{{user.name}}</span>
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-menu>
+
+  <mat-menu #profileMenu="matMenu" xPosition="before">
+    <button mat-menu-item color="warn" (click)="logout()" [matTooltip]="'Logout'" aria-label="Logout">
+      <span>{{user.name}}</span>
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-menu>
+
   <button *ngIf="!user.name" mat-icon-button (click)="goToLogin()" [matTooltip]="'Login'" aria-label="Login">
     <mat-icon>login</mat-icon>
   </button>
- 
-  
 </mat-toolbar>

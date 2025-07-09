@@ -51,16 +51,35 @@
     cursor: pointer;
     border-bottom: 1px solid #ddd;
     transition: background 0.2s, color 0.2s;
-}
+    width: 100%;
+    position: relative;
 
-.sidebar-link:last-child {
-    border-bottom: none;
-}
+    &:last-child {
+        border-bottom: none;
+    }
 
-.sidebar-link:hover,
-.sidebar-link:focus {
-    background: #1976d2;
-    color: #fff;
+    &:hover,
+    &:focus {
+        background: #1976d2;
+        color: #fff;
+    }
+
+    // Active state styling
+    &.active {
+        background: #1976d2;
+        color: #fff;
+        font-weight: 600;
+
+        // Add a left border indicator
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: #fff;
+        }
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -69,28 +88,53 @@
     }
 }
 
+// Light theme styles
 body.light-theme .sidebar-slider {
     background: lightgrey;
     color: #222;
-}
-
-body.dark-theme .sidebar-slider {
-    background: #23272f;
-    color: lightgrey;
 }
 
 body.light-theme .sidebar-content {
     color: #222;
 }
 
-body.dark-theme .sidebar-content {
-    color: #fff;
-}
-
 body.light-theme .sidebar-close {
     color: #222;
 }
 
+body.light-theme .sidebar-link {
+    color: #222;
+
+    &:hover,
+    &:focus,
+    &.active {
+        background: #1976d2;
+        color: #fff;
+    }
+}
+
+// Dark theme styles
+body.dark-theme .sidebar-slider {
+    background: #23272f;
+    color: lightgrey;
+}
+
+body.dark-theme .sidebar-content {
+    color: #fff;
+}
+
 body.dark-theme .sidebar-close {
     color: #fff;
+}
+
+body.dark-theme .sidebar-link {
+    color: #fff;
+    border-bottom-color: #444;
+
+    &:hover,
+    &:focus,
+    &.active {
+        background: #1976d2;
+        color: #fff;
+    }
 }

@@ -1,16 +1,20 @@
 import { CanActivateFn, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export const RoleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const expectedRoles = route.data['roles'] as string[];
+  const platformId = inject(PLATFORM_ID);
+  const router = inject(Router);
 
-  const userStr = typeof localStorage !== 'undefined' ? localStorage.getItem('user') : null;
-  const user = userStr ? JSON.parse(userStr) : null;
+  if (isPlatformBrowser(platformId)) {
+    const userStr = localStorage.getItem('user');
+    const user = userStr ? JSON.parse(userStr) : null;
 
-  if (user?.role && expectedRoles.includes(user.role)) {
-    return true;
-  } else {
-    const router = inject(Router);
-    return router.createUrlTree(['/']);
+    if (user?.role && expectedRoles.includes(user.role)) {
+      return true;
+    }
   }
+
+  return router.createUrlTree(['/']);
 };

@@ -1,53 +1,127 @@
-// // src/styles.scss
-
-// @use '@angular/material' as mat;
-
-// // Import the core styles
-// @include mat.core();
-
-// // Define your light theme
-// $light-primary: mat.define-palette(mat.$indigo-palette);
-// $light-accent: mat.define-palette(mat.$pink-palette);
-// $light-theme: mat.define-light-theme((color: (primary: $light-primary,
-//                 accent: $light-accent,
-//             ),
-//         ));
-
-// // Define your dark theme
-// $dark-primary: mat.define-palette(mat.$blue-grey-palette);
-// $dark-accent: mat.define-palette(mat.$amber-palette);
-// $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
-//                 accent: $dark-accent,
-//             ),
-//         ));
-
-// // Apply default theme styles globally (light theme)
-// @include mat.all-component-themes($light-theme);
-
-// // Add theme switching classes
-// .light-theme {
-//     @include mat.all-component-colors($light-theme);
-// }
-
-// .dark-theme {
-//     @include mat.all-component-colors($dark-theme);
-// }
-
-
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-// Optional dark mode override
+// Light theme (default)
+body,
+body.light-theme {
+    --header-bg: #1976d2;
+    --header-text: #ffffff;
+    --primary-color: #1976d2;
+    --background-color: #ffffff;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #eee;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+// Dark theme
 body.dark-theme {
-    background-color: #121212;
-    color: white;
+    --header-bg: linear-gradient(135deg, #23272f 0%, #2c313a 100%);
+    --header-text: #ffffff;
+    --primary-color: #bb86fc;
+    --background-color: #121212;
+    --card-background: #2d2d2d;
+    --text-color: #ffffff;
+    --text-secondary: #cccccc;
+    --border-color: #444;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+// Blue theme
+body.blue-theme {
+    --header-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    --header-text: #ffffff;
+    --primary-color: #2196f3;
+    --background-color: #f0f4f8;
+    --card-background: #ffffff;
+    --text-color: #1a365d;
+    --text-secondary: #4a5568;
+    --border-color: #e2e8f0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+// Green theme
+body.green-theme {
+    --header-bg: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+    --header-text: #ffffff;
+    --primary-color: #4caf50;
+    --background-color: #f1f8e9;
+    --card-background: #ffffff;
+    --text-color: #1b5e20;
+    --text-secondary: #388e3c;
+    --border-color: #c8e6c9;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+// Purple theme
+body.purple-theme {
+    --header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --header-text: #ffffff;
+    --primary-color: #9c27b0;
+    --background-color: #faf0ff;
+    --card-background: #ffffff;
+    --text-color: #4a148c;
+    --text-secondary: #7b1fa2;
+    --border-color: #e1bee7;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+// Common theme-aware styles
+body.dark-theme {
+    .stat-card {
+        background: var(--card-background);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-icon {
+        background: #333;
+    }
+
+    .stat-content h3 {
+        color: var(--text-color);
+    }
+
+    .stat-content p {
+        color: var(--text-secondary);
+    }
+
+    .recent-courses {
+        background: var(--card-background);
+        color: var(--text-color);
+    }
+
+    .recent-courses h3 {
+        color: var(--text-color);
+    }
+
+    .courses-table table {
+        th {
+            background: #333;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: #333;
+        }
+    }
 }
 
 html,
 body {
     height: 100%;
-}
-
-body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }

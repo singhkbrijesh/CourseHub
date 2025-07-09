@@ -1,0 +1,431 @@
+.student-dashboard {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 200px);
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 1.1rem;
+        color: #666;
+        margin: 0;
+    }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.stat-content {
+    flex: 1;
+
+    h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+    }
+
+    p {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+}
+
+.my-courses-section,
+.recommended-section {
+    margin-bottom: 40px;
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.course-card {
+    background: var(--card-background);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.course-thumbnail {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    &:hover img {
+        transform: scale(1.05);
+    }
+}
+
+.course-content {
+    padding: 20px;
+
+    h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+
+    .course-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+.course-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+
+    .instructor {
+        color: #1976d2;
+        font-weight: 500;
+    }
+
+    .level {
+        color: #1976d2;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .duration {
+        color: #666;
+        font-weight: 500;
+    }
+}
+
+.progress-section {
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.course-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.continue-btn,
+.enroll-btn {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+
+    &:hover {
+        background: #1565c0;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.course-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .rating {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .stars {
+            color: #ffc107;
+            font-size: 1.1rem;
+        }
+
+        .rating-value {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    }
+
+    .enrollment-count {
+        color: #666;
+        font-size: 0.9rem;
+    }
+}
+
+.price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2e7d32;
+}
+
+.no-courses-message {
+    text-align: center;
+    padding: 60px 20px;
+
+    .empty-state {
+        max-width: 400px;
+        margin: 0 auto;
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .browse-btn {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+
+            &:hover {
+                background: #1565c0;
+            }
+        }
+    }
+}
+
+// Dark theme styles
+body.dark-theme {
+    .student-dashboard {
+        background: #1a1a1a;
+        color: #fff;
+    }
+
+    .dashboard-header {
+        h1 {
+            color: #fff;
+        }
+
+        p {
+            color: #ccc;
+        }
+    }
+
+    .stat-card {
+        background: #2d2d2d;
+        color: #fff;
+    }
+
+    .stat-icon {
+        background: #333;
+    }
+
+    .stat-content h3 {
+        color: #fff;
+    }
+
+    .stat-content p {
+        color: #ccc;
+    }
+
+    .my-courses-section h2,
+    .recommended-section h2 {
+        color: #fff;
+    }
+
+    .course-card {
+        background: #2d2d2d;
+        color: #fff;
+    }
+
+    .course-content {
+        h3 {
+            color: #fff;
+        }
+
+        .course-description {
+            color: #ccc;
+        }
+    }
+
+    .course-meta {
+        .instructor {
+            color: #64b5f6;
+        }
+
+        .level {
+            background: #1565c0;
+            color: #fff;
+        }
+
+        .duration {
+            color: #ccc;
+        }
+    }
+
+    .progress-text {
+        color: #ccc;
+    }
+
+    .course-actions {
+        border-top-color: #555;
+    }
+
+    .price {
+        color: #4caf50;
+    }
+
+    .no-courses-message {
+        .empty-state {
+            h3 {
+                color: #fff;
+            }
+
+            p {
+                color: #ccc;
+            }
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .student-dashboard {
+        padding: 15px;
+    }
+
+    .dashboard-header {
+        h1 {
+            font-size: 2rem;
+        }
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .course-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .course-actions {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+
+        .continue-btn,
+        .enroll-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+}

@@ -1,1 +1,73 @@
-<p>courses works!</p>
+<div class="courses-container">
+    <div class="courses-header">
+      <h1>Course Catalog</h1>
+      <p>Discover and enroll in courses to enhance your skills</p>
+    </div>
+  
+    <div class="filters-section">
+      <div class="search-bar">
+        <input 
+          type="text" 
+          placeholder="Search courses..." 
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()"
+          class="search-input">
+      </div>
+  
+      <div class="filter-controls">
+        <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()" class="filter-select">
+          <option value="">All Categories</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+  
+        <select [(ngModel)]="selectedLevel" (ngModelChange)="onLevelChange()" class="filter-select">
+          <option value="">All Levels</option>
+          <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="courses-grid">
+      <div *ngFor="let course of filteredCourses" class="course-card">
+        <div class="course-thumbnail">
+          <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+        </div>
+        
+        <div class="course-content">
+          <h3>{{ course.title }}</h3>
+          <p class="course-description">{{ course.description }}</p>
+          
+          <div class="course-meta">
+            <span class="instructor">By {{ course.instructor }}</span>
+            <span class="level">{{ course.level }}</span>
+            <span class="duration">{{ course.duration }}h</span>
+          </div>
+          
+          <div class="course-stats">
+            <div class="rating">
+              <span class="stars">★★★★☆</span>
+              <span class="rating-value">{{ course.rating }}/5</span>
+            </div>
+            <div class="enrollment-count">{{ course.enrollmentCount }} enrolled</div>
+          </div>
+          
+          <!-- Update the course card section to include navigation -->
+          <div class="course-actions">
+            <span class="price">${{ course.price }}</span>
+            <div class="action-buttons">
+              <button class="view-btn" [routerLink]="['/courses', course.id]">
+                View Details
+              </button>
+              <button class="enroll-btn" (click)="enrollInCourse(course.id)">
+                Enroll Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="filteredCourses.length === 0" class="no-courses">
+      <p>No courses found matching your criteria.</p>
+    </div>
+  </div>

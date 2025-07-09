@@ -1,0 +1,123 @@
+<div class="student-dashboard">
+    <div class="dashboard-header">
+      <h1>Welcome back, {{ user.name }}!</h1>
+      <p>Continue your learning journey</p>
+    </div>
+  
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-content">
+          <h3>{{ enrollments.length }}</h3>
+          <p>Enrolled Courses</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-content">
+          <h3>{{ completedCourses }}</h3>
+          <p>Completed Courses</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-content">
+          <h3>{{ inProgressCourses }}</h3>
+          <p>In Progress</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-content">
+          <h3>{{ overallProgress }}%</h3>
+          <p>Overall Progress</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- My Courses Section -->
+    <div class="my-courses-section" *ngIf="enrolledCourses.length > 0">
+      <h2>My Courses</h2>
+      <div class="courses-grid">
+        <div *ngFor="let course of enrolledCourses" class="course-card">
+          <div class="course-thumbnail">
+            <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+          </div>
+          
+          <div class="course-content">
+            <h3>{{ course.title }}</h3>
+            <p class="course-description">{{ course.description }}</p>
+            
+            <div class="course-meta">
+              <span class="instructor">By {{ course.instructor }}</span>
+              <span class="level">{{ course.level }}</span>
+            </div>
+            
+            <div class="progress-section">
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="getEnrollmentProgress(course.id)"></div>
+              </div>
+              <span class="progress-text">{{ getEnrollmentProgress(course.id) }}% Complete</span>
+            </div>
+            
+            <div class="course-actions">
+              <button class="continue-btn" (click)="continueCourse(course.id)">
+                {{ getEnrollmentProgress(course.id) === 0 ? 'Start Course' : 'Continue' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- No Courses Message -->
+    <div class="no-courses-message" *ngIf="enrolledCourses.length === 0">
+      <div class="empty-state">
+        <h3>No Courses Yet</h3>
+        <p>You haven't enrolled in any courses yet. Browse our course catalog to get started!</p>
+        <button class="browse-btn" routerLink="/courses">Browse Courses</button>
+      </div>
+    </div>
+  
+    <!-- Recommended Courses -->
+    <div class="recommended-section" *ngIf="recentCourses.length > 0">
+      <h2>Recommended for You</h2>
+      <div class="courses-grid">
+        <div *ngFor="let course of recentCourses" class="course-card">
+          <div class="course-thumbnail">
+            <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+          </div>
+          
+          <div class="course-content">
+            <h3>{{ course.title }}</h3>
+            <p class="course-description">{{ course.description }}</p>
+            
+            <div class="course-meta">
+              <span class="instructor">By {{ course.instructor }}</span>
+              <span class="level">{{ course.level }}</span>
+              <span class="duration">{{ course.duration }}h</span>
+            </div>
+            
+            <div class="course-stats">
+              <div class="rating">
+                <span class="stars">★★★★☆</span>
+                <span class="rating-value">{{ course.rating }}/5</span>
+              </div>
+              <div class="enrollment-count">{{ course.enrollmentCount }} enrolled</div>
+            </div>
+            
+            <div class="course-actions">
+              <span class="price">${{ course.price }}</span>
+              <button class="enroll-btn" (click)="enrollInCourse(course.id)">
+                Enroll Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

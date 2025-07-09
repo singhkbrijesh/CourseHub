@@ -5,7 +5,7 @@ import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { Subscription } from 'rxjs';
 import { LoaderComponent } from './shared/loader/loader.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -20,47 +20,69 @@ export class AppComponent implements OnInit, OnDestroy {
   public loading = false;
 
   private routerEventsSub?: Subscription;
+  private loadingTimer: any; // Added this
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
+    // Show initial loader for 2 seconds
+    this.showLoaderWithDelay(2000);
+    
     this.loadUser();
 
     this.routerEventsSub = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.loadUser();
-        this.loading = false;
       } else if (event.constructor.name === 'NavigationStart') {
-        this.loading = true;
+        this.showLoaderWithDelay(1500); // Show loader with 1.5 second minimum delay
       } else if (
         event.constructor.name === 'NavigationCancel' ||
         event.constructor.name === 'NavigationError'
       ) {
+        if (this.loadingTimer) {
+          clearTimeout(this.loadingTimer);
+        }
         this.loading = false;
       }
     });
 
-    // Update user on route change
-    this.routerEventsSub = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.loadUser();
-      }
-    });
+    // Only add event listeners in browser environment
+    if (isPlatformBrowser(this.platformId)) {
+      window.addEventListener('storage', this.onStorageChange);
+      window.addEventListener('userChanged', this.onUserChanged);
+      document.addEventListener('mousedown', this.handleClickOutsideSidebar);
+    }
+  }
 
-    // Listen for storage changes (login/logout in other tabs)
-    window.addEventListener('storage', this.onStorageChange);
-
-    // Listen for custom login/logout events (optional, see below)
-    window.addEventListener('userChanged', this.onUserChanged);
-
-    document.addEventListener('mousedown', this.handleClickOutsideSidebar);
+  // Added this method
+  private showLoaderWithDelay(minDelayMs: number = 1500) {
+    this.loading = true;
+    
+    if (this.loadingTimer) {
+      clearTimeout(this.loadingTimer);
+    }
+    
+    this.loadingTimer = setTimeout(() => {
+      this.loading = false;
+    }, minDelayMs);
   }
 
   ngOnDestroy() {
     this.routerEventsSub?.unsubscribe();
-    window.removeEventListener('storage', this.onStorageChange);
-    window.removeEventListener('userChanged', this.onUserChanged);
-    document.removeEventListener('mousedown', this.handleClickOutsideSidebar);
+    
+    // Clear loading timer
+    if (this.loadingTimer) {
+      clearTimeout(this.loadingTimer);
+    }
+    
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('storage', this.onStorageChange);
+      window.removeEventListener('userChanged', this.onUserChanged);
+      document.removeEventListener('mousedown', this.handleClickOutsideSidebar);
+    }
   }
 
   handleClickOutsideSidebar = (event: MouseEvent) => {
@@ -73,18 +95,20 @@ export class AppComponent implements OnInit, OnDestroy {
   };
 
   loadUser = () => {
-    const userData = localStorage.getItem('user');
-    this.user = userData ? JSON.parse(userData) : { name: '', role: '' };
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = localStorage.getItem('user');
+      this.user = userData ? JSON.parse(userData) : { name: '', role: '' };
+    } else {
+      this.user = { name: '', role: '' };
+    }
   };
 
-  // For storage event
   onStorageChange = (event: StorageEvent) => {
     if (event.key === 'user') {
       this.loadUser();
     }
   };
 
-  // For custom event
   onUserChanged = () => {
     this.loadUser();
   };

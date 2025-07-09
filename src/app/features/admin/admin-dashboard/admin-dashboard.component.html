@@ -1,1 +1,67 @@
-<p>admin-dashboard works!</p>
+<div class="admin-dashboard">
+    <h2>Admin Dashboard</h2>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-content">
+          <h3>{{ totalCourses }}</h3>
+          <p>Total Courses</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h3>{{ totalUsers }}</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-content">
+          <h3>{{ totalEnrollments }}</h3>
+          <p>Total Enrollments</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-content">
+          <h3>{{ pendingApprovals }}</h3>
+          <p>Pending Approvals</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="recent-courses">
+      <h3>Recent Courses</h3>
+      <div class="courses-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Course Name</th>
+              <th>Instructor</th>
+              <th>Status</th>
+              <th>Enrollments</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let course of recentCourses">
+              <td>{{ course.title }}</td>
+              <td>{{ course.instructor }}</td>
+              <td>
+                <span class="status-badge" [class]="course.status">
+                  {{ course.status | titlecase }}
+                </span>
+              </td>
+              <td>{{ course.enrollmentCount }}</td>
+              <td>{{ course.createdAt | date:'shortDate' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

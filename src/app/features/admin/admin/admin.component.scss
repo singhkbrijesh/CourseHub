@@ -1,0 +1,37 @@
+.admin-container {
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.admin-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.admin-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .admin-container {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+body.dark-theme .admin-header h1 {
+    color: #fff;
+}
+
+body.dark-theme .admin-content {
+    background: #2d2d2d;
+    color: #fff;
+}

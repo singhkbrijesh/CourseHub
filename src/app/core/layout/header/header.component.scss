@@ -4,17 +4,24 @@
     align-items: center;
     background: var(--header-bg);
     color: var(--header-text);
-    // padding: 0.75rem 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: larger;
+    margin-left: 8px;
+    color: var(--header-text);
 }
 
 .left-section .logo {
     font-size: 1.6rem;
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--header-text);
 }
 
 .right-section {
@@ -31,12 +38,98 @@
 
 .sidebar-opener {
     cursor: pointer;
-    background-color: #eee;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--header-text);
     padding: 10px;
     margin: 10px;
     width: fit-content;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
     z-index: 1200;
     position: relative;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+// Additional styling for Material UI components in header
+::ng-deep .header-container {
+    .mat-toolbar {
+        background: var(--header-bg) !important;
+        color: var(--header-text) !important;
+    }
+
+    .mat-icon-button {
+        color: var(--header-text) !important;
+
+        .mat-icon {
+            color: var(--header-text) !important;
+        }
+    }
+
+    .mat-button-toggle-group {
+        background: transparent;
+    }
+
+    .mat-menu-panel {
+        background: var(--header-bg);
+
+        .mat-menu-item {
+            color: var(--header-text);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+        }
+    }
+}
+
+// Dark theme specific adjustments
+body.dark-theme {
+    .header-container {
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar-opener {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+    }
+}
+
+// Light theme specific adjustments
+body.light-theme {
+    .sidebar-opener {
+        background-color: rgba(0, 0, 0, 0.05);
+        border-color: rgba(0, 0, 0, 0.1);
+        color: var(--header-text);
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+.selected-theme {
+    background: rgba(0, 0, 0, 0.1);
+
+    .check-icon {
+        margin-left: auto;
+        color: #4caf50;
+    }
+}
+
+.mat-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    mat-icon {
+        margin-right: 8px;
+    }
 }

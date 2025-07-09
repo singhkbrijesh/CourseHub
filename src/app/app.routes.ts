@@ -9,27 +9,27 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
+      import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'courses',
     loadChildren: () =>
-      import('./features/courses/courses.routes').then((m) => m.COURSES_ROUTES),
+      import('./features/courses/courses.module').then((m) => m.CoursesModule),
   },
   {
     path: 'users',
     loadChildren: () =>
-      import('./features/users/users.routes').then((m) => m.USERS_ROUTES),
+      import('./features/users/users.module').then((m) => m.UsersModule),
   },
   {
     path: 'admin',
     loadChildren: () =>
-      import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+      import('./features/admin/admin.module').then((m) => m.AdminModule),
   },
   {
     path: 'instructor',
     loadChildren: () =>
-      import('./features/instructor/instructor.routes').then((m) => m.INSTRUCTOR_ROUTES),
+      import('./features/instructor/instructor.module').then((m) => m.InstructorModule),
   },
   {
     path: '**',

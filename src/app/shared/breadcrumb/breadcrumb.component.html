@@ -1,6 +1,12 @@
 <nav class="breadcrumb-nav" *ngIf="breadcrumbs.length">
     <ng-container *ngFor="let crumb of breadcrumbs; let last = last; let i = index">
-      <span>{{ crumb | titlecase }}</span>
-      <span *ngIf="!last"> / </span>
+      <span 
+        class="breadcrumb-item" 
+        [class.clickable]="crumb.isClickable"
+        [class.current]="!crumb.isClickable"
+        (click)="navigateTo(crumb)">
+        {{ crumb.label | titlecase }}
+      </span>
+      <span *ngIf="!last" class="breadcrumb-separator"> / </span>
     </ng-container>
   </nav>

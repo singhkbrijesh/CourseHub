@@ -1,20 +1,20 @@
 [
     {
-        "email": "admin@example.com",
-        "password": "admin123",
+        "email": "admin@gmail.com",
+        "password": "admin@123",
         "role": "admin",
         "name": "John Doe"
     },
     {
-        "email": "instructor@example.com",
-        "password": "instructor123",
+        "email": "instructor@gmail.com",
+        "password": "instructor@24",
         "role": "instructor",
         "name": "Sanjay Tyagi"
     },
     {
-        "email": "student@example.com",
-        "password": "student123",
+        "email": "student@gmail.com",
+        "password": "student@24",
         "role": "student",
-        "name": "Rohan Rastogi"
+        "name": "Raju Rastogi"
     }
 ]
