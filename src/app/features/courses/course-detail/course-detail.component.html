@@ -45,10 +45,6 @@
       <!-- Enrollment Section -->
       <div class="enrollment-section" *ngIf="currentUser.role === 'student'">
         <div class="enrollment-card" *ngIf="!isEnrolled">
-          <div class="price-section">
-            <span class="price">${{ course?.price }}</span>
-            <span class="price-label">One-time payment</span>
-          </div>
           <button class="enroll-btn" (click)="enrollInCourse()">
             Enroll Now
           </button>

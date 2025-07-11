@@ -16,5 +16,11 @@
         "password": "student@24",
         "role": "student",
         "name": "Raju Rastogi"
+    },
+    {
+        "email": "student2@gmail.com",
+        "password": "student@1234",
+        "role": "student",
+        "name": "Farhan"
     }
 ]

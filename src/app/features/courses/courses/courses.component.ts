@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -29,7 +29,8 @@ import { Course } from '../../../core/models/course.model';
     MatChipsModule
   ],
   templateUrl: './courses.component.html',
-  styleUrl: './courses.component.scss'
+  styleUrl: './courses.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class CoursesComponent implements OnInit, AfterViewInit {
   courses: Course[] = [];
@@ -44,7 +45,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   // View mode and Material table properties
   viewMode: 'grid' | 'table' = 'grid';
   dataSource = new MatTableDataSource<Course>();
-  displayedColumns: string[] = ['title', 'category', 'level', 'duration', 'rating', 'instructor', 'price', 'actions'];
+  displayedColumns: string[] = ['title', 'category', 'level', 'duration', 'rating', 'instructor', 'actions'];
   
   // Grid view pagination and sorting properties
   gridPageSize = 6;
@@ -91,7 +92,6 @@ export class CoursesComponent implements OnInit, AfterViewInit {
           case 'instructor': return data.instructor.toLowerCase();
           case 'duration': return data.duration;
           case 'rating': return data.rating;
-          case 'price': return data.price;
           default: return '';
         }
       };
@@ -104,20 +104,36 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   loadCourses() {
-    this.courseService.getCourses().subscribe(courses => {
+  this.courseService.getCourses().subscribe({
+    next: (courses) => {
       this.courses = courses.filter(c => c.status === 'approved');
       this.filteredCourses = [...this.courses];
+      
+      // Update both table and grid views
       this.updateTableData();
-      this.updateGridPagination(); // Add this for grid pagination
-    });
-  }
+      this.updateGridPagination();
+    },
+    error: (error) => {
+      console.error('Error loading courses:', error);
+    }
+  });
+}
 
   loadUserEnrollments() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
     if (user.id && user.role === 'student') {
-      this.courseService.getStudentEnrollments(user.id).subscribe(enrollments => {
-        this.enrolledCourseIds = enrollments.map(e => e.courseId);
+      this.courseService.getStudentEnrollments(user.id).subscribe({
+        next: (enrollments) => {
+          this.enrolledCourseIds = enrollments.map(e => e.courseId);
+        },
+        error: (error) => {
+          console.error('Error loading enrollments:', error);
+          this.enrolledCourseIds = [];
+        }
       });
+    } else {
+      this.enrolledCourseIds = [];
     }
   }
 
@@ -137,25 +153,25 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   updateTableData() {
-    // Update the data source with filtered courses
+    // Updating the data source with filtered courses
     this.dataSource.data = this.filteredCourses;
     
-    // Ensure paginator and sort are connected after data update
+    // Connecting paginator and sort after data update
     if (!this.dataSource.paginator && this.paginator) {
       this.connectPaginatorAndSort();
     }
     
-    // Reset to first page when data changes
+    // Resetting to first page when data changes
     if (this.paginator) {
       this.paginator.firstPage();
     }
   }
 
-  // New method for grid pagination
+  // Method for grid pagination
   updateGridPagination() {
     let sortedCourses = [...this.filteredCourses];
     
-    // Apply sorting if selected
+    // Applying sorting if selected
     if (this.gridSortBy) {
       sortedCourses.sort((a, b) => {
         let valueA: any, valueB: any;
@@ -168,10 +184,6 @@ export class CoursesComponent implements OnInit, AfterViewInit {
           case 'rating':
             valueA = a.rating;
             valueB = b.rating;
-            break;
-          case 'price':
-            valueA = a.price;
-            valueB = b.price;
             break;
           case 'duration':
             valueA = a.duration;
@@ -193,27 +205,27 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       });
     }
     
-    // Apply pagination
+    // Applying pagination
     const startIndex = this.gridPageIndex * this.gridPageSize;
     const endIndex = startIndex + this.gridPageSize;
     this.paginatedCourses = sortedCourses.slice(startIndex, endIndex);
   }
 
-  // New method for grid page change
+  // Method for grid page change
   onGridPageChange(event: PageEvent) {
     this.gridPageIndex = event.pageIndex;
     this.gridPageSize = event.pageSize;
     this.updateGridPagination();
   }
 
-  // New method for grid sorting
+  // Method for grid sorting
   onGridSortChange() {
     this.gridPageIndex = 0; // Reset to first page when sorting changes
     this.updateGridPagination();
   }
 
   filterCourses() {
-    // Apply filters manually for grid view and then update table
+    // Applying filters manually for grid view and then updating table
     this.filteredCourses = this.courses.filter(course => {
       const matchesSearch = course.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                            course.description.toLowerCase().includes(this.searchTerm.toLowerCase());
@@ -223,10 +235,10 @@ export class CoursesComponent implements OnInit, AfterViewInit {
       return matchesSearch && matchesCategory && matchesLevel;
     });
     
-    // Reset pagination when filtering
+    // Resetting pagination when filtering
     this.gridPageIndex = 0;
-    
-    // Update both table and grid
+
+    // Updating both table and grid
     this.updateTableData();
     this.updateGridPagination();
   }
@@ -248,14 +260,41 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   enrollInCourse(courseId: string) {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user.role === 'student') {
-      this.courseService.enrollInCourse(courseId, user.id).subscribe(() => {
-        alert('Successfully enrolled in course!');
-        this.loadUserEnrollments(); // Refresh enrollments
-      });
-    } else {
-      alert('Only students can enroll in courses. Please login as a student.');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  
+  if (user.role === 'student' && user.id) {
+    // Check if already enrolled first
+    if (this.isEnrolled(courseId)) {
+      alert('You are already enrolled in this course!');
+      return;
     }
+
+    this.courseService.enrollInCourse(courseId, user.id).subscribe({
+      next: (enrollment) => {
+        alert('Successfully enrolled in course!');
+        
+        // Update the local enrolledCourseIds array immediately
+        this.enrolledCourseIds.push(courseId);
+        
+        // CRITICAL: Reload courses to get updated enrollment counts
+        this.loadCourses();
+        
+        // Also reload enrollments to get fresh data from API
+        this.loadUserEnrollments();
+      },
+      error: (error) => {
+        console.error('Enrollment error:', error);
+        if (error.message === 'Already enrolled in this course') {
+          alert('You are already enrolled in this course!');
+        } else {
+          alert('Failed to enroll in course. Please try again.');
+        }
+      }
+    });
+  } else if (!user.id) {
+    alert('Please login to enroll in courses.');
+  } else {
+    alert('Only students can enroll in courses. Please login as a student.');
   }
+}
 }

@@ -7,7 +7,6 @@ export interface Course {
     category: string;
     level: 'Beginner' | 'Intermediate' | 'Advanced';
     duration: number; // in hours
-    price: number;
     rating: number;
     enrollmentCount: number;
     thumbnail: string;

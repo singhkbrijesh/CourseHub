@@ -57,7 +57,6 @@ export class StudentDashboardComponent implements OnInit {
 
   continueCourse(courseId: string) {
     // Navigate to course detail or lesson
-    console.log('Continue course:', courseId);
   }
   
   getEnrollmentProgress(courseId: string): number {

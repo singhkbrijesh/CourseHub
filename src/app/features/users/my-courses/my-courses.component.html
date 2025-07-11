@@ -1,1 +1,59 @@
-<p>my-courses works!</p>
+<div class="my-courses-container">
+    <div class="header">
+      <h1>My Courses</h1>
+      <p>Continue your learning journey</p>
+    </div>
+  
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <p>Loading your courses...</p>
+    </div>
+  
+    <!-- Enrolled Courses -->
+    <div *ngIf="!loading && enrolledCourses.length > 0" class="courses-section">
+      <div class="courses-grid">
+        <div *ngFor="let course of enrolledCourses" class="course-card">
+          <div class="course-thumbnail">
+            <img [src]="course.thumbnail" [alt]="course.title" 
+                 onerror="this.src='assets/images/defaultcourse.jpeg'">
+          </div>
+          
+          <div class="course-content">
+            <h3>{{ course.title }}</h3>
+            <p class="course-description">{{ course.description }}</p>
+            
+            <div class="course-meta">
+              <span class="instructor">By {{ course.instructor }}</span>
+              <span class="level">{{ course.level }}</span>
+              <span class="duration">{{ course.duration }}h</span>
+            </div>
+            
+            <div class="progress-section">
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="getEnrollmentProgress(course.id)"></div>
+              </div>
+              <span class="progress-text">{{ getEnrollmentProgress(course.id) }}% Complete</span>
+            </div>
+            
+            <div class="course-actions">
+              <span class="status" [class]="getEnrollmentStatus(course.id)">
+                {{ getEnrollmentStatus(course.id) | titlecase }}
+              </span>
+              <button class="continue-btn" (click)="continueCourse(course.id)">
+                {{ getEnrollmentProgress(course.id) === 0 ? 'Start Course' : 'Continue' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- No Courses Message -->
+    <div *ngIf="!loading && enrolledCourses.length === 0" class="no-courses">
+      <div class="empty-state">
+        <h3>No Enrolled Courses</h3>
+        <p>You haven't enrolled in any courses yet. Browse our course catalog to get started!</p>
+        <button class="browse-btn" routerLink="/courses">Browse Courses</button>
+      </div>
+    </div>
+  </div>
