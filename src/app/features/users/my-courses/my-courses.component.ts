@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
 
@@ -16,7 +16,7 @@ export class MyCoursesComponent implements OnInit {
   enrolledCourses: Course[] = [];
   loading = false;
 
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService, private router: Router) {}
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -70,7 +70,6 @@ export class MyCoursesComponent implements OnInit {
   }
 
   continueCourse(courseId: string) {
-    // Navigate to course detail page
-    window.location.href = `/courses/${courseId}`;
+    this.router.navigate(['/courses', courseId]);
   }
 }

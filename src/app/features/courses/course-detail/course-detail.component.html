@@ -1,121 +1,265 @@
-<div class="course-detail-container" *ngIf="!loading">
-    <div class="course-header">
-      <button class="back-btn" (click)="goBack()">← Back to Courses</button>
-      
-      <div class="course-hero" *ngIf="course">
-        <div class="course-info">
-          <h1>{{ course.title }}</h1>
-          <p class="course-description">{{ course.description }}</p>
-          
-          <div class="course-meta">
-            <div class="meta-item">
-              <span class="label">Instructor:</span>
-              <span class="value">{{ course.instructor }}</span>
-            </div>
-            <div class="meta-item">
-              <span class="label">Level:</span>
-              <span class="value level-badge" [class]="course.level.toLowerCase()">{{ course.level }}</span>
-            </div>
-            <div class="meta-item">
-              <span class="label">Duration:</span>
-              <span class="value">{{ course.duration }} hours</span>
-            </div>
-            <div class="meta-item">
-              <span class="label">Category:</span>
-              <span class="value">{{ course.category }}</span>
-            </div>
+<div class="course-detail-container" *ngIf="!loading && course">
+  <div class="course-header">
+    <button class="back-btn" (click)="goBack()">← Back to Courses</button>
+    
+    <div class="course-hero">
+      <div class="course-info">
+        <h1>{{ course.title }}</h1>
+        <p class="course-description">{{ course.description }}</p>
+        
+        <div class="course-meta">
+          <div class="meta-item">
+            <span class="label">Instructor:</span>
+            <span class="value">{{ course.instructor }}</span>
           </div>
-          
-          <div class="course-stats">
-            <div class="stat">
-              <span class="stars">★★★★☆</span>
-              <span class="rating">{{ course.rating }}/5</span>
-            </div>
-            <div class="stat">
-              <span class="enrollment-count">{{ course.enrollmentCount }} students enrolled</span>
-            </div>
+          <div class="meta-item">
+            <span class="label">Level:</span>
+            <span class="value level-badge" [class]="course.level.toLowerCase()">{{ course.level }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Duration:</span>
+            <span class="value">{{ course.duration }} hours</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Category:</span>
+            <span class="value">{{ course.category }}</span>
           </div>
         </div>
         
-        <div class="course-thumbnail">
-          <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+        <div class="course-stats">
+          <div class="stat">
+            <span class="stars">★★★★☆</span>
+            <span class="rating">{{ course.rating }}/5</span>
+          </div>
+          <div class="stat">
+            <span class="enrollment-count">{{ course.enrollmentCount }} students enrolled</span>
+          </div>
+          <div class="stat">
+            <span class="total-duration">{{ getTotalDuration() }} minutes total</span>
+          </div>
+          <div class="stat">
+            <span class="lesson-count">{{ course.lessons.length || 0 }} lessons</span>
+          </div>
         </div>
       </div>
       
-      <!-- Enrollment Section -->
-      <div class="enrollment-section" *ngIf="currentUser.role === 'student'">
-        <div class="enrollment-card" *ngIf="!isEnrolled">
-          <button class="enroll-btn" (click)="enrollInCourse()">
-            Enroll Now
-          </button>
-        </div>
-        
-        <div class="progress-card" *ngIf="isEnrolled">
-          <h3>Your Progress</h3>
-          <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="enrollmentProgress"></div>
+      <div class="course-thumbnail">
+        <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+      </div>
+    </div>
+    
+    <!-- Enrollment Section -->
+    <div class="enrollment-section" *ngIf="currentUser?.role === 'student'">
+      <div class="enrollment-card" *ngIf="!isEnrolled">
+        <button class="enroll-btn" (click)="enrollInCourse()">
+          Enroll Now
+        </button>
+      </div>
+      
+      <div class="progress-card" *ngIf="isEnrolled">
+        <h3>Your Progress</h3>
+        <mat-progress-bar 
+          mode="determinate" 
+          [value]="enrollmentProgress"
+          class="course-progress-bar">
+        </mat-progress-bar>
+        <p class="progress-text">{{ enrollmentProgress }}% Complete</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Overview -->
+  <div class="course-overview">
+    <h2>Course Overview</h2>
+    <div class="overview-grid">
+      <div class="overview-item">
+        <h4>Total Duration</h4>
+        <p>{{ getTotalDuration() }} minutes of content</p>
+      </div>
+      <div class="overview-item">
+        <h4>Lessons</h4>
+        <p>{{ course.lessons.length || 0 }} comprehensive lessons</p>
+      </div>
+      <div class="overview-item">
+        <h4>Level</h4>
+        <p>{{ course.level }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Requirements -->
+  <div class="course-requirements" *ngIf="course.requirements && course.requirements.length > 0">
+    <h3>Requirements</h3>
+    <ul class="requirements-list">
+      <li *ngFor="let requirement of course.requirements">{{ requirement }}</li>
+    </ul>
+  </div>
+
+  <!-- Learning Outcomes -->
+  <div class="course-learning-outcomes" *ngIf="course.learningOutcomes && course.learningOutcomes.length > 0">
+    <h3>What You'll Learn</h3>
+    <ul class="learning-outcomes-list">
+      <li *ngFor="let outcome of course.learningOutcomes">{{ outcome }}</li>
+    </ul>
+  </div>
+
+  <!-- Course Tags -->
+  <div class="course-tags" *ngIf="course.tags && course.tags.length > 0">
+    <h3>Tags</h3>
+    <div class="tags-container">
+      <span *ngFor="let tag of course.tags" class="tag">{{ tag }}</span>
+    </div>
+  </div>
+
+  <!-- Course Content -->
+  <div class="course-content" *ngIf="course.lessons && course.lessons.length > 0">
+    <div class="content-sidebar">
+      <h3>Course Content</h3>
+      <div class="lessons-list">
+        <div *ngFor="let lesson of course.lessons; let i = index" 
+             class="lesson-item"
+             [class.active]="selectedLesson?.id === lesson.id"
+             [class.completed]="isLessonCompleted(lesson.id)"
+             [class.preview]="lesson.isPreview"
+             [class.locked]="!canAccessLesson(lesson)"
+             [class.enrolled-only]="!lesson.isPreview && !isEnrolled"
+             (click)="selectLesson(lesson)">
+          <div class="lesson-number">{{ i + 1 }}</div>
+          <div class="lesson-info">
+            <h4>{{ lesson.title }}</h4>
+            <p>{{ lesson.duration }} min</p>
+            <!-- Show preview badge for preview lessons -->
+            <span *ngIf="lesson.isPreview" class="preview-badge">PREVIEW</span>
+            <!-- Show locked indicator for inaccessible lessons -->
+            <span *ngIf="!canAccessLesson(lesson)" class="locked-badge">LOCKED</span>
+            <!-- Show enrolled only indicator for non-preview lessons when not enrolled -->
+            <span *ngIf="!lesson.isPreview && !isEnrolled" class="enrolled-badge">ENROLLED ONLY</span>
           </div>
-          <p class="progress-text">{{ enrollmentProgress }}% Complete</p>
+          <div class="lesson-status">
+            <span *ngIf="isLessonCompleted(lesson.id)" class="completed-icon">✓</span>
+            <span *ngIf="selectedLesson?.id === lesson.id" class="playing-icon">▶</span>
+            <!-- Show different icons based on access level -->
+            <span *ngIf="!canAccessLesson(lesson)" class="lock-icon">🔒</span>
+            <span *ngIf="lesson.isPreview" class="preview-icon">👁</span>
+            <span *ngIf="canAccessLesson(lesson) && !lesson.isPreview && !isEnrolled" class="preview-only-icon">👁</span>
+          </div>
         </div>
       </div>
     </div>
-  
-    <!-- Course Content -->
-    <div class="course-content" *ngIf="course">
-      <div class="content-sidebar">
-        <h3>Course Content</h3>
-        <div class="lessons-list">
-          <div *ngFor="let lesson of course.lessons; let i = index" 
-               class="lesson-item"
-               [class.active]="selectedLesson?.id === lesson.id"
-               [class.completed]="isLessonCompleted(lesson.id)"
-               (click)="selectLesson(lesson)">
-            <div class="lesson-number">{{ i + 1 }}</div>
-            <div class="lesson-info">
-              <h4>{{ lesson.title }}</h4>
-              <p>{{ lesson.duration }} min</p>
-            </div>
-            <div class="lesson-status">
-              <span *ngIf="isLessonCompleted(lesson.id)" class="completed-icon">✓</span>
-              <span *ngIf="selectedLesson?.id === lesson.id" class="playing-icon">▶</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="content-main">
-        <div class="lesson-player" *ngIf="selectedLesson">
-          <div class="video-container">
-            <div class="video-placeholder">
-              <h3>{{ selectedLesson.title }}</h3>
-              <p>{{ selectedLesson.description }}</p>
-              <div class="video-info">
-                <span>Duration: {{ selectedLesson.duration }} minutes</span>
-                <span *ngIf="selectedLesson.videoUrl">Video URL: {{ selectedLesson.videoUrl }}</span>
+    
+    <div class="content-main">
+      <div class="lesson-player" *ngIf="selectedLesson">
+        <div class="video-container">
+          <div class="video-preview-section">
+            <!-- Video Thumbnail -->
+            <div class="video-thumbnail" *ngIf="selectedLesson?.videoUrl">
+              <img [src]="selectedLesson.youtubeVideoId ? getYouTubeThumbnail(selectedLesson.youtubeVideoId) : (selectedLesson.videoUrl ? getYouTubeThumbnail(getYouTubeVideoId(selectedLesson.videoUrl)) : 'assets/images/defaultcourse.jpeg')" 
+                  [alt]="selectedLesson.title"
+                  class="thumbnail-image"
+                  onerror="this.src='assets/images/defaultcourse.jpeg'">
+              <div class="video-overlay">
+                <div class="play-overlay-content">
+                  <!-- Play button for enrolled users -->
+                  <button *ngIf="canPlayLesson(selectedLesson)" 
+                          class="play-button-large" 
+                          (click)="playVideo(selectedLesson)">
+                    <span class="play-icon">▶</span>
+                    <span class="play-text">Play Video</span>
+                  </button>
+                  
+                  <!-- Preview button for non-enrolled users -->
+                  <button *ngIf="!canPlayLesson(selectedLesson) && canPreviewLesson(selectedLesson)" 
+                          class="preview-button-large" 
+                          (click)="previewVideo(selectedLesson)">
+                    <span class="preview-icon">👁</span>
+                    <span class="preview-text">Preview Video</span>
+                  </button>
+                  
+                  <!-- Locked message -->
+                  <div *ngIf="!canAccessLesson(selectedLesson)" class="locked-content">
+                    <span class="lock-icon">🔒</span>
+                    <span class="lock-text">Enrollment Required</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           
-          <div class="lesson-actions" *ngIf="isEnrolled">
-            <button class="complete-btn" 
-                    *ngIf="!isLessonCompleted(selectedLesson.id)"
-                    (click)="markLessonComplete(selectedLesson.id)">
-              Mark as Complete
-            </button>
-            <span class="completed-status" *ngIf="isLessonCompleted(selectedLesson.id)">
-              ✓ Completed
-            </span>
+          <!-- Lesson Information -->
+          <div class="lesson-info-section">
+            <h3>{{ selectedLesson.title }}</h3>
+            <p class="lesson-description">{{ selectedLesson.description }}</p>
+            
+            <div class="video-meta">
+              <span class="duration">⏱ {{ selectedLesson.duration }} minutes</span>
+              <span *ngIf="selectedLesson.isPreview" class="preview-badge">🎯 FREE PREVIEW</span>
+              <span *ngIf="!selectedLesson.isPreview && !isEnrolled" class="enrolled-badge">🔒 ENROLLMENT REQUIRED</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="video-actions">
+              <!-- Full access for enrolled users -->
+              <div *ngIf="canPlayLesson(selectedLesson)" class="enrolled-actions">
+                <button class="watch-button" (click)="playVideo(selectedLesson)">
+                  <span class="button-icon">▶</span>
+                  Watch on YouTube
+                </button>
+                <p class="access-note">✅ You have full access to this lesson</p>
+              </div>
+              
+              <!-- Preview access for non-enrolled users -->
+              <div *ngIf="!canPlayLesson(selectedLesson) && canPreviewLesson(selectedLesson)" class="preview-actions">
+                <button class="preview-watch-button" (click)="previewVideo(selectedLesson)">
+                  <span class="button-icon">👁</span>
+                  Preview on YouTube
+                </button>
+                <p class="preview-note">👀 Preview available - Enroll for full access</p>
+              </div>
+              
+              <!-- Enrollment required -->
+              <div *ngIf="!canAccessLesson(selectedLesson)" class="locked-actions">
+                <button class="enroll-button" (click)="enrollInCourse()">
+                  <span class="button-icon">🔓</span>
+                  Enroll to Watch
+                </button>
+                <p class="locked-note">🔒 This lesson requires enrollment</p>
+              </div>
+            </div>
           </div>
         </div>
         
-        <div class="no-lesson" *ngIf="!selectedLesson">
-          <h3>No lessons available</h3>
-          <p>This course doesn't have any lessons yet.</p>
+        <!-- Lesson Progress (for enrolled users) -->
+        <div class="lesson-actions" *ngIf="isEnrolled">
+          <button class="complete-btn" 
+                  *ngIf="!isLessonCompleted(selectedLesson.id)"
+                  (click)="markLessonComplete(selectedLesson.id)">
+            ✓ Mark as Complete
+          </button>
+          <span class="completed-status" *ngIf="isLessonCompleted(selectedLesson.id)">
+            ✅ Completed
+          </span>
         </div>
+      </div>
+      
+      <div class="no-lesson" *ngIf="!selectedLesson">
+        <h3>Select a lesson to start learning</h3>
+        <p>Choose a lesson from the course content to begin your learning journey.</p>
+        <p *ngIf="!isEnrolled" class="enrollment-note">
+          <strong>Note:</strong> You can preview some lessons for free. Enroll to get full access to all lessons.
+        </p>
       </div>
     </div>
   </div>
-  
-  <!-- <div class="loading-container" *ngIf="loading">
-    <div class="loading-spinner">Loading course details...</div>
-  </div> -->
+</div>
+
+<div class="loading-container" *ngIf="loading">
+  <div class="loading-spinner">Loading course details...</div>
+</div>
+
+<div class="error-container" *ngIf="!loading && !course">
+  <div class="error-message">
+    <h3>Course not found</h3>
+    <p>The course you're looking for doesn't exist or has been removed.</p>
+    <button class="back-btn" (click)="goBack()">← Back to Courses</button>
+  </div>
+</div>

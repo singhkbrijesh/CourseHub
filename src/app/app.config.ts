@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
         InMemoryDataService, 
         { 
           dataEncapsulation: false,
-          delay: 1500, // Simulate network delay
+          delay: 500, // Simulate network delay
           passThruUnknownUrl: true // Allow requests to pass through if not in the in-memory database
         }
       )

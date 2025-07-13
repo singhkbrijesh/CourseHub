@@ -1,11 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, NavigationStart, NavigationCancel, NavigationError, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "./core/layout/header/header.component";
 import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { Subscription } from 'rxjs';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { LoadingService } from './services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -20,32 +21,33 @@ export class AppComponent implements OnInit, OnDestroy {
   public loading = false;
 
   private routerEventsSub?: Subscription;
-  private loadingTimer: any; // Added this
+  private loadingServiceSub?: Subscription;
 
   constructor(
     private router: Router,
+    private loadingService: LoadingService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
-    // Show initial loader for 2 seconds
-    this.showLoaderWithDelay(2000);
+    // Subscribe to loading service
+    this.loadingServiceSub = this.loadingService.loading$.subscribe(
+      loading => this.loading = loading
+    );
+
+    // Show initial loader
+    this.loadingService.show();
     
     this.loadUser();
 
     this.routerEventsSub = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationStart) {
+        this.loadingService.show();
+      } else if (event instanceof NavigationEnd) {
         this.loadUser();
-      } else if (event.constructor.name === 'NavigationStart') {
-        this.showLoaderWithDelay(1500); // Show loader with 1.5 second minimum delay
-      } else if (
-        event.constructor.name === 'NavigationCancel' ||
-        event.constructor.name === 'NavigationError'
-      ) {
-        if (this.loadingTimer) {
-          clearTimeout(this.loadingTimer);
-        }
-        this.loading = false;
+        this.loadingService.hide();
+      } else if (event instanceof NavigationCancel || event instanceof NavigationError) {
+        this.loadingService.hide();
       }
     });
 
@@ -55,28 +57,16 @@ export class AppComponent implements OnInit, OnDestroy {
       window.addEventListener('userChanged', this.onUserChanged);
       document.addEventListener('mousedown', this.handleClickOutsideSidebar);
     }
-  }
 
-  // Added this method
-  private showLoaderWithDelay(minDelayMs: number = 1500) {
-    this.loading = true;
-    
-    if (this.loadingTimer) {
-      clearTimeout(this.loadingTimer);
-    }
-    
-    this.loadingTimer = setTimeout(() => {
-      this.loading = false;
-    }, minDelayMs);
+    // Hide initial loader after app initialization
+    setTimeout(() => {
+      this.loadingService.hide();
+    }, 500);
   }
 
   ngOnDestroy() {
     this.routerEventsSub?.unsubscribe();
-    
-    // Clear loading timer
-    if (this.loadingTimer) {
-      clearTimeout(this.loadingTimer);
-    }
+    this.loadingServiceSub?.unsubscribe();
     
     if (isPlatformBrowser(this.platformId)) {
       window.removeEventListener('storage', this.onStorageChange);

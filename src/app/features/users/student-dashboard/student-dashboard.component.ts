@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -18,8 +19,15 @@ export class StudentDashboardComponent implements OnInit {
   overallProgress = 0;
   completedCourses = 0;
   inProgressCourses = 0;
+  loading = false;
 
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService,private loadingService: LoadingService,
+    private router: Router)
+    {
+    this.loadingService.loading$.subscribe(loading => {
+      this.loading = loading;
+    });
+    }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -56,7 +64,8 @@ export class StudentDashboardComponent implements OnInit {
   }
 
   continueCourse(courseId: string) {
-    // Navigate to course detail or lesson
+    // Navigate to course detail page
+    this.router.navigate(['/courses', courseId]);
   }
   
   getEnrollmentProgress(courseId: string): number {

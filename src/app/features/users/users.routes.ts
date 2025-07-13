@@ -4,8 +4,6 @@ import { AuthGuard } from '../../core/guards/auth.guard';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { StudentDashboardComponent } from './student-dashboard/student-dashboard.component';
 import { MyCoursesComponent } from './my-courses/my-courses.component';
-import { MyProgressComponent } from './my-progress/my-progress.component';
-import { CertificatesComponent } from './certificates/certificates.component';
 
 export const USERS_ROUTES: Routes = [
   {
@@ -19,8 +17,6 @@ export const USERS_ROUTES: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: StudentDashboardComponent },
       { path: 'my-courses', component: MyCoursesComponent },
-      { path: 'progress', component: MyProgressComponent },
-      { path: 'certificates', component: CertificatesComponent }
     ]
   }
 ];

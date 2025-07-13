@@ -1,4 +1,4 @@
-.login-container {
+.signup-container {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -7,17 +7,17 @@
     padding: 20px;
 }
 
-.login-box {
+.signup-box {
     background: #fff;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     color: #333;
 }
 
-.login-box h2 {
+.signup-box h2 {
     text-align: center;
     margin-bottom: 8px;
     font-size: 2rem;
@@ -44,7 +44,8 @@
     font-size: 0.95rem;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -54,9 +55,14 @@
     box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
     border-color: #1976d2;
     outline: none;
+}
+
+.form-group select {
+    cursor: pointer;
 }
 
 .error-message {
@@ -75,7 +81,18 @@
     font-size: 0.9rem;
 }
 
-.login-btn {
+.success-message-box {
+    background: #e8f5e8;
+    color: #2e7d32;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border: 1px solid #a5d6a7;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.signup-btn {
     width: 100%;
     padding: 12px;
     background: #1976d2;
@@ -89,46 +106,46 @@
     margin-top: 10px;
 }
 
-.login-btn:hover {
+.signup-btn:hover {
     background: #125ea2;
 }
 
-.login-btn:disabled {
+.signup-btn:disabled {
     background: #cccccc;
     color: #888888;
     cursor: not-allowed;
     opacity: 0.7;
 }
 
-.signup-link {
+.login-link {
     text-align: center;
     margin-top: 25px;
     padding-top: 20px;
     border-top: 1px solid #eee;
 }
 
-.signup-link p {
+.login-link p {
     color: #666;
     margin: 0;
 }
 
-.signup-link .link {
+.login-link .link {
     color: #1976d2;
     text-decoration: none;
     font-weight: 500;
     cursor: pointer;
 }
 
-.signup-link .link:hover {
+.login-link .link:hover {
     text-decoration: underline;
 }
 
 // Light theme styles
-body.light-theme .login-container {
+body.light-theme .signup-container {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
-body.light-theme .login-box {
+body.light-theme .signup-box {
     background: #fff;
     color: #333;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -138,32 +155,33 @@ body.light-theme .form-group label {
     color: #555;
 }
 
-body.light-theme .form-group input {
+body.light-theme .form-group input,
+body.light-theme .form-group select {
     background: #fff;
     color: #333;
     border: 1px solid #ccc;
 }
 
-body.light-theme .login-btn {
+body.light-theme .signup-btn {
     background: #1976d2;
     color: #fff;
 }
 
-body.light-theme .login-btn:hover {
+body.light-theme .signup-btn:hover {
     background: #125ea2;
 }
 
-body.light-theme .login-btn:disabled {
+body.light-theme .signup-btn:disabled {
     background: #cccccc;
     color: #888888;
 }
 
 // Dark theme styles
-body.dark-theme .login-container {
+body.dark-theme .signup-container {
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
 }
 
-body.dark-theme .login-box {
+body.dark-theme .signup-box {
     background: #2d2d2d;
     color: #fff;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -173,49 +191,51 @@ body.dark-theme .form-group label {
     color: #ccc;
 }
 
-body.dark-theme .form-group input {
+body.dark-theme .form-group input,
+body.dark-theme .form-group select {
     background: #404040;
     color: #fff;
     border: 1px solid #555;
 }
 
-body.dark-theme .form-group input:focus {
+body.dark-theme .form-group input:focus,
+body.dark-theme .form-group select:focus {
     border-color: #64b5f6;
 }
 
-body.dark-theme .login-btn {
+body.dark-theme .signup-btn {
     background: #1976d2;
     color: #fff;
 }
 
-body.dark-theme .login-btn:hover {
+body.dark-theme .signup-btn:hover {
     background: #125ea2;
 }
 
-body.dark-theme .signup-link {
+body.dark-theme .login-link {
     border-top-color: #555;
 }
 
-body.dark-theme .signup-link p {
+body.dark-theme .login-link p {
     color: #ccc;
 }
 
-body.dark-theme .signup-link .link {
+body.dark-theme .login-link .link {
     color: #64b5f6;
 }
 
 // Responsive design
 @media (max-width: 768px) {
-    .login-container {
+    .signup-container {
         padding: 10px;
     }
 
-    .login-box {
+    .signup-box {
         padding: 30px 20px;
         margin: 10px;
     }
 
-    .login-box h2 {
+    .signup-box h2 {
         font-size: 1.6rem;
     }
 }

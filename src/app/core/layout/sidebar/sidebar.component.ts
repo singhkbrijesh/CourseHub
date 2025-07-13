@@ -87,8 +87,6 @@ export class SidebarComponent implements OnInit, OnChanges {
           { label: 'Dashboard', route: '/users/dashboard' },
           { label: 'Browse Courses', route: '/courses' },
           { label: 'My Courses', route: '/users/my-courses' },
-          { label: 'My Progress', route: '/users/progress' },
-          { label: 'Certificates', route: '/users/certificates' }
         ];
         break;
       default:

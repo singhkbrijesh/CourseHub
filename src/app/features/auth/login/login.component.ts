@@ -1,12 +1,13 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { from } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
+import { LoadingService } from '../../../services/loading.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,15 +19,22 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private loadingService: LoadingService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
+    });
+
+    // Subscribe to loading service
+    this.loadingService.loading$.subscribe(loading => {
+      this.loading = loading;
     });
   }
 
@@ -50,5 +58,9 @@ export class LoginComponent {
       },
       error: err => this.errorMessage = 'Invalid email or password'
     });
+  }
+
+  goToSignup() {
+    this.router.navigate(['/auth/signup']);
   }
 }

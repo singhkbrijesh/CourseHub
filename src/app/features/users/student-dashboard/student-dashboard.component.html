@@ -65,7 +65,7 @@
             </div>
             
             <div class="course-actions">
-              <button class="continue-btn" (click)="continueCourse(course.id)">
+              <button class="continue-btn" (click)="continueCourse(course.id)" [disabled]="loading">
                 {{ getEnrollmentProgress(course.id) === 0 ? 'Start Course' : 'Continue' }}
               </button>
             </div>

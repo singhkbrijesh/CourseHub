@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { CourseService } from '../../../services/course.service';
 import { AuthService } from '../../../services/auth.service';
+import { LoadingService } from '../../../services/loading.service';
 import { Course } from '../../../core/models/course.model';
 
 @Component({
@@ -41,6 +42,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   selectedLevel = '';
   userRole = '';
   enrolledCourseIds: string[] = [];
+  loading = false;
   
   // View mode and Material table properties
   viewMode: 'grid' | 'table' = 'grid';
@@ -62,8 +64,14 @@ export class CoursesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private courseService: CourseService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private loadingService: LoadingService
+  ) {
+    // Subscribe to loading service
+    this.loadingService.loading$.subscribe(loading => {
+      this.loading = loading;
+    });
+  }
 
   ngOnInit() {
     this.loadUserInfo();
@@ -104,20 +112,20 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   loadCourses() {
-  this.courseService.getCourses().subscribe({
-    next: (courses) => {
-      this.courses = courses.filter(c => c.status === 'approved');
-      this.filteredCourses = [...this.courses];
-      
-      // Update both table and grid views
-      this.updateTableData();
-      this.updateGridPagination();
-    },
-    error: (error) => {
-      console.error('Error loading courses:', error);
-    }
-  });
-}
+    this.courseService.getCourses().subscribe({
+      next: (courses) => {
+        this.courses = courses.filter(c => c.status === 'approved');
+        this.filteredCourses = [...this.courses];
+        
+        // Update both table and grid views
+        this.updateTableData();
+        this.updateGridPagination();
+      },
+      error: (error) => {
+        console.error('Error loading courses:', error);
+      }
+    });
+  }
 
   loadUserEnrollments() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -260,41 +268,41 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   enrollInCourse(courseId: string) {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  
-  if (user.role === 'student' && user.id) {
-    // Check if already enrolled first
-    if (this.isEnrolled(courseId)) {
-      alert('You are already enrolled in this course!');
-      return;
-    }
-
-    this.courseService.enrollInCourse(courseId, user.id).subscribe({
-      next: (enrollment) => {
-        alert('Successfully enrolled in course!');
-        
-        // Update the local enrolledCourseIds array immediately
-        this.enrolledCourseIds.push(courseId);
-        
-        // CRITICAL: Reload courses to get updated enrollment counts
-        this.loadCourses();
-        
-        // Also reload enrollments to get fresh data from API
-        this.loadUserEnrollments();
-      },
-      error: (error) => {
-        console.error('Enrollment error:', error);
-        if (error.message === 'Already enrolled in this course') {
-          alert('You are already enrolled in this course!');
-        } else {
-          alert('Failed to enroll in course. Please try again.');
-        }
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    if (user.role === 'student' && user.id) {
+      // Check if already enrolled first
+      if (this.isEnrolled(courseId)) {
+        alert('You are already enrolled in this course!');
+        return;
       }
-    });
-  } else if (!user.id) {
-    alert('Please login to enroll in courses.');
-  } else {
-    alert('Only students can enroll in courses. Please login as a student.');
+
+      this.courseService.enrollInCourse(courseId, user.id).subscribe({
+        next: (enrollment) => {
+          alert('Successfully enrolled in course!');
+          
+          // Update the local enrolledCourseIds array immediately
+          this.enrolledCourseIds.push(courseId);
+          
+          // CRITICAL: Reload courses to get updated enrollment counts
+          this.loadCourses();
+          
+          // Also reload enrollments to get fresh data from API
+          this.loadUserEnrollments();
+        },
+        error: (error) => {
+          console.error('Enrollment error:', error);
+          if (error.message === 'Already enrolled in this course') {
+            alert('You are already enrolled in this course!');
+          } else {
+            alert('Failed to enroll in course. Please try again.');
+          }
+        }
+      });
+    } else if (!user.id) {
+      alert('Please login to enroll in courses.');
+    } else {
+      alert('Only students can enroll in courses. Please login as a student.');
+    }
   }
-}
 }

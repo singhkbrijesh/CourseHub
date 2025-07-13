@@ -1,13 +1,15 @@
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
+    <p class="subtitle">Welcome back to CourseHub</p>
+    
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email">
           Email <span style="color: red;">*</span>
         </label>
         <input formControlName="email" type="email" id="email" name="email" placeholder="Enter your email" required />
-        <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" style="color: red; font-size: 0.9em;">
+        <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="error-message">
           <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
           <div *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email.</div>
         </div>
@@ -17,12 +19,17 @@
           Password <span style="color: red;">*</span>
         </label>
         <input formControlName="password" type="password" id="password" name="password" placeholder="Enter your password" required />
-        <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" style="color: red; font-size: 0.9em;">
+        <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error-message">
           <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
         </div>
       </div>
       <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Login</button>
-      <div *ngIf="errorMessage" style="color: red; margin-top: 10px;">{{ errorMessage }}</div>
+      <div *ngIf="errorMessage" class="error-message-box">{{ errorMessage }}</div>
     </form>
+
+    <!-- Sign-up Link -->
+    <div class="signup-link">
+      <p>Don't have an account? <a (click)="goToSignup()" class="link">Sign up here</a></p>
+    </div>
   </div>
 </div>
