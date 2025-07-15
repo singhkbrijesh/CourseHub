@@ -83,6 +83,82 @@
                 font-size: 0.8rem;
                 font-weight: 500;
             }
+
+            // Add instructor name styling
+            &.instructor-name {
+                color: #8b5cf6;
+                cursor: pointer;
+                font-weight: 500;
+                text-decoration: underline;
+                text-decoration-color: transparent;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    text-decoration-color: #8b5cf6;
+                    color: #7c3aed;
+                }
+            }
+        }
+    }
+}
+
+// Instructor card overlay styles
+.instructor-card-overlay {
+    position: absolute;
+    z-index: 9999;
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInUp 0.2s ease-out forwards;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        z-index: -1;
+    }
+
+    &.position-left {
+        transform: translateX(-100%);
+    }
+}
+
+.instructor-name {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        z-index: -1;
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Dark theme support
+body.dark-theme {
+    .course-meta {
+        .meta-item {
+            .value.instructor-name {
+                color: #a855f7;
+
+                &:hover {
+                    color: #9333ea;
+                    text-decoration-color: #a855f7;
+                }
+            }
         }
     }
 }

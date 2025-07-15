@@ -1,6 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError, map, catchError, switchMap, finalize } from 'rxjs';
+import { Observable, of, throwError, map, catchError, switchMap, finalize, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { LoadingService } from './loading.service';
 
@@ -24,23 +24,24 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  login(email: string, password: string): Observable<User> {
+  login(email: string, password: string): Observable<any> {
     this.loadingService.show();
+    
     return this.http.get<User[]>(this.usersUrl).pipe(
-      map(users => {
+      tap(users => {
         const user = users.find(u => u.email === email && u.password === password);
         if (user) {
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('user', JSON.stringify(user));
             window.dispatchEvent(new Event('userChanged'));
           }
-          return user;
+        } else {
+          throw new Error('Invalid credentials');
         }
-        throw new Error('Invalid credentials');
       }),
       catchError(error => {
         console.error('Login error:', error);
-        return throwError(() => new Error('Invalid credentials'));
+        return throwError(() => new Error('Login failed'));
       }),
       finalize(() => this.loadingService.hide())
     );

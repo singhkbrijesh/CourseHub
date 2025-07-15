@@ -10,7 +10,11 @@
         <div class="course-meta">
           <div class="meta-item">
             <span class="label">Instructor:</span>
-            <span class="value">{{ course.instructor }}</span>
+            <span class="value instructor-name" 
+                  (mouseenter)="onInstructorHover($event)"
+                  (mouseleave)="onInstructorLeave()">
+              {{ course.instructor }}
+            </span>
           </div>
           <div class="meta-item">
             <span class="label">Level:</span>
@@ -262,4 +266,14 @@
     <p>The course you're looking for doesn't exist or has been removed.</p>
     <button class="back-btn" (click)="goBack()">← Back to Courses</button>
   </div>
+</div>
+
+<!-- Instructor Info Card -->
+<div class="instructor-card-overlay" 
+     *ngIf="showInstructorCard && course?.instructorInfo"
+     [style.left.px]="cardPosition.x"
+     [style.top.px]="cardPosition.y"
+     (mouseenter)="onCardHover()"
+     (mouseleave)="onCardLeave()">
+  <app-instructor-info-card [instructorInfo]="course?.instructorInfo"></app-instructor-info-card>
 </div>

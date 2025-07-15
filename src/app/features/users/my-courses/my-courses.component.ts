@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
+import { LoadingService } from '../../../services/loading.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
+import { LoaderComponent } from '../../../shared/loader/loader.component';
 
 @Component({
   selector: 'app-my-courses',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LoaderComponent],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.scss'
 })
@@ -16,7 +18,16 @@ export class MyCoursesComponent implements OnInit {
   enrolledCourses: Course[] = [];
   loading = false;
 
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(
+    private courseService: CourseService, 
+    private router: Router,
+    private loadingService: LoadingService
+  ) {
+    // Subscribe to loading service
+    this.loadingService.loading$.subscribe(loading => {
+      this.loading = loading;
+    });
+  }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -24,38 +35,27 @@ export class MyCoursesComponent implements OnInit {
   }
 
   loadMyCourses() {
-    this.loading = true;
-    
     if (this.user.id && this.user.role === 'student') {
-      // Load student enrollments
-      this.courseService.getStudentEnrollments(this.user.id).subscribe({
-        next: (enrollments) => {
-          this.enrollments = enrollments;
-          this.loadEnrolledCourses();
-        },
-        error: (error) => {
-          console.error('Error loading enrollments:', error);
-          this.loading = false;
-        }
+      // Subscribe to user enrollments
+      this.courseService.userEnrollments$.subscribe(enrollments => {
+        this.enrollments = enrollments;
+        this.loadEnrolledCourses();
       });
+      
+      // Trigger loading of student enrollments (this will show loader via LoadingService)
+      this.courseService.getStudentEnrollments(this.user.id).subscribe();
     } else {
+      // No loading needed for non-students
       this.loading = false;
     }
   }
 
   loadEnrolledCourses() {
-    // Load all courses and filter by enrolled ones
-    this.courseService.getCourses().subscribe({
-      next: (courses) => {
-        this.enrolledCourses = courses.filter(course => 
-          this.enrollments.some(enrollment => enrollment.courseId === course.id)
-        );
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading courses:', error);
-        this.loading = false;
-      }
+    // Subscribe to courses state
+    this.courseService.courses$.subscribe(courses => {
+      this.enrolledCourses = courses.filter(course => 
+        this.enrollments.some(enrollment => enrollment.courseId === course.id)
+      );
     });
   }
 

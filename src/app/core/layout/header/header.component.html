@@ -4,7 +4,7 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span class="logo">CourseHub</span>
+  <span class="logo" (click)="goToCourses()" [style.cursor]="'pointer'">CourseHub</span>
 
   <app-breadcrumb *ngIf="!isLoginPage"></app-breadcrumb>
 

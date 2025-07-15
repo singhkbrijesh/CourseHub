@@ -4,6 +4,16 @@ export interface Course {
   description: string;
   instructor: string;
   instructorId?: string;
+  instructorInfo?: {
+    name: string;
+    title: string;
+    rating: number;
+    totalReviews: number;
+    totalStudents: number;
+    totalCourses: number;
+    bio: string;
+    avatar?: string;
+  };
   category: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: number;

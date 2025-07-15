@@ -1,0 +1,173 @@
+.instructor-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    width: 350px;
+    max-width: 90vw;
+    border: 1px solid #e0e0e0;
+    position: relative;
+    z-index: 1000;
+}
+
+.instructor-header {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.instructor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.instructor-basic-info {
+    flex: 1;
+
+    h3 {
+        margin: 0 0 5px 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1a1a1a;
+        text-decoration: underline;
+        text-decoration-color: #8b5cf6;
+    }
+
+    .instructor-title {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #666;
+        line-height: 1.3;
+    }
+}
+
+.instructor-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+
+    .stat-icon {
+        font-size: 1.1rem;
+        margin-bottom: 2px;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #666;
+    }
+}
+
+.instructor-bio {
+    .bio-text {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--text-secondary, #666);
+
+        // CSS-only truncation with show more
+        display: -webkit-box;
+        -webkit-line-clamp: 3; // Show only 3 lines
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        position: relative;
+
+        // Add a gradient fade effect at the end
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 1.5em;
+            background: linear-gradient(to right, transparent, var(--card-background, #fff));
+        }
+    }
+
+    // Show more functionality using CSS checkbox hack
+    .show-more-toggle {
+        display: none;
+
+        &:checked~.bio-text {
+            -webkit-line-clamp: unset;
+            max-height: none;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &:checked~.toggle-label .show-more-text {
+            display: none;
+        }
+
+        &:checked~.toggle-label .show-less-text {
+            display: inline;
+        }
+    }
+
+    .toggle-label {
+        display: inline-block;
+        color: var(--primary-color, #1976d2);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: underline;
+        margin-top: 5px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: var(--primary-color-dark, #1565c0);
+            text-decoration: none;
+        }
+
+        .show-less-text {
+            display: none;
+        }
+    }
+}
+
+// Dark theme support
+:host-context(body.dark-theme) {
+    .instructor-card {
+        background: #2d2d2d;
+        border-color: #555;
+        color: #fff;
+    }
+
+    .instructor-basic-info h3 {
+        color: #fff;
+    }
+
+    .stat-value {
+        color: #fff;
+    }
+
+    .instructor-bio p {
+        color: #ccc;
+    }
+}

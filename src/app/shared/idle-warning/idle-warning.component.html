@@ -1,0 +1,19 @@
+<div class="idle-warning">
+      <h2 mat-dialog-title>Session Timeout Warning</h2>
+      <mat-dialog-content>
+        <div class="warning-content">
+          <div class="warning-icon">⚠️</div>
+          <p>Your session will expire in:</p>
+          <div class="countdown">{{ countdown }}</div>
+          <p>Click "Stay Logged In" to continue your session.</p>
+        </div>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="logout()" class="logout-btn">
+          Logout Now
+        </button>
+        <button mat-raised-button color="primary" (click)="stayLoggedIn()" class="stay-btn">
+          Stay Logged In
+        </button>
+      </mat-dialog-actions>
+    </div>

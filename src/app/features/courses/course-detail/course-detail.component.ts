@@ -5,11 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { LoadingService } from '../../../services/loading.service';
 import { Course, Lesson } from '../../../core/models/course.model';
+import { InstructorInfoCardComponent } from "../instructor-info-card/instructor-info-card.component";
 
 @Component({
   selector: 'app-course-detail',
   standalone: true,
-  imports: [CommonModule, MatProgressBarModule],
+  imports: [CommonModule, MatProgressBarModule, InstructorInfoCardComponent],
   templateUrl: './course-detail.component.html',
   styleUrl: './course-detail.component.scss'
 })
@@ -21,6 +22,10 @@ export class CourseDetailComponent implements OnInit {
   enrollmentProgress = 0;
   completedLessons: string[] = [];
   currentUser: any = {};
+
+  showInstructorCard = false;
+  cardPosition = { x: 0, y: 0 };
+  private hoverTimeout: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -255,4 +260,45 @@ export class CourseDetailComponent implements OnInit {
   canAccessLesson(lesson: any): boolean {
     return this.isEnrolled || lesson.isPreview;
   }
+
+  onInstructorHover(event: MouseEvent) {
+  if (this.hoverTimeout) {
+    clearTimeout(this.hoverTimeout);
+  }
+  
+  this.hoverTimeout = setTimeout(() => {
+    this.cardPosition = {
+      x: event.clientX + 10,
+      y: event.clientY - 50
+    };
+    this.showInstructorCard = true;
+  }, 300);
+}
+
+  onInstructorLeave() {
+  if (this.hoverTimeout) {
+    clearTimeout(this.hoverTimeout);
+  }
+  
+  // Increase delay to allow user to move to the card
+  this.hoverTimeout = setTimeout(() => {
+    if (!this.showInstructorCard) return; // Don't hide if already hidden
+    this.showInstructorCard = false;
+  }, 200);
+}
+
+  onCardHover() {
+  // Clear any pending hide timeout when hovering over the card
+  if (this.hoverTimeout) {
+    clearTimeout(this.hoverTimeout);
+  }
+  this.showInstructorCard = true;
+}
+
+onCardLeave() {
+  // Hide card after a short delay when leaving the card
+  this.hoverTimeout = setTimeout(() => {
+    this.showInstructorCard = false;
+  }, 150);
+}
 }

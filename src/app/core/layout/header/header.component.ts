@@ -103,7 +103,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.themeService.toggleTheme();
   }
 
-  // New method for selecting specific themes
   selectTheme(theme: Theme): void {
     this.themeService.setTheme(theme);
   }
@@ -122,5 +121,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   goToLogin() {
     this.router.navigate(['/auth']);
+  }
+
+  goToCourses(): void {
+    this.router.navigate(['/courses']);
   }
 }

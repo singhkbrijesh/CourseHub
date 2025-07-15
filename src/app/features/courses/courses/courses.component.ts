@@ -75,7 +75,17 @@ export class CoursesComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loadUserInfo();
-    this.loadCourses();
+    
+    // Subscribe to courses state
+    this.courseService.courses$.subscribe(courses => {
+      this.courses = courses.filter(c => c.status === 'approved');
+      this.filteredCourses = [...this.courses];
+      this.updateTableData();
+      this.updateGridPagination();
+    });
+    
+    // Trigger data loading
+    this.courseService.getCourses().subscribe();
     this.loadUserEnrollments();
   }
 
@@ -131,17 +141,13 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     if (user.id && user.role === 'student') {
-      this.courseService.getStudentEnrollments(user.id).subscribe({
-        next: (enrollments) => {
-          this.enrolledCourseIds = enrollments.map(e => e.courseId);
-        },
-        error: (error) => {
-          console.error('Error loading enrollments:', error);
-          this.enrolledCourseIds = [];
-        }
+      // Subscribe to user enrollments
+      this.courseService.userEnrollments$.subscribe(enrollments => {
+        this.enrolledCourseIds = enrollments.map(e => e.courseId);
       });
-    } else {
-      this.enrolledCourseIds = [];
+      
+      // Trigger loading
+      this.courseService.getStudentEnrollments(user.id).subscribe();
     }
   }
 

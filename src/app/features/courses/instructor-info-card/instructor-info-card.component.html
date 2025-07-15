@@ -1,0 +1,48 @@
+<div class="instructor-card" *ngIf="instructorInfo">
+  <div class="instructor-header">
+    <!-- <div class="instructor-avatar">
+      <img [src]="instructorInfo.avatar || 'assets/images/default-avatar.jpg'" 
+           [alt]="instructorInfo.name"
+           onerror="this.src='assets/images/default-avatar.jpg'">
+    </div> -->
+    <div class="instructor-basic-info">
+      <h3>{{ instructorInfo.name }}</h3>
+      <p class="instructor-title">{{ instructorInfo.title }}</p>
+    </div>
+  </div>
+  
+  <div class="instructor-stats">
+    <div class="stat-item">
+      <span class="stat-icon">⭐</span>
+      <span class="stat-value">{{ instructorInfo.rating }}</span>
+      <span class="stat-label">Instructor Rating</span>
+    </div>
+    
+    <div class="stat-item">
+      <span class="stat-icon">📝</span>
+      <span class="stat-value">{{ formatNumber(instructorInfo.totalReviews) }}</span>
+      <span class="stat-label">Reviews</span>
+    </div>
+    
+    <div class="stat-item">
+      <span class="stat-icon">👨‍🎓</span>
+      <span class="stat-value">{{ formatNumber(instructorInfo.totalStudents) }}</span>
+      <span class="stat-label">Students</span>
+    </div>
+    
+    <div class="stat-item">
+      <span class="stat-icon">🎓</span>
+      <span class="stat-value">{{ instructorInfo.totalCourses }}</span>
+      <span class="stat-label">Courses</span>
+    </div>
+  </div>
+  
+  <div class="instructor-bio">
+    <input type="checkbox" id="show-more-toggle" class="show-more-toggle">
+    <p class="bio-text">{{ instructorInfo.bio }}</p>
+    <label for="show-more-toggle" class="toggle-label">
+      <span class="show-more-text">Show More</span>
+      <span class="show-less-text">Show Less</span>
+    </label>
+  </div>
+</div>
