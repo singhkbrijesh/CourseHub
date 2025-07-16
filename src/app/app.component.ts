@@ -119,7 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // Set idle timer for 1 minute (60000ms) for testing
     this.idleTimer = setTimeout(() => {
       this.showIdleWarning();
-    }, 15000);
+    }, 900000);
   }
 
   private showIdleWarning() {

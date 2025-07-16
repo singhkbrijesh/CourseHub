@@ -277,7 +277,6 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
     if (user.role === 'student' && user.id) {
-      // Check if already enrolled first
       if (this.isEnrolled(courseId)) {
         alert('You are already enrolled in this course!');
         return;

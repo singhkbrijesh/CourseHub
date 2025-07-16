@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { CourseService } from '../../../services/course.service';
 import { LoadingService } from '../../../services/loading.service';
 import { Course, Lesson } from '../../../core/models/course.model';
 import { InstructorInfoCardComponent } from "../instructor-info-card/instructor-info-card.component";
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-course-detail',
@@ -23,6 +24,10 @@ export class CourseDetailComponent implements OnInit {
   completedLessons: string[] = [];
   currentUser: any = {};
 
+  isVideoPlaying = false;
+  currentVideoUrl = '';
+  safeVideoUrl: SafeResourceUrl | null = null;
+
   showInstructorCard = false;
   cardPosition = { x: 0, y: 0 };
   private hoverTimeout: any;
@@ -32,6 +37,7 @@ export class CourseDetailComponent implements OnInit {
     private router: Router,
     private courseService: CourseService,
     private loadingService: LoadingService,
+    private sanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Subscribe to loading service
@@ -43,6 +49,21 @@ export class CourseDetailComponent implements OnInit {
   ngOnInit() {
     this.loadCurrentUser();
     this.loadCourse();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.isVideoPlaying) {
+      switch (event.key) {
+        case 'Escape':
+          this.closeVideo();
+          break;
+        case ' ':
+          // Space bar to pause/play (YouTube handles this)
+          event.preventDefault();
+          break;
+      }
+    }
   }
 
   loadCurrentUser() {
@@ -116,6 +137,7 @@ export class CourseDetailComponent implements OnInit {
   selectLesson(lesson: Lesson) {
     if (this.canAccessLesson(lesson)) {
       this.selectedLesson = lesson;
+      this.closeVideo(); // Close current video when switching lessons
     } else {
       if (isPlatformBrowser(this.platformId)) {
         console.log('Lesson not accessible');
@@ -205,20 +227,35 @@ export class CourseDetailComponent implements OnInit {
 
   // Video-related methods
   getYouTubeVideoId(url: string): string {
-    if (!url) return '';
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : '';
+  if (!url) return '';
+  
+  // Handle different YouTube URL formats
+  const patterns = [
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&\n?#]+)/,
+    /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^&\n?#]+)/,
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^&\n?#]+)/,
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([^&\n?#]+)/
+  ];
+  
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return match[1];
+    }
   }
+  
+  return '';
+}
 
   getYouTubeThumbnail(videoId: string): string {
     if (!videoId) return 'assets/images/defaultcourse.jpeg';
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   }
 
-  getYouTubeEmbedUrl(videoId: string): string {
-    if (!videoId) return '';
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+  getYouTubeEmbedUrl(videoId: string): SafeResourceUrl {
+    if (!videoId) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    const url = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&autoplay=1`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   getVideoThumbnail(lesson: any): string {
@@ -240,9 +277,52 @@ export class CourseDetailComponent implements OnInit {
     }
   }
 
-  previewVideo(lesson: any) {
-    if (lesson.videoUrl && isPlatformBrowser(this.platformId)) {
-      window.open(lesson.videoUrl, '_blank');
+  playVideoEmbedded(lesson: any) {
+  console.log('Playing video for lesson:', lesson.title);
+  console.log('Video URL:', lesson.videoUrl);
+  
+  if (!lesson.videoUrl) {
+    if (isPlatformBrowser(this.platformId)) {
+      alert('No video URL found for this lesson');
+    }
+    return;
+  }
+  
+  const videoId = this.getYouTubeVideoId(lesson.videoUrl);
+  console.log('Extracted video ID:', videoId);
+  
+  if (!videoId) {
+    if (isPlatformBrowser(this.platformId)) {
+      alert('Invalid YouTube URL. Please contact support.');
+    }
+    return;
+  }
+  
+  // Create safe URL and play immediately
+  this.safeVideoUrl = this.getYouTubeEmbedUrl(videoId);
+  this.currentVideoUrl = lesson.videoUrl;
+  this.isVideoPlaying = true;
+}
+  
+  onVideoLoad() {
+  console.log('Video loaded successfully');
+}
+
+  closeVideo() {
+    this.isVideoPlaying = false;
+    this.currentVideoUrl = '';
+    this.safeVideoUrl = null; // Reset safe URL
+    
+    if (isPlatformBrowser(this.platformId)) {
+      setTimeout(() => {
+        const lessonElement = document.querySelector('.lesson-info-section');
+        if (lessonElement) {
+          lessonElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 100);
     }
   }
 
@@ -262,43 +342,43 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onInstructorHover(event: MouseEvent) {
-  if (this.hoverTimeout) {
-    clearTimeout(this.hoverTimeout);
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    
+    this.hoverTimeout = setTimeout(() => {
+      this.cardPosition = {
+        x: event.clientX + 10,
+        y: event.clientY - 50
+      };
+      this.showInstructorCard = true;
+    }, 300);
   }
-  
-  this.hoverTimeout = setTimeout(() => {
-    this.cardPosition = {
-      x: event.clientX + 10,
-      y: event.clientY - 50
-    };
-    this.showInstructorCard = true;
-  }, 300);
-}
 
   onInstructorLeave() {
-  if (this.hoverTimeout) {
-    clearTimeout(this.hoverTimeout);
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    
+    // Increase delay to allow user to move to the card
+    this.hoverTimeout = setTimeout(() => {
+      if (!this.showInstructorCard) return; // Don't hide if already hidden
+      this.showInstructorCard = false;
+    }, 200);
   }
-  
-  // Increase delay to allow user to move to the card
-  this.hoverTimeout = setTimeout(() => {
-    if (!this.showInstructorCard) return; // Don't hide if already hidden
-    this.showInstructorCard = false;
-  }, 200);
-}
 
   onCardHover() {
-  // Clear any pending hide timeout when hovering over the card
-  if (this.hoverTimeout) {
-    clearTimeout(this.hoverTimeout);
+    // Clear any pending hide timeout when hovering over the card
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    this.showInstructorCard = true;
   }
-  this.showInstructorCard = true;
-}
 
-onCardLeave() {
-  // Hide card after a short delay when leaving the card
-  this.hoverTimeout = setTimeout(() => {
-    this.showInstructorCard = false;
-  }, 150);
-}
+  onCardLeave() {
+    // Hide card after a short delay when leaving the card
+    this.hoverTimeout = setTimeout(() => {
+      this.showInstructorCard = false;
+    }, 150);
+  }
 }

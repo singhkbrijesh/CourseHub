@@ -43,162 +43,107 @@
             margin-bottom: 20px;
             line-height: 1.6;
         }
+
+        .course-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+
+            .meta-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .label {
+                    font-weight: 600;
+                    color: var(--text-color);
+                    min-width: 80px;
+                }
+
+                .value {
+                    color: var(--text-secondary);
+
+                    &.instructor-name {
+                        cursor: pointer;
+                        color: var(--primary-color);
+                        text-decoration: underline;
+
+                        &:hover {
+                            opacity: 0.8;
+                        }
+                    }
+                }
+
+                .level-badge {
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-size: 0.9rem;
+                    font-weight: 500;
+
+                    &.beginner {
+                        background: #e8f5e8;
+                        color: #2e7d32;
+                    }
+
+                    &.intermediate {
+                        background: #fff3e0;
+                        color: #f57c00;
+                    }
+
+                    &.advanced {
+                        background: #ffebee;
+                        color: #d32f2f;
+                    }
+                }
+            }
+        }
+
+        .course-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+
+            .stat {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--text-secondary);
+                font-size: 0.9rem;
+
+                .stars {
+                    color: #ffd700;
+                    font-size: 1.1rem;
+                }
+
+                .rating {
+                    font-weight: 600;
+                    color: var(--text-color);
+                }
+            }
+        }
     }
 
     .course-thumbnail {
         img {
             width: 100%;
-            height: 250px;
+            height: 300px;
             object-fit: cover;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-    }
-}
-
-.course-meta {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-
-    .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .label {
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .value {
-            color: var(--text-secondary);
-
-            &.level-badge {
-                background: var(--primary-color);
-                color: white;
-                padding: 4px 8px;
-                border-radius: 12px;
-                font-size: 0.8rem;
-                font-weight: 500;
-            }
-
-            // Add instructor name styling
-            &.instructor-name {
-                color: #8b5cf6;
-                cursor: pointer;
-                font-weight: 500;
-                text-decoration: underline;
-                text-decoration-color: transparent;
-                transition: all 0.3s ease;
-
-                &:hover {
-                    text-decoration-color: #8b5cf6;
-                    color: #7c3aed;
-                }
-            }
-        }
-    }
-}
-
-// Instructor card overlay styles
-.instructor-card-overlay {
-    position: absolute;
-    z-index: 9999;
-    pointer-events: auto;
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeInUp 0.2s ease-out forwards;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: -10px;
-        left: -10px;
-        right: -10px;
-        bottom: -10px;
-        z-index: -1;
-    }
-
-    &.position-left {
-        transform: translateX(-100%);
-    }
-}
-
-.instructor-name {
-    position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: -5px;
-        left: -5px;
-        right: -5px;
-        bottom: -5px;
-        z-index: -1;
-    }
-}
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-// Dark theme support
-body.dark-theme {
-    .course-meta {
-        .meta-item {
-            .value.instructor-name {
-                color: #a855f7;
-
-                &:hover {
-                    color: #9333ea;
-                    text-decoration-color: #a855f7;
-                }
-            }
-        }
-    }
-}
-
-.course-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
-
-    .stat {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.95rem;
-
-        .stars {
-            color: #ffc107;
-            font-size: 1.2rem;
-        }
-
-        .rating,
-        .enrollment-count,
-        .total-duration,
-        .lesson-count {
-            color: var(--text-secondary);
-            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
     }
 }
 
 .enrollment-section {
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
     margin-bottom: 30px;
 
     .enrollment-card {
         text-align: center;
+        padding: 20px;
+        background: var(--card-background);
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 
         .enroll-btn {
             background: var(--primary-color);
@@ -209,7 +154,6 @@ body.dark-theme {
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
             transition: all 0.3s ease;
 
             &:hover {
@@ -220,49 +164,38 @@ body.dark-theme {
     }
 
     .progress-card {
+        background: var(--card-background);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+
         h3 {
             color: var(--text-color);
             margin-bottom: 15px;
+            font-size: 1.2rem;
         }
 
         .course-progress-bar {
             height: 8px;
             border-radius: 4px;
             margin-bottom: 10px;
-
-            // Custom styling for the progress bar
-            ::ng-deep .mat-mdc-progress-bar-fill::after {
-                background-color: var(--primary-color);
-            }
-
-            ::ng-deep .mat-mdc-progress-bar-buffer {
-                background-color: #e0e0e0;
-            }
-
-            ::ng-deep .mat-mdc-progress-bar {
-                border-radius: 4px;
-            }
         }
 
         .progress-text {
             color: var(--text-secondary);
             font-size: 0.9rem;
-            margin-top: 8px;
+            margin: 0;
         }
     }
 }
 
 .course-overview {
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 25px;
     margin-bottom: 30px;
 
     h2 {
         color: var(--text-color);
         margin-bottom: 20px;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 
     .overview-grid {
@@ -356,17 +289,15 @@ body.dark-theme {
 
     .content-sidebar {
         background: var(--card-background);
-        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         height: fit-content;
-        position: sticky;
-        top: 20px;
 
         h3 {
             color: var(--text-color);
             margin-bottom: 20px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .lessons-list {
@@ -374,20 +305,20 @@ body.dark-theme {
                 display: flex;
                 align-items: center;
                 gap: 15px;
-                padding: 12px;
+                padding: 15px;
                 border-radius: 8px;
+                margin-bottom: 10px;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 border: 1px solid transparent;
-                margin-bottom: 8px;
 
                 &:hover {
                     background: var(--background-color);
+                    border-color: var(--border-color);
                 }
 
                 &.active {
-                    background: var(--primary-color);
-                    color: white;
+                    background: #e3f2fd;
                     border-color: var(--primary-color);
                 }
 
@@ -396,27 +327,18 @@ body.dark-theme {
                     border-color: #4caf50;
                 }
 
-                &.preview {
-                    border-left: 3px solid #4caf50;
-                }
-
                 &.locked {
                     opacity: 0.6;
-                    background: #f5f5f5;
                     cursor: not-allowed;
-                }
-
-                &.enrolled-only {
-                    opacity: 0.8;
-                    border-left: 3px solid #ff9800;
+                    background: #f5f5f5;
                 }
 
                 .lesson-number {
-                    background: var(--border-color);
-                    color: var(--text-color);
                     width: 30px;
                     height: 30px;
                     border-radius: 50%;
+                    background: var(--primary-color);
+                    color: white;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -429,74 +351,69 @@ body.dark-theme {
                     flex: 1;
 
                     h4 {
-                        margin: 0 0 4px 0;
-                        font-size: 1rem;
-                        color: inherit;
+                        color: var(--text-color);
+                        margin-bottom: 5px;
+                        font-size: 0.95rem;
+                        line-height: 1.3;
                     }
 
                     p {
+                        color: var(--text-secondary);
+                        font-size: 0.85rem;
                         margin: 0;
-                        font-size: 0.8rem;
-                        opacity: 0.8;
                     }
 
                     .preview-badge {
                         background: #4caf50;
                         color: white;
-                        padding: 2px 6px;
-                        border-radius: 10px;
+                        padding: 2px 8px;
+                        border-radius: 12px;
                         font-size: 0.7rem;
                         font-weight: 600;
-                        margin-top: 4px;
-                        display: inline-block;
+                        margin-left: 8px;
                     }
 
                     .locked-badge {
                         background: #f44336;
                         color: white;
-                        padding: 2px 6px;
-                        border-radius: 10px;
+                        padding: 2px 8px;
+                        border-radius: 12px;
                         font-size: 0.7rem;
                         font-weight: 600;
-                        margin-top: 4px;
-                        display: inline-block;
+                        margin-left: 8px;
                     }
 
                     .enrolled-badge {
                         background: #ff9800;
                         color: white;
-                        padding: 2px 6px;
-                        border-radius: 10px;
+                        padding: 2px 8px;
+                        border-radius: 12px;
                         font-size: 0.7rem;
                         font-weight: 600;
-                        margin-top: 4px;
-                        display: inline-block;
+                        margin-left: 8px;
                     }
                 }
 
                 .lesson-status {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 1.2rem;
+
                     .completed-icon {
                         color: #4caf50;
-                        font-weight: bold;
                     }
 
                     .playing-icon {
                         color: var(--primary-color);
                     }
 
-                    .preview-icon {
-                        color: #4caf50;
-                        font-size: 1.2rem;
-                    }
-
-                    .preview-only-icon {
-                        color: #ff9800;
-                        font-size: 1.2rem;
-                    }
-
                     .lock-icon {
                         color: #f44336;
-                        font-size: 1.1rem;
+                    }
+
+                    .preview-icon {
+                        color: #4caf50;
                     }
                 }
             }
@@ -506,19 +423,94 @@ body.dark-theme {
     .content-main {
         .lesson-player {
             background: var(--card-background);
-            border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 
             .video-container {
-                .video-placeholder {
-                    padding: 30px;
-                    text-align: center;
-                    background: #f5f5f5;
-                    min-height: 300px;
+                .video-preview-section {
+                    position: relative;
+                    min-height: 450px; // Increased minimum height
                     display: flex;
                     flex-direction: column;
-                    justify-content: center;
+
+                    .video-thumbnail {
+                        position: relative;
+                        height: 400px; // Fixed height for thumbnail
+                        overflow: hidden;
+                        flex-shrink: 0;
+
+                        .thumbnail-image {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+
+                        .video-overlay {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background: rgba(0, 0, 0, 0.4);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.3s ease;
+
+                            &:hover {
+                                background: rgba(0, 0, 0, 0.6);
+                            }
+
+                            .play-overlay-content {
+                                text-align: center;
+                                color: white;
+
+                                .play-button-large,
+                                .preview-button-large {
+                                    background: rgba(255, 255, 255, 0.9);
+                                    border: none;
+                                    border-radius: 50px;
+                                    padding: 20px 30px;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                    font-size: 1.1rem;
+                                    font-weight: 600;
+
+                                    &:hover {
+                                        background: white;
+                                        transform: scale(1.05);
+                                    }
+                                }
+
+                                .play-button-large {
+                                    color: var(--primary-color);
+                                }
+
+                                .preview-button-large {
+                                    color: #ff9800;
+                                }
+
+                                .locked-content {
+                                    background: rgba(244, 67, 54, 0.9);
+                                    padding: 20px 30px;
+                                    border-radius: 50px;
+                                    color: white;
+                                    font-weight: 600;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .lesson-info-section {
+                    padding: 25px;
 
                     h3 {
                         color: var(--text-color);
@@ -563,115 +555,125 @@ body.dark-theme {
                         }
                     }
 
-                    .video-controls {
-                        .play-btn {
-                            background: var(--primary-color);
-                            color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 8px;
-                            font-size: 1rem;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            margin-bottom: 10px;
+                    .video-meta {
+                        display: flex;
+                        gap: 20px;
+                        align-items: center;
+                        margin-bottom: 25px;
+                        flex-wrap: wrap;
 
-                            &:hover {
-                                background: #1565c0;
-                            }
-                        }
-
-                        .play-note {
-                            color: #4caf50;
+                        .duration {
+                            color: var(--text-secondary);
                             font-size: 0.9rem;
-                            font-weight: 500;
-                            margin: 0;
                         }
-                    }
 
-                    .preview-controls {
-                        .preview-btn {
+                        .preview-badge {
+                            background: #4caf50;
+                            color: white;
+                            padding: 4px 12px;
+                            border-radius: 12px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
+                        }
+
+                        .enrolled-badge {
                             background: #ff9800;
                             color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 8px;
-                            font-size: 1rem;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            margin-bottom: 10px;
-
-                            &:hover {
-                                background: #f57c00;
-                            }
-                        }
-
-                        .preview-note {
-                            color: #ff9800;
-                            font-size: 0.9rem;
-                            font-weight: 500;
-                            margin: 0;
+                            padding: 4px 12px;
+                            border-radius: 12px;
+                            font-size: 0.8rem;
+                            font-weight: 600;
                         }
                     }
 
-                    .enrollment-required {
-                        .enrollment-message {
-                            margin-bottom: 20px;
-
-                            h4 {
-                                color: #f44336;
-                                font-size: 1.1rem;
+                    .video-actions {
+                        .enrolled-actions {
+                            .watch-button {
+                                background: var(--primary-color);
+                                color: white;
+                                border: none;
+                                padding: 12px 24px;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
                                 margin-bottom: 10px;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+
+                                &:hover {
+                                    background: #1565c0;
+                                    transform: translateY(-1px);
+                                }
                             }
 
-                            p {
-                                color: #666;
+                            .access-note {
+                                color: #4caf50;
+                                font-size: 0.9rem;
                                 font-weight: 500;
+                                margin: 0;
                             }
                         }
 
-                        .enroll-now-btn {
-                            background: #f44336;
-                            color: white;
-                            border: none;
-                            padding: 12px 24px;
-                            border-radius: 8px;
-                            font-size: 1rem;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
+                        .preview-actions {
+                            .preview-watch-button {
+                                background: #ff9800;
+                                color: white;
+                                border: none;
+                                padding: 12px 24px;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                margin-bottom: 10px;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
 
-                            &:hover {
-                                background: #d32f2f;
+                                &:hover {
+                                    background: #f57c00;
+                                    transform: translateY(-1px);
+                                }
+                            }
+
+                            .preview-note {
+                                color: #ff9800;
+                                font-size: 0.9rem;
+                                font-weight: 500;
+                                margin: 0;
+                            }
+                        }
+
+                        .locked-actions {
+                            .enroll-button {
+                                background: #f44336;
+                                color: white;
+                                border: none;
+                                padding: 12px 24px;
+                                border-radius: 8px;
+                                font-size: 1rem;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                margin-bottom: 10px;
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+
+                                &:hover {
+                                    background: #d32f2f;
+                                    transform: translateY(-1px);
+                                }
+                            }
+
+                            .locked-note {
+                                color: #f44336;
+                                font-size: 0.9rem;
+                                font-weight: 500;
+                                margin: 0;
                             }
                         }
                     }
-                }
-            }
-
-            .lesson-actions {
-                padding: 20px;
-                border-top: 1px solid var(--border-color);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                .complete-btn {
-                    background: #4caf50;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    font-weight: 500;
-                    transition: all 0.3s ease;
-
-                    &:hover {
-                        background: #45a049;
-                    }
-                }
-
-                .completed-status {
-                    color: #4caf50;
-                    font-weight: 600;
                 }
             }
         }
@@ -697,6 +699,166 @@ body.dark-theme {
                 color: #ff9800;
                 font-weight: 500;
                 margin-top: 15px;
+            }
+        }
+    }
+}
+
+// Embedded Video Player Styles
+.video-player-embedded {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: visible; // Change from hidden to visible
+    border: 1px solid #e0e0e0;
+    height: auto;
+    min-height: 450px; // Increased minimum height
+
+    .video-player-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e0e0e0;
+        flex-shrink: 0; // Prevent shrinking
+
+        h4 {
+            margin: 0;
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .close-video-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #666;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+
+            &:hover {
+                background: #e9ecef;
+                color: #333;
+            }
+        }
+    }
+
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; // 16:9 aspect ratio
+        background: #000;
+        overflow: hidden;
+
+        .video-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-error {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+
+            p {
+                color: #dc3545;
+                margin-bottom: 15px;
+                font-size: 1rem;
+            }
+
+            .retry-btn {
+                background: #6c757d;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 0.9rem;
+
+                &:hover {
+                    background: #5a6268;
+                }
+            }
+        }
+    }
+
+    .video-controls {
+        padding: 25px 20px; // Increased padding
+        background: #f8f9fa;
+        border-top: 1px solid #e0e0e0;
+        text-align: center;
+        min-height: 80px; // Increased minimum height
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0; // Prevent shrinking
+
+        .mark-complete-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 16px 32px; // Increased padding
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap; // Prevent text wrapping
+
+            &:hover {
+                background: #218838;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+
+            &::before {
+                content: '✓';
+                font-size: 1.2rem;
+            }
+        }
+
+        .completed-status {
+            color: #28a745;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 32px; // Increased padding
+            background: #d4edda;
+            border-radius: 8px;
+            border: 1px solid #c3e6cb;
+            white-space: nowrap; // Prevent text wrapping
+
+            &::before {
+                content: '✅';
+                font-size: 1.3rem;
             }
         }
     }
@@ -758,6 +920,75 @@ body.dark-theme {
     }
 }
 
+.instructor-card-overlay {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: auto;
+
+    app-instructor-info-card {
+        display: block;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        background: var(--card-background);
+        border: 1px solid var(--border-color);
+        max-width: 320px;
+        animation: fadeInUp 0.3s ease-out;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Update existing video action buttons
+.watch-button,
+.preview-watch-button {
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+    .video-player-container {
+        background: #2d3748;
+        border-color: #4a5568;
+
+        .video-player-header {
+            background: #1a202c;
+            border-bottom-color: #4a5568;
+
+            h4 {
+                color: #e2e8f0;
+            }
+
+            .close-video-btn {
+                color: #a0aec0;
+
+                &:hover {
+                    background: #4a5568;
+                    color: #e2e8f0;
+                }
+            }
+        }
+
+        .video-controls {
+            background: #1a202c;
+            border-top-color: #4a5568;
+        }
+    }
+}
+
 // Responsive design
 @media (max-width: 768px) {
     .course-detail-container {
@@ -793,352 +1024,21 @@ body.dark-theme {
     .course-content {
         grid-template-columns: 1fr;
         gap: 20px;
-
-        .content-sidebar {
-            position: static;
-        }
-    }
-}
-
-// Dark theme support
-body.dark-theme {
-    .course-tags .tags-container .tag {
-        background: #1e3a8a;
-        color: #bfdbfe;
     }
 
-    .lesson-item {
-        &.completed {
-            background: #1a4d1a;
-            border-color: #4caf50;
-        }
+    .video-player-container {
+        margin: 15px 0;
 
-        &.locked {
-            background: #2d2d2d;
-        }
+        .video-player-header {
+            padding: 12px 15px;
 
-        &.enrolled-only {
-            background: #3d2d1a;
-        }
-    }
-
-    .video-placeholder {
-        background: #2d2d2d !important;
-    }
-}
-
-.lesson-player {
-    background: var(--card-background);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-    .video-container {
-        .video-preview-section {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            background: #000;
-            border-radius: 12px 12px 0 0;
-            overflow: hidden;
-
-            .video-thumbnail {
-                position: relative;
-                width: 100%;
-                height: 100%;
-
-                .thumbnail-image {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-
-                .video-overlay {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.4);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.3s ease;
-
-                    &:hover {
-                        background: rgba(0, 0, 0, 0.6);
-                    }
-
-                    .play-overlay-content {
-                        text-align: center;
-                        color: white;
-
-                        .play-button-large,
-                        .preview-button-large {
-                            background: rgba(255, 255, 255, 0.2);
-                            border: 3px solid white;
-                            border-radius: 50%;
-                            width: 100px;
-                            height: 100px;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
-                            color: white;
-                            font-weight: 600;
-                            margin-bottom: 15px;
-
-                            .play-icon,
-                            .preview-icon {
-                                font-size: 2rem;
-                                margin-bottom: 5px;
-                            }
-
-                            .play-text,
-                            .preview-text {
-                                font-size: 0.8rem;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                            }
-
-                            &:hover {
-                                background: rgba(255, 255, 255, 0.3);
-                                transform: scale(1.1);
-                            }
-                        }
-
-                        .preview-button-large {
-                            border-color: #ff9800;
-                            color: #ff9800;
-
-                            &:hover {
-                                background: rgba(255, 152, 0, 0.2);
-                            }
-                        }
-
-                        .locked-content {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            gap: 10px;
-                            color: #f44336;
-
-                            .lock-icon {
-                                font-size: 3rem;
-                            }
-
-                            .lock-text {
-                                font-size: 1.1rem;
-                                font-weight: 600;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .lesson-info-section {
-            padding: 25px;
-
-            h3 {
-                color: var(--text-color);
-                margin-bottom: 10px;
-                font-size: 1.4rem;
-                font-weight: 600;
-            }
-
-            .lesson-description {
-                color: var(--text-secondary);
-                margin-bottom: 20px;
-                line-height: 1.6;
+            h4 {
                 font-size: 1rem;
             }
-
-            .video-meta {
-                display: flex;
-                gap: 15px;
-                margin-bottom: 25px;
-                flex-wrap: wrap;
-
-                .duration {
-                    color: var(--text-secondary);
-                    font-size: 0.9rem;
-                    font-weight: 500;
-                }
-
-                .preview-badge {
-                    background: #4caf50;
-                    color: white;
-                    padding: 4px 10px;
-                    border-radius: 15px;
-                    font-size: 0.8rem;
-                    font-weight: 600;
-                }
-
-                .enrolled-badge {
-                    background: #ff9800;
-                    color: white;
-                    padding: 4px 10px;
-                    border-radius: 15px;
-                    font-size: 0.8rem;
-                    font-weight: 600;
-                }
-            }
-
-            .video-actions {
-
-                .enrolled-actions,
-                .preview-actions,
-                .locked-actions {
-                    text-align: center;
-
-                    .watch-button,
-                    .preview-watch-button,
-                    .enroll-button {
-                        background: var(--primary-color);
-                        color: white;
-                        border: none;
-                        padding: 15px 25px;
-                        border-radius: 8px;
-                        font-size: 1rem;
-                        font-weight: 600;
-                        cursor: pointer;
-                        transition: all 0.3s ease;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 10px;
-                        margin-bottom: 10px;
-
-                        .button-icon {
-                            font-size: 1.1rem;
-                        }
-
-                        &:hover {
-                            background: #1565c0;
-                            transform: translateY(-2px);
-                            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
-                        }
-                    }
-
-                    .preview-watch-button {
-                        background: #ff9800;
-
-                        &:hover {
-                            background: #f57c00;
-                        }
-                    }
-
-                    .enroll-button {
-                        background: #f44336;
-
-                        &:hover {
-                            background: #d32f2f;
-                        }
-                    }
-
-                    .access-note {
-                        color: #4caf50;
-                        font-size: 0.9rem;
-                        font-weight: 500;
-                        margin: 0;
-                    }
-
-                    .preview-note {
-                        color: #ff9800;
-                        font-size: 0.9rem;
-                        font-weight: 500;
-                        margin: 0;
-                    }
-
-                    .locked-note {
-                        color: #f44336;
-                        font-size: 0.9rem;
-                        font-weight: 500;
-                        margin: 0;
-                    }
-                }
-            }
-        }
-    }
-
-    .lesson-actions {
-        padding: 20px 25px;
-        border-top: 1px solid var(--border-color);
-        background: var(--background-color);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .complete-btn {
-            background: #4caf50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-
-            &:hover {
-                background: #45a049;
-                transform: translateY(-1px);
-            }
         }
 
-        .completed-status {
-            color: #4caf50;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-    }
-}
-
-// Responsive design
-@media (max-width: 768px) {
-    .lesson-player {
-        .video-container {
-            .video-preview-section {
-                height: 250px;
-
-                .video-overlay {
-                    .play-overlay-content {
-
-                        .play-button-large,
-                        .preview-button-large {
-                            width: 80px;
-                            height: 80px;
-
-                            .play-icon,
-                            .preview-icon {
-                                font-size: 1.5rem;
-                            }
-
-                            .play-text,
-                            .preview-text {
-                                font-size: 0.7rem;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .lesson-info-section {
-                padding: 20px;
-
-                .video-actions {
-
-                    .watch-button,
-                    .preview-watch-button,
-                    .enroll-button {
-                        width: 100%;
-                        justify-content: center;
-                    }
-                }
-            }
+        .video-controls {
+            padding: 12px 15px;
         }
     }
 }

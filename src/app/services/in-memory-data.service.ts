@@ -56,7 +56,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '1',
             title: 'Introduction to Angular',
             description: 'Getting started with Angular framework, understanding the architecture and core concepts.',
-            videoUrl: 'https://www.youtube.com/watch?v=xAT0lHYhHMY&list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF',
+            videoUrl: 'https://www.youtube.com/watch?v=xAT0lHYhHMY',
             duration: 30,
             order: 1,
             isPreview: true
@@ -65,7 +65,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '2',
             title: 'Components and Templates',
             description: 'Understanding Angular components, templates, and data binding.',
-            videoUrl: 'https://www.youtube.com/watch?v=R0nRX8jD2D0&list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&index=3',
+            videoUrl: 'https://www.youtube.com/watch?v=R0nRX8jD2D0',
             duration: 45,
             order: 2,
             isPreview: false
@@ -74,7 +74,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '3',
             title: 'Services and Dependency Injection',
             description: 'Learn about services, dependency injection, and how to share data between components.',
-            videoUrl: 'https://www.youtube.com/watch?v=-jRxG84AzCI&list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&index=6',
+            videoUrl: 'https://www.youtube.com/watch?v=-jRxG84AzCI',
             duration: 35,
             order: 3,
             isPreview: false
@@ -83,7 +83,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '4',
             title: 'Routing and Navigation',
             description: 'Implementing routing, navigation, and route guards in Angular applications.',
-            videoUrl: 'https://www.youtube.com/watch?v=r5DEBMuStPw&list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&index=5',
+            videoUrl: 'https://www.youtube.com/watch?v=Nehk4tBxD4o',
             duration: 40,
             order: 4,
             isPreview: false
@@ -92,7 +92,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '5',
             title: 'Forms and Validation',
             description: 'Working with template-driven and reactive forms in Angular.',
-            videoUrl: 'https://www.youtube.com/watch?v=kWbk-dOJaNQ&list=PL1w1q3fL4pmj9k1FrJ3Pe91EPub2_h4jF&index=7',
+            videoUrl: 'https://www.youtube.com/watch?v=a2fGh8wqHmo',
             duration: 50,
             order: 5,
             isPreview: false
@@ -147,7 +147,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '6',
             title: 'Introduction to React',
             description: 'Getting started with React, JSX, and component-based architecture.',
-            videoUrl: 'https://www.youtube.com/watch?v=QFaFIcGhPoM&list=PLC3y8-rFHvwgg3vaYJgHGnModB54rxOk3',
+            videoUrl: 'https://www.youtube.com/watch?v=nhSZ4LhIii8',
             duration: 30,
             order: 1,
             isPreview: true
@@ -156,7 +156,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '7',
             title: 'State Management with Redux',
             description: 'Learn how to manage state in React applications using Redux.',
-            videoUrl: 'https://www.youtube.com/watch?v=JZQWKYjfZlQ',
+            videoUrl: 'https://www.youtube.com/watch?v=DnRY5yG67u8',
             duration: 45,
             order: 2,
             isPreview: false
@@ -165,7 +165,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '8',
             title: 'Routing in React',
             description: 'Implementing routing and navigation in React applications.',
-            videoUrl: 'https://www.youtube.com/watch?v=WNU1BEZIjxg',
+            videoUrl: 'https://www.youtube.com/watch?v=ZP8QyCIUeIA&t=3s',
             duration: 35,
             order: 3,
             isPreview: true
@@ -174,7 +174,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '9',
             title: 'Testing React Applications',
             description: 'Learn how to write tests for React components and applications.',
-            videoUrl: 'https://www.youtube.com/watch?v=T2sv8jXoP4s&list=PLC3y8-rFHvwirqe1KHFCHJ0RqNuN61SJd',
+            videoUrl: 'https://www.youtube.com/watch?v=8Xwq35cPwYg',
             duration: 40,
             order: 4,
             isPreview: false
@@ -229,7 +229,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '10',
             title: 'Introduction to Digital Marketing',
             description: 'Understanding the digital marketing landscape and key concepts.',
-            videoUrl: 'https://example.com/video10',
+            videoUrl: 'https://www.youtube.com/watch?v=aC-DwwgqG6A',
             duration: 25,
             order: 1,
             isPreview: true
@@ -238,7 +238,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '11',
             title: 'Search Engine Optimization (SEO)',
             description: 'Learn how to optimize websites for search engines and improve rankings.',
-            videoUrl: 'https://example.com/video11',
+            videoUrl: 'https://www.youtube.com/watch?v=4Y0Mc0IbX_0',
             duration: 40,
             order: 2,
             isPreview: false
@@ -247,7 +247,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '12',
             title: 'Social Media Marketing',
             description: 'Master social media platforms and create engaging content strategies.',
-            videoUrl: 'https://example.com/video12',
+            videoUrl: 'https://www.youtube.com/watch?v=0UY-PZB6oGA',
             duration: 35,
             order: 3,
             isPreview: false
@@ -256,7 +256,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '13',
             title: 'Email Marketing Campaigns',
             description: 'Design and execute effective email marketing campaigns.',
-            videoUrl: 'https://example.com/video13',
+            videoUrl: 'https://www.youtube.com/watch?v=tCL1Xuo06qw',
             duration: 30,
             order: 4,
             isPreview: false
@@ -265,7 +265,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '14',
             title: 'Google Analytics & Performance Tracking',
             description: 'Track and analyze digital marketing performance using Google Analytics.',
-            videoUrl: 'https://example.com/video14',
+            videoUrl: 'https://www.youtube.com/watch?v=hsIP4iH25Wg',
             duration: 45,
             order: 5,
             isPreview: false
@@ -320,7 +320,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '15',
             title: 'Python Fundamentals for Data Science',
             description: 'Learn Python basics and libraries essential for data science.',
-            videoUrl: 'https://example.com/video15',
+            videoUrl: 'https://www.youtube.com/watch?v=mkv5mxYu0Wk',
             duration: 45,
             order: 1,
             isPreview: true
@@ -329,7 +329,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '16',
             title: 'Data Manipulation with Pandas',
             description: 'Master data manipulation and analysis using Pandas library.',
-            videoUrl: 'https://example.com/video16',
+            videoUrl: 'https://www.youtube.com/watch?v=3qdzsvlOlS4',
             duration: 50,
             order: 2,
             isPreview: false
@@ -338,7 +338,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '17',
             title: 'Data Visualization with Matplotlib & Seaborn',
             description: 'Create stunning visualizations for data insights.',
-            videoUrl: 'https://example.com/video17',
+            videoUrl: 'https://www.youtube.com/watch?v=FN78JowwpSY',
             duration: 40,
             order: 3,
             isPreview: false
@@ -347,7 +347,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '18',
             title: 'Machine Learning with Scikit-learn',
             description: 'Introduction to machine learning algorithms and implementation.',
-            videoUrl: 'https://example.com/video18',
+            videoUrl: 'https://www.youtube.com/watch?v=7z8-QWlbmoo',
             duration: 55,
             order: 4,
             isPreview: false
@@ -402,7 +402,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '19',
             title: 'ES6+ Features Deep Dive',
             description: 'Explore arrow functions, destructuring, modules, and more.',
-            videoUrl: 'https://example.com/video19',
+            videoUrl: 'ES6+ Features Deep Dive',
             duration: 40,
             order: 1,
             isPreview: true
@@ -411,7 +411,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '20',
             title: 'Asynchronous JavaScript',
             description: 'Master Promises, async/await, and event loop concepts.',
-            videoUrl: 'https://example.com/video20',
+            videoUrl: 'https://www.youtube.com/watch?v=QSqc6MMS6Fk',
             duration: 45,
             order: 2,
             isPreview: false
@@ -420,7 +420,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '21',
             title: 'Advanced JavaScript Patterns',
             description: 'Learn design patterns and advanced programming techniques.',
-            videoUrl: 'https://example.com/video21',
+            videoUrl: 'https://www.youtube.com/watch?v=tJCSxhm3Cc0',
             duration: 50,
             order: 3,
             isPreview: false
@@ -467,7 +467,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '22',
             title: 'Getting Started with TypeScript',
             description: 'Introduction to TypeScript and its benefits.',
-            videoUrl: 'https://example.com/video22',
+            videoUrl: 'https://www.youtube.com/watch?v=v1-u2zFEN9I',
             duration: 30,
             order: 1,
             isPreview: true
@@ -476,7 +476,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '23',
             title: 'TypeScript Basics',
             description: 'Learn about types, interfaces, and functions in TypeScript.',
-            videoUrl: 'https://example.com/video23',
+            videoUrl: 'https://www.youtube.com/watch?v=ahCwqrYpIuM',
             duration: 40,
             order: 2,
             isPreview: false
@@ -485,7 +485,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '24',
             title: 'Advanced TypeScript',
             description: 'Explore advanced TypeScript features and best practices.',
-            videoUrl: 'https://example.com/video24',
+            videoUrl: 'https://www.youtube.com/watch?v=5woZK_3z25U',
             duration: 50,
             order: 3,
             isPreview: false
@@ -532,7 +532,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '25',
             title: 'Introduction to Machine Learning',
             description: 'Understanding the basics of machine learning and its applications.',
-            videoUrl: 'https://example.com/video25',
+            videoUrl: 'https://www.youtube.com/watch?v=h0e2HAPTGF4',
             duration: 30,
             order: 1,
             isPreview: true
@@ -541,7 +541,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '26',
             title: 'Supervised Learning Algorithms',
             description: 'Learn about regression and classification algorithms.',
-            videoUrl: 'https://example.com/video26',
+            videoUrl: 'https://www.youtube.com/watch?v=LKlOH8OLLcw',
             duration: 40,
             order: 2,
             isPreview: false
@@ -550,7 +550,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '27',
             title: 'Unsupervised Learning Techniques',
             description: 'Explore clustering and dimensionality reduction techniques.',
-            videoUrl: 'https://example.com/video27',
+            videoUrl: 'https://www.youtube.com/watch?v=D6gtZrsYi6c',
             duration: 45,
             order: 3,
             isPreview: false
@@ -597,7 +597,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '28',
             title: 'Introduction to Deep Learning',
             description: 'Understanding the basics of deep learning and its applications.',
-            videoUrl: 'https://example.com/video28',
+            videoUrl: 'https://www.youtube.com/watch?v=FbxTVRfQFuI',
             duration: 35,
             order: 1,
             isPreview: true
@@ -606,7 +606,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '29',
             title: 'Building Neural Networks',
             description: 'Learn about the architecture of neural networks and how to build them.',
-            videoUrl: 'https://example.com/video29',
+            videoUrl: 'https://www.youtube.com/watch?v=2AhiHV7QGVk',
             duration: 50,
             order: 2,
             isPreview: false
@@ -615,7 +615,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '30',
             title: 'Advanced Deep Learning Techniques',
             description: 'Explore advanced techniques in deep learning, including CNNs and RNNs.',
-            videoUrl: 'https://example.com/video30',
+            videoUrl: 'https://www.youtube.com/watch?v=mGSAKjnNu6g',
             duration: 55,
             order: 3,
             isPreview: false
@@ -663,7 +663,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '31',
             title: 'Introduction to Web Development',
             description: 'Understanding the basics of web development and its technologies.',
-            videoUrl: 'https://example.com/video31',
+            videoUrl: 'https://www.youtube.com/watch?v=HfTXHrWMGVY',
             duration: 30,
             order: 1,
             isPreview: true
@@ -672,7 +672,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '32',
             title: 'HTML & CSS Fundamentals',
             description: 'Learn the structure and styling of web pages using HTML and CSS.',
-            videoUrl: 'https://example.com/video32',
+            videoUrl: 'https://www.youtube.com/watch?v=G3e-cpL7ofc',
             duration: 45,
             order: 2,
             isPreview: false
@@ -681,7 +681,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '33',
             title: 'JavaScript for Web Development',
             description: 'Master JavaScript programming for interactive web applications.',
-            videoUrl: 'https://example.com/video33',
+            videoUrl: 'https://www.youtube.com/watch?v=W6NZfCO5SIk',
             duration: 50,
             order: 3,
             isPreview: false
@@ -690,7 +690,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '34',
             title: 'Building Single Page Applications with React',
             description: 'Learn how to build dynamic single-page applications using React.',
-            videoUrl: 'https://example.com/video34',
+            videoUrl: 'https://www.youtube.com/watch?v=VVa7GKEx7c0',
             duration: 60,
             order: 4,
             isPreview: false
@@ -737,7 +737,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '35',
             title: 'Introduction to Cloud Computing',
             description: 'Understanding the basics of cloud computing and its benefits.',
-            videoUrl: 'https://example.com/video35',
+            videoUrl: 'https://www.youtube.com/watch?v=RWgW-CgdIk0',
             duration: 30,
             order: 1,
             isPreview: true
@@ -746,7 +746,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '36',
             title: 'Cloud Service Models Explained',
             description: 'Learn about Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS).',
-            videoUrl: 'https://example.com/video36',
+            videoUrl: 'https://www.youtube.com/watch?v=1BMO7YkwR6Y',
             duration: 40,
             order: 2,
             isPreview: false
@@ -755,7 +755,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '37',
             title: 'Exploring Major Cloud Providers',
             description: 'Overview of AWS, Azure, and Google Cloud services.',
-            videoUrl: 'https://example.com/video37',
+            videoUrl: 'https://www.youtube.com/watch?v=KPVWqKqAS_Q',
             duration: 45,
             order: 3,
             isPreview: false
@@ -802,7 +802,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '38',
             title: 'Introduction to Data Science',
             description: 'Understanding the basics of data science and its importance.',
-            videoUrl: 'https://example.com/video38',
+            videoUrl: 'https://www.youtube.com/watch?v=KxryzSO1Fjs',
             duration: 30,
             order: 1,
             isPreview: true
@@ -811,7 +811,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '39',
             title: 'Data Analysis with Python',
             description: 'Learn how to analyze data using Python libraries.',
-            videoUrl: 'https://example.com/video39',
+            videoUrl: 'https://www.youtube.com/watch?v=r-uOLxNrNk8',
             duration: 45,
             order: 2,
             isPreview: false
@@ -820,7 +820,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '40',
             title: 'Machine Learning Fundamentals',
             description: 'Overview of key machine learning concepts and algorithms.',
-            videoUrl: 'https://example.com/video40',
+            videoUrl: 'https://www.youtube.com/watch?v=EuBBz3bI-aA',
             duration: 50,
             order: 3,
             isPreview: false
@@ -867,7 +867,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '41',
             title: 'Introduction to Cybersecurity',
             description: 'Understanding the basics of cybersecurity and its significance.',
-            videoUrl: 'https://example.com/video41',
+            videoUrl: 'https://www.youtube.com/watch?v=z5nc9MDbvkw',
             duration: 30,
             order: 1,
             isPreview: true
@@ -876,7 +876,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '42',
             title: 'Common Cyber Threats and Attacks',
             description: 'Learn about various types of cyber threats and how they operate.',
-            videoUrl: 'https://example.com/video42',
+            videoUrl: 'https://www.youtube.com/watch?v=Dk-ZqQ-bfy4',
             duration: 40,
             order: 2,
             isPreview: false
@@ -885,7 +885,7 @@ export class InMemoryDataService implements InMemoryDbService {
             id: '43',
             title: 'Defending Against Cyber Attacks',
             description: 'Explore defense mechanisms and best practices for cybersecurity.',
-            videoUrl: 'https://example.com/video43',
+            videoUrl: 'https://www.youtube.com/watch?v=7oJlt4iRv0s',
             duration: 50,
             order: 3,
             isPreview: false
