@@ -4,11 +4,10 @@ import { Router, RouterModule } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { LoadingService } from '../../../services/loading.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
-import { LoaderComponent } from '../../../shared/loader/loader.component';
 
 @Component({
   selector: 'app-my-courses',
-  imports: [CommonModule, RouterModule, LoaderComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.scss'
 })

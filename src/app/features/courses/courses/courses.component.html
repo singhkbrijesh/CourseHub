@@ -17,12 +17,14 @@
     <div class="filter-controls">
       <select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()" class="filter-select">
         <option value="">All Categories</option>
-        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        <option *ngFor="let category of availableCategories" [value]="category">
+          {{ category }}
+        </option>
       </select>
 
       <select [(ngModel)]="selectedLevel" (ngModelChange)="onLevelChange()" class="filter-select">
         <option value="">All Levels</option>
-        <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+        <option *ngFor="let level of availableLevels" [value]="level">{{ level }}</option>
       </select>
 
       <!-- Sort Control for Grid View -->
@@ -32,6 +34,7 @@
         <option value="rating">Rating</option>
         <option value="duration">Duration</option>
         <option value="enrollmentCount">Popularity</option>
+        <option value="publishedDate">Published Date</option>
       </select>
 
       <select *ngIf="viewMode === 'grid' && gridSortBy" [(ngModel)]="gridSortDirection" (ngModelChange)="onGridSortChange()" class="filter-select">
@@ -64,7 +67,7 @@
     <div class="courses-grid">
       <div *ngFor="let course of paginatedCourses" class="course-card">
         <div class="course-thumbnail">
-          <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+          <img [src]="course.thumbnail || 'assets/images/defaultcourse.jpeg'" [alt]="course.title">
         </div>
         
         <div class="course-content">
@@ -75,6 +78,7 @@
             <span class="instructor">By {{ course.instructor }}</span>
             <span class="level">{{ course.level }}</span>
             <span class="duration">{{ course.duration }}h</span>
+            <span class="published-date">{{ course.createdAt | date:'shortDate' }}</span>
           </div>
           
           <div class="course-stats">
@@ -91,10 +95,11 @@
                 View Details
               </button>
               <button 
-                *ngIf="userRole === 'student' && !isEnrolled(course.id)" 
-                class="enroll-btn" 
+                *ngIf="userRole === 'student'"
+                [class]="isEnrolled(course.id) ? 'enrolled-btn' : 'enroll-btn'"
+                [disabled]="isEnrolled(course.id)"
                 (click)="enrollInCourse(course.id)">
-                Enroll Now
+                {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll Now' }}
               </button>
             </div>
           </div>
@@ -106,7 +111,7 @@
     <mat-paginator 
       #gridPaginator
       [length]="filteredCourses.length"
-      [pageSizeOptions]="[6, 12, 18, 24]" 
+      [pageSizeOptions]="[5, 10, 15, 20]" 
       [pageSize]="gridPageSize"
       [pageIndex]="gridPageIndex"
       (page)="onGridPageChange($event)"
@@ -168,6 +173,13 @@
         <mat-cell class="instructor-cell" *matCellDef="let course">{{ course.instructor }}</mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="publishedDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header="publishedDate">Published Date</mat-header-cell>
+        <mat-cell class="published-date-cell" *matCellDef="let course">
+          {{ course.createdAt | date:'shortDate' }}
+        </mat-cell>
+      </ng-container>
+
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
@@ -176,12 +188,14 @@
             <button mat-button color="primary" [routerLink]="['/courses', course.id]">
               View Details
             </button>
-            <button class="enroll-button" 
-              *ngIf="userRole === 'student' && !isEnrolled(course.id)" 
+            <button 
+              *ngIf="userRole === 'student'"
+              [class]="isEnrolled(course.id) ? 'enrolled-button' : 'enroll-button'"
+              [disabled]="isEnrolled(course.id)"
               mat-raised-button 
-              color="accent" 
+              [color]="isEnrolled(course.id) ? 'primary' : 'accent'"
               (click)="enrollInCourse(course.id)">
-              Enroll
+              {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll' }}
             </button>
           </div>
         </mat-cell>
@@ -194,8 +208,8 @@
     <mat-paginator 
     class="table-paginator"
       #paginator
-      [pageSizeOptions]="[6, 12, 18, 24]" 
-      [pageSize]="6"
+      [pageSizeOptions]="[5, 10, 15, 20]" 
+      [pageSize]="5"
       showFirstLastButtons
       aria-label="Select page of courses">
     </mat-paginator>

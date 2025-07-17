@@ -47,10 +47,10 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   // View mode and Material table properties
   viewMode: 'grid' | 'table' = 'grid';
   dataSource = new MatTableDataSource<Course>();
-  displayedColumns: string[] = ['title', 'category', 'level', 'duration', 'rating', 'instructor', 'actions'];
+  displayedColumns: string[] = ['title', 'category', 'level', 'duration', 'rating', 'instructor', 'publishedDate', 'actions'];
   
   // Grid view pagination and sorting properties
-  gridPageSize = 6;
+  gridPageSize = 5;
   gridPageIndex = 0;
   gridSortBy = '';
   gridSortDirection: 'asc' | 'desc' = 'asc';
@@ -59,8 +59,8 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('gridPaginator') gridPaginator!: MatPaginator;
   
-  categories = ['Programming', 'Design', 'Business', 'Marketing', 'Data Science'];
-  levels = ['Beginner', 'Intermediate', 'Advanced'];
+  availableCategories: string[] = [];
+  availableLevels: string[] = [];
 
   constructor(
     private courseService: CourseService,
@@ -74,20 +74,24 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.loadUserInfo();
+  this.loadUserInfo();
+  
+  // Subscribe to courses state
+  this.courseService.courses$.subscribe(courses => {
+    this.courses = courses.filter(c => c.status === 'approved');
+    this.filteredCourses = [...this.courses];
     
-    // Subscribe to courses state
-    this.courseService.courses$.subscribe(courses => {
-      this.courses = courses.filter(c => c.status === 'approved');
-      this.filteredCourses = [...this.courses];
-      this.updateTableData();
-      this.updateGridPagination();
-    });
+    // Initialize available categories
+    this.updateAvailableFilters();
     
-    // Trigger data loading
-    this.courseService.getCourses().subscribe();
-    this.loadUserEnrollments();
-  }
+    this.updateTableData();
+    this.updateGridPagination();
+  });
+  
+  // Trigger data loading
+  this.courseService.getCourses().subscribe();
+  this.loadUserEnrollments();
+}
 
   ngAfterViewInit() {
     // This will be called after the template has been initialized
@@ -95,6 +99,58 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     // needs to happen in updateTableData after data is loaded
     this.connectPaginatorAndSort();
   }
+
+  private updateAvailableFilters() {
+  // Get unique categories and levels from currently filtered courses (excluding current category/level filters)
+  const coursesToCheck = this.courses.filter(course => {
+    const searchTermLower = this.searchTerm.toLowerCase().trim();
+    
+    // Apply search filter
+    if (searchTermLower) {
+      const matchesSearch = 
+        course.title.toLowerCase().includes(searchTermLower) ||
+        course.description.toLowerCase().includes(searchTermLower) ||
+        course.instructor.toLowerCase().includes(searchTermLower) ||
+        course.category.toLowerCase().includes(searchTermLower) ||
+        course.level.toLowerCase().includes(searchTermLower) ||
+        course.duration.toString().includes(searchTermLower) ||
+        `${course.duration}h`.includes(searchTermLower) ||
+        `${course.duration} hours`.includes(searchTermLower) ||
+        `${course.duration} hour`.includes(searchTermLower) ||
+        course.rating.toString().includes(searchTermLower) ||
+        `${course.rating}/5`.includes(searchTermLower) ||
+        `${course.rating} stars`.includes(searchTermLower) ||
+        `${course.rating} star`.includes(searchTermLower) ||
+        course.enrollmentCount.toString().includes(searchTermLower) ||
+        `${course.enrollmentCount} enrolled`.includes(searchTermLower) ||
+        `${course.enrollmentCount} students`.includes(searchTermLower) ||
+        (course.tags && course.tags.some(tag => tag.toLowerCase().includes(searchTermLower))) ||
+        (course.requirements && course.requirements.some(req => req.toLowerCase().includes(searchTermLower))) ||
+        (course.learningOutcomes && course.learningOutcomes.some(outcome => outcome.toLowerCase().includes(searchTermLower))) ||
+        this.matchesCommonSearchTerms(course, searchTermLower);
+      
+      if (!matchesSearch) return false;
+    }
+    
+    // For categories: Apply only level filter (not category filter)
+    // For levels: Apply only category filter (not level filter)
+    return true; // We'll handle this separately for each filter
+  });
+
+  // Extract unique categories (excluding level filter)
+  const coursesForCategories = coursesToCheck.filter(course => {
+    const matchesLevel = !this.selectedLevel || course.level === this.selectedLevel;
+    return matchesLevel;
+  });
+  this.availableCategories = [...new Set(coursesForCategories.map(course => course.category))].sort();
+
+  // Extract unique levels (excluding category filter)
+  const coursesForLevels = coursesToCheck.filter(course => {
+    const matchesCategory = !this.selectedCategory || course.category === this.selectedCategory;
+    return matchesCategory;
+  });
+  this.availableLevels = [...new Set(coursesForLevels.map(course => course.level))].sort();
+}
 
   private connectPaginatorAndSort() {
     if (this.paginator && this.sort) {
@@ -108,6 +164,7 @@ export class CoursesComponent implements OnInit, AfterViewInit {
           case 'category': return data.category.toLowerCase();
           case 'level': return data.level.toLowerCase();
           case 'instructor': return data.instructor.toLowerCase();
+          case 'publishedDate': return new Date(data.createdAt).getTime();
           case 'duration': return data.duration;
           case 'rating': return data.rating;
           default: return '';
@@ -207,6 +264,10 @@ export class CoursesComponent implements OnInit, AfterViewInit {
             valueA = a.enrollmentCount;
             valueB = b.enrollmentCount;
             break;
+          case 'publishedDate':
+          valueA = new Date(a.createdAt).getTime();
+          valueB = new Date(b.createdAt).getTime();
+          break;
           default:
             return 0;
         }
@@ -239,35 +300,137 @@ export class CoursesComponent implements OnInit, AfterViewInit {
   }
 
   filterCourses() {
-    // Applying filters manually for grid view and then updating table
-    this.filteredCourses = this.courses.filter(course => {
-      const matchesSearch = course.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           course.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+  // First update available categories based on current search and level filter
+  this.updateAvailableFilters();
+
+  // Then apply all filters including category
+  this.filteredCourses = this.courses.filter(course => {
+    const searchTermLower = this.searchTerm.toLowerCase().trim();
+    
+    // If no search term, only apply category and level filters
+    if (!searchTermLower) {
       const matchesCategory = !this.selectedCategory || course.category === this.selectedCategory;
       const matchesLevel = !this.selectedLevel || course.level === this.selectedLevel;
-      
-      return matchesSearch && matchesCategory && matchesLevel;
-    });
+      return matchesCategory && matchesLevel;
+    }
     
-    // Resetting pagination when filtering
-    this.gridPageIndex = 0;
+    // Comprehensive search across all course fields
+    const matchesSearch = 
+      // Title and description (original)
+      course.title.toLowerCase().includes(searchTermLower) ||
+      course.description.toLowerCase().includes(searchTermLower) ||
+      
+      // Instructor name
+      course.instructor.toLowerCase().includes(searchTermLower) ||
+      
+      // Category
+      course.category.toLowerCase().includes(searchTermLower) ||
+      
+      // Level
+      course.level.toLowerCase().includes(searchTermLower) ||
+      
+      // Duration (search for "40h", "40 hours", "40", etc.)
+      course.duration.toString().includes(searchTermLower) ||
+      `${course.duration}h`.includes(searchTermLower) ||
+      `${course.duration} hours`.includes(searchTermLower) ||
+      `${course.duration} hour`.includes(searchTermLower) ||
+      
+      // Rating (search for "4.5", "4.5/5", "4.5 stars", etc.)
+      course.rating.toString().includes(searchTermLower) ||
+      `${course.rating}/5`.includes(searchTermLower) ||
+      `${course.rating} stars`.includes(searchTermLower) ||
+      `${course.rating} star`.includes(searchTermLower) ||
+      
+      // Enrollment count
+      course.enrollmentCount.toString().includes(searchTermLower) ||
+      `${course.enrollmentCount} enrolled`.includes(searchTermLower) ||
+      `${course.enrollmentCount} students`.includes(searchTermLower) ||
 
-    // Updating both table and grid
-    this.updateTableData();
-    this.updateGridPagination();
+      // Published date search
+      course.createdAt.toLocaleDateString().includes(searchTermLower) ||
+      course.createdAt.getFullYear().toString().includes(searchTermLower) ||
+      
+      // Tags (if available)
+      (course.tags && course.tags.some(tag => tag.toLowerCase().includes(searchTermLower))) ||
+      
+      // Requirements (if available)
+      (course.requirements && course.requirements.some(req => req.toLowerCase().includes(searchTermLower))) ||
+      
+      // Learning outcomes (if available)
+      (course.learningOutcomes && course.learningOutcomes.some(outcome => outcome.toLowerCase().includes(searchTermLower))) ||
+      
+      // Search by common terms
+      this.matchesCommonSearchTerms(course, searchTermLower);
+    
+    // Apply category and level filters
+    const matchesCategory = !this.selectedCategory || course.category === this.selectedCategory;
+    const matchesLevel = !this.selectedLevel || course.level === this.selectedLevel;
+    
+    return matchesSearch && matchesCategory && matchesLevel;
+  });
+  
+  // Reset selected category if it's no longer available
+  if (this.selectedCategory && !this.availableCategories.includes(this.selectedCategory)) {
+    this.selectedCategory = '';
   }
+  
+  // Resetting pagination when filtering
+  this.gridPageIndex = 0;
+
+  // Updating both table and grid
+  this.updateTableData();
+  this.updateGridPagination();
+}
+
+// Helper method for common search terms
+private matchesCommonSearchTerms(course: Course, searchTerm: string): boolean {
+  // Common search patterns
+  const commonTerms = [
+    // Duration patterns
+    { patterns: ['short', 'quick', 'brief'], condition: () => course.duration <= 30 },
+    { patterns: ['medium', 'moderate'], condition: () => course.duration > 30 && course.duration <= 60 },
+    { patterns: ['long', 'extensive', 'comprehensive'], condition: () => course.duration > 60 },
+    
+    // Rating patterns
+    { patterns: ['excellent', 'best', 'top rated'], condition: () => course.rating >= 4.5 },
+    { patterns: ['good', 'quality'], condition: () => course.rating >= 4.0 },
+    { patterns: ['average'], condition: () => course.rating >= 3.0 && course.rating < 4.0 },
+    
+    // Popularity patterns
+    { patterns: ['popular', 'trending'], condition: () => course.enrollmentCount > 100 },
+    { patterns: ['new', 'latest'], condition: () => course.enrollmentCount < 50 },
+    
+    // Level patterns
+    { patterns: ['easy', 'simple', 'basic'], condition: () => course.level === 'Beginner' },
+    { patterns: ['hard', 'difficult', 'complex'], condition: () => course.level === 'Advanced' },
+    
+    // Category patterns
+    { patterns: ['coding', 'programming', 'development'], condition: () => course.category === 'Programming' },
+    { patterns: ['creative', 'visual'], condition: () => course.category === 'Design' },
+    { patterns: ['data', 'analytics', 'statistics'], condition: () => course.category === 'Data Science' },
+    { patterns: ['sales', 'promotion'], condition: () => course.category === 'Marketing' },
+    { patterns: ['management', 'entrepreneur'], condition: () => course.category === 'Business' }
+  ];
+  
+  return commonTerms.some(term => 
+    term.patterns.some(pattern => searchTerm.includes(pattern)) && term.condition()
+  );
+}
 
   onSearchChange() {
-    this.filterCourses();
-  }
+  // Reset both filters when search changes to avoid conflicts
+  this.selectedCategory = '';
+  this.selectedLevel = '';
+  this.filterCourses();
+}
 
   onCategoryChange() {
     this.filterCourses();
   }
 
   onLevelChange() {
-    this.filterCourses();
-  }
+  this.filterCourses();
+}
 
   isEnrolled(courseId: string): boolean {
     return this.enrolledCourseIds.includes(courseId);

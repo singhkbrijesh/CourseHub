@@ -73,6 +73,12 @@
                             opacity: 0.8;
                         }
                     }
+
+                    &.published-date {
+                        color: #666;
+                        font-size: 0.95rem;
+                        font-style: italic;
+                    }
                 }
 
                 .level-badge {
@@ -218,6 +224,11 @@
             p {
                 color: var(--text-secondary);
                 font-size: 0.9rem;
+
+                &.published-date-text {
+                    color: #666;
+                    font-style: italic;
+                }
             }
         }
     }
@@ -921,7 +932,7 @@
 }
 
 .instructor-card-overlay {
-    position: fixed;
+    position: absolute;
     z-index: 1000;
     pointer-events: auto;
 
@@ -985,6 +996,24 @@
         .video-controls {
             background: #1a202c;
             border-top-color: #4a5568;
+        }
+    }
+}
+
+body.dark-theme {
+    .course-meta {
+        .meta-item {
+            .value.published-date {
+                color: #aaa;
+            }
+        }
+    }
+
+    .overview-grid {
+        .overview-item {
+            p.published-date-text {
+                color: #aaa;
+            }
         }
     }
 }

@@ -28,6 +28,10 @@
             <span class="label">Category:</span>
             <span class="value">{{ course.category }}</span>
           </div>
+          <div class="meta-item">
+            <span class="label">Published:</span>
+            <span class="value">{{ course.createdAt | date:'mediumDate' }}</span>
+          </div>
         </div>
         
         <div class="course-stats">
@@ -84,6 +88,10 @@
       <div class="overview-item">
         <h4>Level</h4>
         <p>{{ course.level }}</p>
+      </div>
+      <div class="overview-item">
+        <h4>Published Date</h4>
+        <p>{{ course.createdAt | date:'fullDate' }}</p>
       </div>
     </div>
   </div>
@@ -244,7 +252,7 @@
                   <span class="button-icon">👁</span>
                   {{ isVideoPlaying ? 'Hide Preview' : 'Preview Video' }}
                 </button>
-                <p class="preview-note">👀 Preview available - Enroll for full access</p>
+                <p class="preview-note">Preview available</p>
               </div>
               
               <!-- Enrollment required -->
