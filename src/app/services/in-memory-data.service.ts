@@ -186,7 +186,7 @@ export class InMemoryDataService implements InMemoryDbService {
         title: 'Digital Marketing Mastery',
         description: 'Complete digital marketing course covering SEO, social media, email marketing, and analytics. Learn to create effective marketing strategies and measure their success.',
         instructor: 'Mike Johnson',
-        instructorId: 'instructor3',
+        instructorId: 'instructor4',
         instructorInfo: {
           name: 'Mike Johnson',
           title: 'Full Stack Developer at Google',
@@ -277,7 +277,7 @@ export class InMemoryDataService implements InMemoryDbService {
         title: 'Python for Data Science',
         description: 'Learn Python programming for data analysis and machine learning with hands-on projects. Master the most popular tools and libraries in the data science ecosystem.',
         instructor: 'Dr. Alan Kumar',
-        instructorId: 'instructor4',
+        instructorId: 'instructor8',
         instructorInfo: {
           name: 'Dr. Alan Kumar',
           title: 'Data Science Professor at Stanford',
@@ -432,7 +432,7 @@ export class InMemoryDataService implements InMemoryDbService {
         title: 'Introduction to TypeScript',
         description: 'Learn the basics of TypeScript, a typed superset of JavaScript.',
         instructor: 'Alex Rodriguez',
-        instructorId: 'instructor1',
+        instructorId: 'instructor6',
         instructorInfo: {
           name: 'Alex Rodriguez',
           title: 'Mobile App Developer at Spotify',
@@ -497,7 +497,7 @@ export class InMemoryDataService implements InMemoryDbService {
         title: 'Machine Learning Basics',
         description: 'An introductory course on machine learning concepts and algorithms.',
         instructor: 'Dr. Sarah Chen',
-        instructorId: 'instructor4',
+        instructorId: 'instructor5',
         instructorInfo: {
           name: 'Dr. Sarah Chen',
           title: 'AI Research Scientist at OpenAI',
@@ -562,7 +562,7 @@ export class InMemoryDataService implements InMemoryDbService {
         title: 'Deep Learning Fundamentals',
         description: 'An introductory course on deep learning concepts and techniques.',
         instructor: 'Dr. Alex Rodriguez',
-        instructorId: 'instructor1',
+        instructorId: 'instructor6',
         instructorInfo: {
           name: 'Alex Rodriguez',
           title: 'Mobile App Developer at Spotify',
@@ -832,7 +832,7 @@ export class InMemoryDataService implements InMemoryDbService {
         title: 'Cybersecurity Essentials',
         description: 'An introductory course on cybersecurity principles, threats, and defense mechanisms.',
         instructor: 'Emily Davis',
-        instructorId: 'instructor4',
+        instructorId: 'instructor7',
         instructorInfo: {
         name: 'Emily Davis',
         title: 'Cybersecurity Expert & CISSP Certified Professional',
@@ -936,51 +936,72 @@ export class InMemoryDataService implements InMemoryDbService {
     const users = [
       {
         id: 'admin1',
-        name: 'Admin User',
-        email: 'admin@coursehub.com',
-        password: 'admin123',
+        name: 'John Doe',
+        email: 'John@coursehub.com',
+        password: 'admin@24',
         role: 'admin'
       },
       {
         id: 'instructor1',
-        name: 'John Doe',
-        email: 'john@coursehub.com',
-        password: 'instructor123',
+        name: 'Jose Portilla',
+        email: 'jose@coursehub.com',
+        password: 'instructor@24',
         role: 'instructor'
       },
       {
         id: 'instructor2',
         name: 'Jane Smith',
         email: 'jane@coursehub.com',
-        password: 'instructor123',
+        password: 'instructor@24',
         role: 'instructor'
       },
       {
         id: 'instructor3',
-        name: 'Sarah Johnson',
-        email: 'sarah@coursehub.com',
-        password: 'instructor123',
+        name: 'Michael Brown',
+        email: 'michael@coursehub.com',
+        password: 'instructor@24',
         role: 'instructor'
       },
       {
         id: 'instructor4',
-        name: 'Dr. Sarah Chen',
-        email: 'sarah.chen@coursehub.com',
-        password: 'instructor123',
+        name: 'Mike Johnson',
+        email: 'mike@coursehub.com',
+        password: 'instructor@24',
         role: 'instructor'
       },
       {
         id: 'instructor5',
+        name: 'Dr. Sarah Chen',
+        email: 'sarah.chen@coursehub.com',
+        password: 'instructor@24',
+        role: 'instructor'
+      },
+      {
+        id: 'instructor6',
         name: 'Alex Rodriguez',
         email: 'alex@coursehub.com',
-        password: 'instructor123',
+        password: 'instructor@24',
+        role: 'instructor'
+      },
+      {
+        id: 'instructor7',
+        name: 'Emily Davis',
+        email: 'emily@coursehub.com',
+        password: 'instructor@24',
+        role: 'instructor'
+      },
+      {
+        id: 'instructor8',
+        name: 'Dr. Alan Kumar',
+        email: 'alan@coursehub.com',
+        password: 'instructor@24',
         role: 'instructor'
       },
       {
         id: 'student1',
         name: 'Student User',
         email: 'student@coursehub.com',
-        password: 'student123',
+        password: 'student@24',
         role: 'student'
       },
       {
