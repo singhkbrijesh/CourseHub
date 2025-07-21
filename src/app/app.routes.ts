@@ -31,8 +31,11 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/instructor/instructor.module').then((m) => m.InstructorModule),
   },
+  { path: 'login', redirectTo: '/auth', pathMatch: 'full' },
+  { path: 'signup', redirectTo: '/auth', pathMatch: 'full' },
+  { path: 'dashboard', redirectTo: '/courses', pathMatch: 'full' },
   {
     path: '**',
-    redirectTo: 'courses',
+    loadComponent: () => import('./shared/not-found/not-found.component').then(c => c.NotFoundComponent)
   },
 ];

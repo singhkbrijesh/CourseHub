@@ -24,28 +24,30 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  login(email: string, password: string): Observable<any> {
-    this.loadingService.show();
-    
-    return this.http.get<User[]>(this.usersUrl).pipe(
-      tap(users => {
-        const user = users.find(u => u.email === email && u.password === password);
-        if (user) {
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('user', JSON.stringify(user));
-            window.dispatchEvent(new Event('userChanged'));
-          }
-        } else {
-          throw new Error('Invalid credentials');
+  login(email: string, password: string): Observable<User> {
+  this.loadingService.show();
+  
+  return this.http.get<User[]>(this.usersUrl).pipe(
+    map(users => {
+      const user = users.find(u => u.email === email && u.password === password);
+      if (user) {
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('user', JSON.stringify(user));
+          window.dispatchEvent(new Event('userChanged'));
         }
-      }),
-      catchError(error => {
-        console.error('Login error:', error);
-        return throwError(() => new Error('Login failed'));
-      }),
-      finalize(() => this.loadingService.hide())
-    );
-  }
+        // Return only the logged-in user's data
+        return user;
+      } else {
+        throw new Error('Invalid credentials');
+      }
+    }),
+    catchError(error => {
+      console.error('Login error:', error);
+      return throwError(() => new Error('Login failed'));
+    }),
+    finalize(() => this.loadingService.hide())
+  );
+}
 
   register(userData: Partial<User> & { password: string }): Observable<User> {
     this.loadingService.show();

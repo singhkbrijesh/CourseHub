@@ -138,7 +138,6 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed with result:', result); // Debug log
       if (result === 'stay') {
         // User wants to stay logged in - reset timer
         this.resetIdleTimer();

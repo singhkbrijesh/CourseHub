@@ -1,90 +1,105 @@
 <div class="student-dashboard">
-    <div class="dashboard-header">
-      <h1>Welcome back, {{ user.name }}!</h1>
-      <p>Continue your learning journey</p>
-    </div>
-  
-    <!-- Stats Cards -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon">📚</div>
-        <div class="stat-content">
-          <h3>{{ enrollments.length }}</h3>
-          <p>Enrolled Courses</p>
-        </div>
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="welcome-section">
+        <h1>Welcome back, {{ user.name }}!</h1>
+        <p>Continue your learning journey</p>
       </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">✅</div>
-        <div class="stat-content">
-          <h3>{{ completedCourses }}</h3>
-          <p>Completed Courses</p>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">📈</div>
-        <div class="stat-content">
-          <h3>{{ inProgressCourses }}</h3>
-          <p>In Progress</p>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">🎯</div>
-        <div class="stat-content">
-          <h3>{{ overallProgress }}%</h3>
-          <p>Overall Progress</p>
-        </div>
-      </div>
-    </div>
-  
-    <!-- My Courses Section -->
-    <div class="my-courses-section" *ngIf="enrolledCourses.length > 0">
-      <h2>My Courses</h2>
-      <div class="courses-grid">
-        <div *ngFor="let course of enrolledCourses" class="course-card">
-          <div class="course-thumbnail">
-            <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
-          </div>
-          
-          <div class="course-content">
-            <h3>{{ course.title }}</h3>
-            <p class="course-description">{{ course.description }}</p>
-            
-            <div class="course-meta">
-              <span class="instructor">By {{ course.instructor }}</span>
-              <span class="level">{{ course.level }}</span>
-            </div>
-            
-            <div class="progress-section">
-              <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="getEnrollmentProgress(course.id)"></div>
-              </div>
-              <span class="progress-text">{{ getEnrollmentProgress(course.id) }}% Complete</span>
-            </div>
-            
-            <div class="course-actions">
-              <button class="continue-btn" (click)="continueCourse(course.id)" [disabled]="loading">
-                {{ getEnrollmentProgress(course.id) === 0 ? 'Start Course' : 'Continue' }}
-              </button>
-            </div>
+
+      <!-- Recent Logins in top right -->
+      <div class="recent-logins-compact" *ngIf="recentLoginActivities.length > 0">
+        <h3>Activity Timeline</h3>
+        <div class="login-list">
+          <div *ngFor="let session of recentLoginActivities.slice(0, 3)" class="login-item">
+            <span class="login-time">{{ formatTime(session.loginTime) }}</span>
+            <span class="login-date">{{ session.loginTime | date:'M/d/yy' }}</span>
           </div>
         </div>
       </div>
     </div>
-  
-    <!-- No Courses Message -->
-    <div class="no-courses-message" *ngIf="enrolledCourses.length === 0">
-      <div class="empty-state">
-        <h3>No Courses Yet</h3>
-        <p>You haven't enrolled in any courses yet. Browse our course catalog to get started!</p>
-        <button class="browse-btn" routerLink="/courses">Browse Courses</button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-content">
+        <h3>{{ enrollments.length }}</h3>
+        <p>Enrolled Courses</p>
       </div>
     </div>
-  
-    <!-- Recommended Courses -->
-    <!-- <div class="recommended-section" *ngIf="recentCourses.length > 0">
+
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <h3>{{ completedCourses }}</h3>
+        <p>Completed Courses</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📈</div>
+      <div class="stat-content">
+        <h3>{{ inProgressCourses }}</h3>
+        <p>In Progress</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-content">
+        <h3>{{ overallProgress }}%</h3>
+        <p>Overall Progress</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Courses Section -->
+  <div class="my-courses-section" *ngIf="enrolledCourses.length > 0">
+    <h2>My Courses</h2>
+    <div class="courses-grid">
+      <div *ngFor="let course of enrolledCourses" class="course-card">
+        <div class="course-thumbnail">
+          <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+        </div>
+
+        <div class="course-content">
+          <h3>{{ course.title }}</h3>
+          <p class="course-description">{{ course.description }}</p>
+
+          <div class="course-meta">
+            <span class="instructor">By {{ course.instructor }}</span>
+            <span class="level">{{ course.level }}</span>
+          </div>
+
+          <div class="progress-section">
+            <mat-progress-bar mode="determinate" [value]="getEnrollmentProgress(course.id)" class="course-progress-bar">
+            </mat-progress-bar>
+            <span class="progress-text">{{ getEnrollmentProgress(course.id) }}% Complete</span>
+          </div>
+
+          <div class="course-actions">
+            <button [class]="getEnrollmentProgress(course.id) === 100 ? 'restart-btn' : 'continue-btn'"
+              (click)="continueCourse(course.id)" [disabled]="loading">
+              {{ getCourseButtonText(course.id) }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Courses Message -->
+  <div class="no-courses-message" *ngIf="enrolledCourses.length === 0">
+    <div class="empty-state">
+      <h3>No Courses Yet</h3>
+      <p>You haven't enrolled in any courses yet. Browse our course catalog to get started!</p>
+      <button class="browse-btn" routerLink="/courses">Browse Courses</button>
+    </div>
+  </div>
+
+  <!-- Recommended Courses -->
+  <!-- <div class="recommended-section" *ngIf="recentCourses.length > 0">
       <h2>Recommended for You</h2>
       <div class="courses-grid">
         <div *ngFor="let course of recentCourses" class="course-card">
@@ -119,4 +134,4 @@
         </div>
       </div>
     </div> -->
-  </div>
+</div>

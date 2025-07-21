@@ -5,13 +5,10 @@
         <h1>My Courses</h1>
         <p>Continue your learning journey</p>
       </div>
-      
+
       <!-- Filter Dropdown in top right -->
       <div class="filter-dropdown" *ngIf="!loading && enrolledCourses.length > 0">
-        <select 
-          [(ngModel)]="selectedFilter" 
-          (ngModelChange)="onFilterChange()"
-          class="filter-select">
+        <select [(ngModel)]="selectedFilter" (ngModelChange)="onFilterChange()" class="filter-select">
           <option class="filter-option" value="all">All ({{ getFilterCount('all') }})</option>
           <option class="filter-option" value="enrolled">Enrolled ({{ getFilterCount('enrolled') }})</option>
           <option class="filter-option" value="in-progress">In Progress ({{ getFilterCount('in-progress') }})</option>
@@ -31,27 +28,25 @@
     <div class="courses-grid">
       <div *ngFor="let course of filteredCourses" class="course-card">
         <div class="course-thumbnail">
-          <img [src]="course.thumbnail" [alt]="course.title" 
-               onerror="this.src='assets/images/defaultcourse.jpeg'">
+          <img [src]="course.thumbnail" [alt]="course.title" (error)="onImageError($event)">
         </div>
-        
+
         <div class="course-content">
           <h3>{{ course.title }}</h3>
           <p class="course-description">{{ course.description }}</p>
-          
+
           <div class="course-meta">
             <span class="instructor">By {{ course.instructor }}</span>
             <span class="level">{{ course.level }}</span>
             <span class="duration">{{ course.duration }}h</span>
           </div>
-          
+
           <div class="progress-section">
-            <div class="progress-bar">
-              <div class="progress-fill" [style.width.%]="getEnrollmentProgress(course.id)"></div>
-            </div>
+            <mat-progress-bar mode="determinate" [value]="getEnrollmentProgress(course.id)" class="course-progress-bar">
+            </mat-progress-bar>
             <span class="progress-text">{{ getEnrollmentProgress(course.id) }}% Complete</span>
           </div>
-          
+
           <div class="course-actions">
             <span class="status" [class]="getEnrollmentStatus(course.id)">
               {{ getEnrollmentStatus(course.id) | titlecase }}

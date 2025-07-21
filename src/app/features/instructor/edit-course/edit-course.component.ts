@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+// Angular Material Modules
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,15 +14,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { AsyncValidatorsService } from '../../../services/async-validators.service';
-import { InstructorService } from '../../../services/instructor.service';
-import { Course } from '../../../core/models/course.model';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
+import { InstructorService } from '../../../services/instructor.service';
+import { Course } from '../../../core/models/course.model';
+
 @Component({
-  selector: 'app-create-course',
+  selector: 'app-edit-course',
   standalone: true,
   imports: [
     CommonModule,
@@ -37,10 +40,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatProgressSpinnerModule,
     MatCheckboxModule
   ],
-  templateUrl: './create-course.component.html',
-  styleUrl: './create-course.component.scss'
+  templateUrl: './edit-course.component.html',
+  styleUrl: './edit-course.component.scss'
 })
-export class CreateCourseComponent implements OnInit {
+export class EditCourseComponent implements OnInit {
   // Form groups for each step
   basicInfoForm!: FormGroup;
   detailsForm!: FormGroup;
@@ -54,16 +57,17 @@ export class CreateCourseComponent implements OnInit {
   selectedThumbnail: File | null = null;
   thumbnailPreview: string | null = null;
   isUploading = false;
-
-  isTitleChecking = false;
+  loading = true;
   
-  // Current user data
+  // Course data
+  courseId: string = '';
+  originalCourse: Course | null = null;
   currentUser: any = {};
 
   constructor(
     private formBuilder: FormBuilder,
     private instructorService: InstructorService,
-    private asyncValidators: AsyncValidatorsService,
+    private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
@@ -72,16 +76,14 @@ export class CreateCourseComponent implements OnInit {
 
   ngOnInit() {
     this.loadCurrentUser();
+    this.loadCourseForEdit();
   }
 
   // Initialize all form groups
   initializeForms() {
     // Step 1: Basic Information
     this.basicInfoForm = this.formBuilder.group({
-      title: ['', 
-        [Validators.required, Validators.minLength(5)],
-        [this.asyncValidators.uniqueCourseTitle()]
-      ],
+      title: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [Validators.required, Validators.minLength(20)]],
       category: ['', Validators.required],
       level: ['', Validators.required],
@@ -99,28 +101,6 @@ export class CreateCourseComponent implements OnInit {
     this.lessonsForm = this.formBuilder.group({
       lessons: this.formBuilder.array([this.createLessonControl()])
     });
-
-    // Subscribe to title field status changes
-    this.basicInfoForm.get('title')?.statusChanges.subscribe(status => {
-      this.isTitleChecking = status === 'PENDING';
-    });
-  }
-
-  // Method for custom error messages
-  getTitleErrorMessage(): string {
-    const titleControl = this.basicInfoForm.get('title');
-    
-    if (titleControl?.hasError('required')) {
-      return 'Course title is required';
-    }
-    if (titleControl?.hasError('minlength')) {
-      return 'Title must be at least 5 characters long';
-    }
-    if (titleControl?.hasError('courseTitleExists')) {
-      return 'This course title already exists. Please choose a different title.';
-    }
-    
-    return '';
   }
 
   // Load current user from localStorage
@@ -128,6 +108,103 @@ export class CreateCourseComponent implements OnInit {
     const userData = localStorage.getItem('user');
     if (userData) {
       this.currentUser = JSON.parse(userData);
+    }
+  }
+
+  // Load course data for editing
+  loadCourseForEdit() {
+    this.courseId = this.route.snapshot.paramMap.get('id') || '';
+    
+    if (!this.courseId) {
+      this.snackBar.open('Invalid course ID', 'Close', { duration: 3000 });
+      this.router.navigate(['/instructor/my-courses']);
+      return;
+    }
+
+    this.instructorService.getCourseById(this.courseId).subscribe({
+      next: (course) => {
+        this.originalCourse = course ?? null;
+        if (course) {
+          this.populateFormWithCourseData(course);
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading course:', error);
+        this.snackBar.open('Error loading course data', 'Close', { duration: 3000 });
+        this.router.navigate(['/instructor/my-courses']);
+      }
+    });
+  }
+
+  // Populate forms with existing course data
+  populateFormWithCourseData(course: Course) {
+  // Populate basic info form
+  this.basicInfoForm.patchValue({
+    title: course.title || '',
+    description: course.description || '',
+    category: course.category || '',
+    level: course.level || '',
+    duration: course.duration || 30
+  });
+
+  // Set thumbnail preview
+  this.thumbnailPreview = course.thumbnail || null;
+
+  // Populate requirements - handle empty or undefined arrays
+  this.clearFormArray(this.requirements);
+  if (course.requirements && course.requirements.length > 0) {
+    course.requirements.forEach(req => {
+      this.requirements.push(this.formBuilder.group({
+        requirement: [req || '', Validators.required]
+      }));
+    });
+  } else {
+    // Add at least one empty requirement
+    this.requirements.push(this.createRequirementControl());
+  }
+
+  // Populate learning outcomes - handle empty or undefined arrays
+  this.clearFormArray(this.learningOutcomes);
+  if (course.learningOutcomes && course.learningOutcomes.length > 0) {
+    course.learningOutcomes.forEach(outcome => {
+      this.learningOutcomes.push(this.formBuilder.group({
+        outcome: [outcome || '', Validators.required]
+      }));
+    });
+  } else {
+    // Add at least one empty learning outcome
+    this.learningOutcomes.push(this.createLearningOutcomeControl());
+  }
+
+  // Populate tags - handle undefined tags
+  this.detailsForm.patchValue({
+    tags: course.tags && course.tags.length > 0 ? course.tags.join(', ') : ''
+  });
+
+  // Populate lessons - handle empty or undefined lessons
+  this.clearFormArray(this.lessons);
+  if (course.lessons && course.lessons.length > 0) {
+    course.lessons.forEach(lesson => {
+      this.lessons.push(this.formBuilder.group({
+        title: [lesson.title || '', Validators.required],
+        description: [lesson.description || '', Validators.required],
+        videoUrl: [lesson.videoUrl || ''],
+        duration: [lesson.duration || 15, [Validators.required, Validators.min(1)]],
+        isPreview: [lesson.isPreview || false],
+        order: [lesson.order || 1]
+      }));
+    });
+  } else {
+    // Add at least one empty lesson
+    this.lessons.push(this.createLessonControl());
+  }
+}
+
+  // Helper method to clear form arrays
+  clearFormArray(formArray: FormArray) {
+    while (formArray.length !== 0) {
+      formArray.removeAt(0);
     }
   }
 
@@ -191,7 +268,6 @@ export class CreateCourseComponent implements OnInit {
 
   addLesson() {
     const newLesson = this.createLessonControl();
-    // Set the order for the new lesson
     newLesson.patchValue({ order: this.lessons.length + 1 });
     this.lessons.push(newLesson);
   }
@@ -199,7 +275,6 @@ export class CreateCourseComponent implements OnInit {
   removeLesson(index: number) {
     if (this.lessons.length > 1) {
       this.lessons.removeAt(index);
-      // Update order numbers
       this.updateLessonOrder();
     }
   }
@@ -232,7 +307,6 @@ export class CreateCourseComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.thumbnailPreview = e.target?.result as string;
-        console.log(this.thumbnailPreview);
       };
       reader.readAsDataURL(file);
     }
@@ -240,7 +314,7 @@ export class CreateCourseComponent implements OnInit {
 
   removeThumbnail() {
     this.selectedThumbnail = null;
-    this.thumbnailPreview = null;
+    this.thumbnailPreview = this.originalCourse?.thumbnail || null;
   }
 
   // Parse tags from comma-separated string
@@ -251,25 +325,57 @@ export class CreateCourseComponent implements OnInit {
       .filter(tag => tag.length > 0);
   }
 
-  // Submit the complete course
-  onSubmit() {
+  // Submit the updated course
+  // Submit the updated course
+onSubmit() {
   if (this.basicInfoForm.valid && this.detailsForm.valid && this.lessonsForm.valid) {
     this.isUploading = true;
 
-    // Generate a unique ID for the new course
-    const courseId = 'course_' + Date.now();
-
-    // Prepare course data with all required fields
-    const courseData: Course = {
-      id: courseId,
+    // Prepare complete updated course data - PRESERVE ALL FIELDS
+    const updatedCourseData: Course = {
+      // Keep ALL original course data first
+      ...this.originalCourse!,
+      
+      // Then update only the specific fields
+      id: this.courseId,
       title: this.basicInfoForm.value.title,
       description: this.basicInfoForm.value.description,
       category: this.basicInfoForm.value.category,
       level: this.basicInfoForm.value.level,
       duration: this.basicInfoForm.value.duration,
-      instructor: this.currentUser.name || 'Unknown Instructor',
-      instructorId: this.currentUser.id || 'unknown',
-      instructorInfo: {
+      
+      // Update arrays with proper filtering
+      requirements: this.requirements.controls
+        .map(control => control.value.requirement)
+        .filter(req => req && req.trim()),
+        
+      learningOutcomes: this.learningOutcomes.controls
+        .map(control => control.value.outcome)
+        .filter(outcome => outcome && outcome.trim()),
+        
+      tags: this.parseTags(this.detailsForm.value.tags || ''),
+      
+      // Update lessons with proper structure
+      lessons: this.lessons.controls.map((control, index) => ({
+        id: this.originalCourse?.lessons[index]?.id || `lesson_${Date.now()}_${index}`,
+        title: control.value.title,
+        description: control.value.description,
+        videoUrl: control.value.videoUrl || '',
+        duration: control.value.duration,
+        order: index + 1,
+        isPreview: control.value.isPreview || false
+      })),
+      
+      // Preserve thumbnail - use new if uploaded, otherwise keep original
+      thumbnail: this.thumbnailPreview || this.originalCourse?.thumbnail || 'assets/images/defaultcourse.jpeg',
+      
+      // Update timestamp
+      updatedAt: new Date(),
+      
+      // Ensure all required fields are present
+      instructor: this.originalCourse?.instructor || this.currentUser.name || 'Unknown Instructor',
+      instructorId: this.originalCourse?.instructorId || this.currentUser.id || 'unknown',
+      instructorInfo: this.originalCourse?.instructorInfo || {
         name: this.currentUser.name || 'Unknown Instructor',
         title: 'Course Instructor',
         rating: 0,
@@ -279,42 +385,26 @@ export class CreateCourseComponent implements OnInit {
         bio: 'Experienced instructor passionate about teaching.',
         avatar: 'assets/images/instructors/default-instructor.jpg'
       },
-      requirements: this.requirements.controls.map(control => control.value.requirement).filter(req => req.trim()),
-      learningOutcomes: this.learningOutcomes.controls.map(control => control.value.outcome).filter(outcome => outcome.trim()),
-      tags: this.parseTags(this.detailsForm.value.tags || ''),
-      lessons: this.lessons.controls.map((control, index) => ({
-        id: `lesson_${Date.now()}_${index}`,
-        title: control.value.title,
-        description: control.value.description,
-        videoUrl: control.value.videoUrl || '',
-        duration: control.value.duration,
-        order: index + 1,
-        isPreview: control.value.isPreview || false
-      })),
-      rating: 0,
-      enrollmentCount: 0,
-      thumbnail: this.selectedThumbnail ? 
-        `assets/images/${this.selectedThumbnail.name}` : 
-        'assets/images/defaultcourse.jpeg',
-      status: 'pending',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      rating: this.originalCourse?.rating || 0,
+      enrollmentCount: this.originalCourse?.enrollmentCount || 0,
+      status: this.originalCourse?.status || 'pending',
+      createdAt: this.originalCourse?.createdAt || new Date()
     };
 
-    console.log('Creating course with data:', courseData);
+    console.log('Sending complete updated course:', updatedCourseData);
 
     // Submit to service
-    this.instructorService.createCourse(courseData).subscribe({
+    this.instructorService.updateCourse(this.courseId, updatedCourseData).subscribe({
       next: (response) => {
-        console.log('Course created successfully:', response);
+        console.log('Course updated successfully:', response);
         this.isUploading = false;
-        this.snackBar.open('Course created successfully!', 'Close', { duration: 3000 });
+        this.snackBar.open('Course updated successfully!', 'Close', { duration: 3000 });
         this.router.navigate(['/instructor/my-courses']);
       },
       error: (error) => {
-        console.error('Error creating course:', error);
+        console.error('Error updating course:', error);
         this.isUploading = false;
-        this.snackBar.open('Error creating course. Please try again.', 'Close', { duration: 3000 });
+        this.snackBar.open('Error updating course. Please try again.', 'Close', { duration: 3000 });
       }
     });
   } else {
@@ -323,21 +413,21 @@ export class CreateCourseComponent implements OnInit {
     this.markFormGroupTouched(this.lessonsForm);
     this.snackBar.open('Please fill all required fields', 'Close', { duration: 3000 });
   }
-  }
-  
-  private markFormGroupTouched(formGroup: any) {
-  Object.keys(formGroup.controls).forEach(key => {
-    const control = formGroup.get(key);
-    control?.markAsTouched();
-    
-    if (control && control.controls) {
-      this.markFormGroupTouched(control);
-    }
-  });
 }
+
+  private markFormGroupTouched(formGroup: any) {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+      
+      if (control && control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
 
   // Navigation methods
   goBack() {
-    this.router.navigate(['/instructor/dashboard']);
+    this.router.navigate(['/instructor/my-courses']);
   }
 }

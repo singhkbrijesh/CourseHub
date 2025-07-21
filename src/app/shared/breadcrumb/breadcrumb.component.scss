@@ -1,36 +1,72 @@
 .breadcrumb-nav {
-    font-size: 0.95rem;
-    color: lightblue;
+    padding: 12px 0;
     margin-left: 16px;
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
+    font-size: 14px;
 
     .breadcrumb-item {
-        color: lightblue;
-
         &.clickable {
+            color: rgba(255, 255, 255, 0.9); // White color for clickable items on blue header
             cursor: pointer;
-            text-decoration: underline;
+            text-decoration: none;
             transition: all 0.2s ease;
 
             &:hover {
-                color: #87ceeb;
-                text-decoration: none;
-                opacity: 0.8;
+                color: #ffffff; // Pure white on hover
+                text-decoration: underline;
+                background-color: rgba(255, 255, 255, 0.1); // Subtle background on hover
+                padding: 2px 4px;
+                border-radius: 3px;
             }
         }
 
         &.current {
-            color: #ffffff;
-            font-weight: 500;
+            color: #ffffff; // White color for current page
+            font-weight: 600;
             cursor: default;
         }
     }
 
     .breadcrumb-separator {
-        color: lightblue;
         margin: 0 8px;
-        user-select: none;
+        color: rgba(255, 255, 255, 0.7); // Light white for separators
+    }
+}
+
+// For non-header contexts (if breadcrumb is used elsewhere)
+.breadcrumb-nav.light-theme {
+    .breadcrumb-item {
+        &.clickable {
+            color: var(--primary-color);
+
+            &:hover {
+                color: var(--primary-color);
+                background-color: rgba(25, 118, 210, 0.1);
+            }
+        }
+
+        &.current {
+            color: var(--text-color);
+        }
+    }
+
+    .breadcrumb-separator {
+        color: var(--text-secondary);
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .breadcrumb-nav {
+        font-size: 12px;
+
+        .breadcrumb-separator {
+            margin: 0 4px;
+        }
+
+        .breadcrumb-item {
+            &.clickable:hover {
+                padding: 1px 2px;
+            }
+        }
     }
 }

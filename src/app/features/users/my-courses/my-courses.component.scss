@@ -1,7 +1,7 @@
 .my-courses-container {
     padding: 20px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin-bottom: 40px;
 }
 
 .header {
@@ -179,18 +179,18 @@
 .progress-section {
     margin-bottom: 20px;
 
-    .progress-bar {
-        width: 100%;
+    .course-progress-bar {
         height: 8px;
-        background: #e0e0e0;
         border-radius: 4px;
-        overflow: hidden;
         margin-bottom: 8px;
 
-        .progress-fill {
-            height: 100%;
+        // Customize Material progress bar colors
+        ::ng-deep .mat-progress-bar-fill::after {
             background: linear-gradient(90deg, #4caf50, #8bc34a);
-            transition: width 0.3s ease;
+        }
+
+        ::ng-deep .mat-progress-bar-buffer {
+            background: #e0e0e0;
         }
     }
 
@@ -198,6 +198,8 @@
         font-size: 0.9rem;
         color: #666;
         font-weight: 500;
+        display: block;
+        text-align: left;
     }
 }
 

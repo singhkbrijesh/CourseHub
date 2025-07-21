@@ -1,1 +1,74 @@
-<p>my-courses works!</p>
+<div class="my-courses-container">
+    <div class="courses-header">
+        <div class="header-content">
+            <h1>My Courses</h1>
+            <p>Manage and track your course content</p>
+        </div>
+        <button mat-raised-button color="primary" (click)="createNewCourse()">
+            <mat-icon>add</mat-icon>
+            Create New Course
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-container" *ngIf="loading">
+        <p>Loading your courses...</p>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="courses-grid" *ngIf="!loading && courses.length > 0">
+        <mat-card *ngFor="let course of courses" class="course-card">
+            <div class="course-thumbnail">
+                <img [src]="course.thumbnail" [alt]="course.title"
+                    onerror="this.src='assets/images/defaultcourse.jpeg'">
+                <div class="course-status">
+                    <mat-chip [color]="getStatusColor(course.status)" selected>
+                        {{ course.status | titlecase }}
+                    </mat-chip>
+                </div>
+            </div>
+
+            <mat-card-content>
+                <h3>{{ course.title }}</h3>
+                <p class="course-description">{{ course.description | slice:0:100 }}...</p>
+
+                <div class="course-stats">
+                    <div class="stat">
+                        <mat-icon>people</mat-icon>
+                        <span>{{ course.enrollmentCount || 0 }} students</span>
+                    </div>
+                    <div class="stat">
+                        <mat-icon>play_circle</mat-icon>
+                        <span>{{ course.lessons.length || 0 }} lessons</span>
+                    </div>
+                    <div class="stat">
+                        <mat-icon>schedule</mat-icon>
+                        <span>{{ course.duration }}h</span>
+                    </div>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions>
+                <button mat-button (click)="viewCourse(course.id)">
+                    <mat-icon>visibility</mat-icon>
+                    View
+                </button>
+                <button mat-button (click)="editCourse(course.id)">
+                    <mat-icon>edit</mat-icon>
+                    Edit
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!loading && courses.length === 0">
+        <mat-icon>school</mat-icon>
+        <h3>No courses yet</h3>
+        <p>Create your first course to start teaching</p>
+        <button mat-raised-button color="primary" (click)="createNewCourse()">
+            <mat-icon>add</mat-icon>
+            Create Your First Course
+        </button>
+    </div>
+</div>

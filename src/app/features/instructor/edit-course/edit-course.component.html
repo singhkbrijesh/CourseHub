@@ -1,11 +1,11 @@
-<div class="create-course-container">
+<div class="edit-course-container" *ngIf="!loading">
     <div class="course-header">
         <button mat-icon-button (click)="goBack()" class="back-button">
             <mat-icon>arrow_back</mat-icon>
         </button>
         <div class="header-content">
-            <h1>Create New Course</h1>
-            <p>Build your course step by step</p>
+            <h1>Edit Course</h1>
+            <p>Update your course content</p>
         </div>
     </div>
 
@@ -20,36 +20,12 @@
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Course Title</mat-label>
                             <input matInput formControlName="title" placeholder="Enter course title">
-
-                            <!-- Loading spinner for async validation -->
-                            <mat-spinner *ngIf="isTitleChecking" matSuffix diameter="20">
-                            </mat-spinner>
-
-                            <!-- Success icon when title is valid and available -->
-                            <mat-icon
-                                *ngIf="!isTitleChecking && basicInfoForm.get('title')?.valid && basicInfoForm.get('title')?.value"
-                                matSuffix class="success-icon">
-                                check_circle
-                            </mat-icon>
-
-                            <!-- Error icon when title has errors -->
-                            <mat-icon
-                                *ngIf="!isTitleChecking && basicInfoForm.get('title')?.invalid && basicInfoForm.get('title')?.touched"
-                                matSuffix class="error-icon">
-                                error
-                            </mat-icon>
-
-                            <!-- Dynamic error messages -->
-                            <mat-error
-                                *ngIf="basicInfoForm.get('title')?.invalid && basicInfoForm.get('title')?.touched">
-                                {{ getTitleErrorMessage() }}
+                            <mat-error *ngIf="basicInfoForm.get('title')?.hasError('required')">
+                                Title is required
                             </mat-error>
-
-                            <!-- Hint for validation status -->
-                            <mat-hint
-                                *ngIf="!basicInfoForm.get('title')?.errors && basicInfoForm.get('title')?.value?.length >= 5">
-                                {{ isTitleChecking ? 'Checking availability...' : 'Title looks good!' }}
-                            </mat-hint>
+                            <mat-error *ngIf="basicInfoForm.get('title')?.hasError('minlength')">
+                                Title must be at least 5 characters long
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
@@ -115,23 +91,31 @@
                                     accept="image/*" style="display: none;">
                                 <button mat-stroked-button (click)="thumbnailInput.click()" type="button">
                                     <mat-icon>cloud_upload</mat-icon>
-                                    Upload Thumbnail
+                                    Upload New Thumbnail
                                 </button>
                                 <p>Recommended: 1280x720 pixels, JPG or PNG, max 2MB</p>
                             </div>
 
                             <div class="thumbnail-preview" *ngIf="thumbnailPreview">
                                 <img [src]="thumbnailPreview" alt="Thumbnail preview">
-                                <button mat-icon-button (click)="removeThumbnail()" class="remove-thumbnail">
-                                    <mat-icon>close</mat-icon>
-                                </button>
+                                <div class="thumbnail-actions">
+                                    <input type="file" #thumbnailInput (change)="onThumbnailSelected($event)"
+                                        accept="image/*" style="display: none;">
+                                    <button mat-stroked-button (click)="thumbnailInput.click()" type="button">
+                                        <mat-icon>edit</mat-icon>
+                                        Change
+                                    </button>
+                                    <button mat-stroked-button (click)="removeThumbnail()" type="button">
+                                        <mat-icon>delete</mat-icon>
+                                        Remove
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="step-actions">
-                        <button mat-raised-button color="primary" matStepperNext
-                            [disabled]="!basicInfoForm.valid || isTitleChecking">
+                        <button mat-raised-button color="primary" matStepperNext [disabled]="!basicInfoForm.valid">
                             Next: Course Details
                         </button>
                     </div>
@@ -204,7 +188,7 @@
                     <div class="step-actions">
                         <button mat-button matStepperPrevious>Previous</button>
                         <button mat-raised-button color="primary" matStepperNext [disabled]="!detailsForm.valid">
-                            Next: Add Lessons
+                            Next: Edit Lessons
                         </button>
                     </div>
                 </div>
@@ -277,7 +261,7 @@
                         <button mat-raised-button color="primary" (click)="onSubmit()"
                             [disabled]="!lessonsForm.valid || isUploading">
                             <mat-icon *ngIf="isUploading">hourglass_empty</mat-icon>
-                            {{isUploading ? 'Creating Course...' : 'Create Course'}}
+                            {{isUploading ? 'Updating Course...' : 'Update Course'}}
                         </button>
                     </div>
                 </div>
@@ -290,8 +274,18 @@
         <mat-card>
             <mat-card-content>
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                <p>Creating your course...</p>
+                <p>Updating your course...</p>
             </mat-card-content>
         </mat-card>
     </div>
+</div>
+
+<!-- Loading State for Initial Data -->
+<div class="loading-container" *ngIf="loading">
+    <mat-card>
+        <mat-card-content>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            <p>Loading course data...</p>
+        </mat-card-content>
+    </mat-card>
 </div>

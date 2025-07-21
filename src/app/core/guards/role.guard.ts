@@ -16,5 +16,6 @@ export const RoleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
     }
   }
 
+  //fallback redirect to courses
   return router.createUrlTree(['/']);
 };

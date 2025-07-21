@@ -138,10 +138,6 @@ export class CourseDetailComponent implements OnInit {
     if (this.canAccessLesson(lesson)) {
       this.selectedLesson = lesson;
       this.closeVideo(); // Close current video when switching lessons
-    } else {
-      if (isPlatformBrowser(this.platformId)) {
-        console.log('Lesson not accessible');
-      }
     }
   }
 
@@ -178,44 +174,46 @@ export class CourseDetailComponent implements OnInit {
   }
 
   markLessonComplete(lessonId: string) {
-    if (!this.completedLessons.includes(lessonId)) {
-      this.completedLessons.push(lessonId);
-      this.updateProgress();
-    }
+  if (!this.completedLessons.includes(lessonId)) {
+    this.completedLessons.push(lessonId);
+    
+    // Close the current video when marked as complete
+    this.closeVideo();
+    
+    // Update progress without refreshing the page
+    this.updateProgress();
   }
+}
 
   updateProgress() {
-    if (this.course && this.course.lessons) {
-      const totalLessons = this.course.lessons.length;
-      const completedCount = this.completedLessons.length;
-      this.enrollmentProgress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
-      
-      if (this.currentUser.id) {
-        this.courseService.getStudentEnrollments(this.currentUser.id).subscribe({
-          next: (enrollments) => {
-            const enrollment = enrollments.find(e => e.courseId === this.course?.id);
-            if (enrollment) {
-              this.courseService.updateEnrollmentProgress(
-                enrollment.id, 
-                this.enrollmentProgress, 
-                this.completedLessons
-              ).subscribe({
-                next: () => {
-                  console.log('Progress updated successfully');
-                },
-                error: (error) => {
-                  console.error('Error updating progress:', error);
-                }
-              });
-            }
-          },
-          error: (error) => {
-            console.error('Error fetching enrollments:', error);
+  if (this.course && this.course.lessons) {
+    const totalLessons = this.course.lessons.length;
+    const completedCount = this.completedLessons.length;
+    this.enrollmentProgress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+    
+    if (this.currentUser.id) {
+      this.courseService.getStudentEnrollments(this.currentUser.id).subscribe({
+        next: (enrollments) => {
+          const enrollment = enrollments.find(e => e.courseId === this.course?.id);
+          if (enrollment) {
+            this.courseService.updateEnrollmentProgress(
+              enrollment.id, 
+              this.enrollmentProgress, 
+              this.completedLessons
+            ).subscribe({
+              error: (error) => {
+                console.error('Error updating progress:', error);
+              }
+            });
           }
-        });
-      }
+        },
+        error: (error) => {
+          console.error('Error fetching enrollments:', error);
+        }
+      });
     }
   }
+}
 
   isLessonCompleted(lessonId: string): boolean {
     return this.completedLessons.includes(lessonId);
@@ -278,9 +276,6 @@ export class CourseDetailComponent implements OnInit {
   }
 
   playVideoEmbedded(lesson: any) {
-  console.log('Playing video for lesson:', lesson.title);
-  console.log('Video URL:', lesson.videoUrl);
-  
   if (!lesson.videoUrl) {
     if (isPlatformBrowser(this.platformId)) {
       alert('No video URL found for this lesson');
@@ -289,8 +284,6 @@ export class CourseDetailComponent implements OnInit {
   }
   
   const videoId = this.getYouTubeVideoId(lesson.videoUrl);
-  console.log('Extracted video ID:', videoId);
-  
   if (!videoId) {
     if (isPlatformBrowser(this.platformId)) {
       alert('Invalid YouTube URL. Please contact support.');
@@ -302,10 +295,6 @@ export class CourseDetailComponent implements OnInit {
   this.safeVideoUrl = this.getYouTubeEmbedUrl(videoId);
   this.currentVideoUrl = lesson.videoUrl;
   this.isVideoPlaying = true;
-}
-  
-  onVideoLoad() {
-  console.log('Video loaded successfully');
 }
 
   closeVideo() {
@@ -319,7 +308,7 @@ export class CourseDetailComponent implements OnInit {
         if (lessonElement) {
           lessonElement.scrollIntoView({ 
             behavior: 'smooth', 
-            block: 'start' 
+            block: 'nearest' 
           });
         }
       }, 100);

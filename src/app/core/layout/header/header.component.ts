@@ -13,6 +13,7 @@ import { ThemeService, Theme } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-header',
+  standalone: true,
   imports: [MatTooltip, MatIconModule, MatMenuModule, MatButtonModule, CommonModule, MatToolbarModule, BreadcrumbComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

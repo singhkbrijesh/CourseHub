@@ -12,6 +12,7 @@ export const AuthGuard: CanActivateFn = () => {
       return true;
     }
   }
-  
+
+  //fallback redirect to auth
   return router.createUrlTree(['/auth']);
 };

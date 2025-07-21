@@ -6,11 +6,7 @@
 
   <div class="filters-section">
     <div class="search-bar">
-      <input 
-        type="text" 
-        placeholder="Search courses..." 
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="onSearchChange()"
+      <input type="text" placeholder="Search courses..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()"
         class="search-input">
     </div>
 
@@ -28,7 +24,8 @@
       </select>
 
       <!-- Sort Control for Grid View -->
-      <select *ngIf="viewMode === 'grid'" [(ngModel)]="gridSortBy" (ngModelChange)="onGridSortChange()" class="filter-select">
+      <select *ngIf="viewMode === 'grid'" [(ngModel)]="gridSortBy" (ngModelChange)="onGridSortChange()"
+        class="filter-select">
         <option value="">Sort By</option>
         <option value="title">Title</option>
         <option value="rating">Rating</option>
@@ -37,24 +34,19 @@
         <option value="publishedDate">Published Date</option>
       </select>
 
-      <select *ngIf="viewMode === 'grid' && gridSortBy" [(ngModel)]="gridSortDirection" (ngModelChange)="onGridSortChange()" class="filter-select">
+      <select *ngIf="viewMode === 'grid' && gridSortBy" [(ngModel)]="gridSortDirection"
+        (ngModelChange)="onGridSortChange()" class="filter-select">
         <option value="asc">Ascending</option>
         <option value="desc">Descending</option>
       </select>
 
       <!-- View toggle buttons -->
       <div class="view-toggle">
-        <button 
-          mat-icon-button 
-          [class.active]="viewMode === 'grid'"
-          (click)="setViewMode('grid')"
+        <button mat-icon-button [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')"
           matTooltip="Grid View">
           <mat-icon>grid_view</mat-icon>
         </button>
-        <button 
-          mat-icon-button 
-          [class.active]="viewMode === 'table'"
-          (click)="setViewMode('table')"
+        <button mat-icon-button [class.active]="viewMode === 'table'" (click)="setViewMode('table')"
           matTooltip="Table View">
           <mat-icon>table_rows</mat-icon>
         </button>
@@ -69,18 +61,18 @@
         <div class="course-thumbnail">
           <img [src]="course.thumbnail || 'assets/images/defaultcourse.jpeg'" [alt]="course.title">
         </div>
-        
+
         <div class="course-content">
           <h3>{{ course.title }}</h3>
           <p class="course-description">{{ course.description }}</p>
-          
+
           <div class="course-meta">
             <span class="instructor">By {{ course.instructor }}</span>
             <span class="level">{{ course.level }}</span>
-            <span class="duration">{{ course.duration }}h</span>
+            <span class="duration">{{ getTotalDuration(course) }} min</span>
             <span class="published-date">{{ course.createdAt | date:'shortDate' }}</span>
           </div>
-          
+
           <div class="course-stats">
             <div class="rating">
               <span class="stars">★★★★☆</span>
@@ -88,17 +80,14 @@
             </div>
             <div class="enrollment-count">{{ course.enrollmentCount }} enrolled</div>
           </div>
-          
+
           <div class="course-actions">
             <div class="action-buttons">
               <button class="view-btn" [routerLink]="['/courses', course.id]">
                 View Details
               </button>
-              <button 
-                *ngIf="userRole === 'student'"
-                [class]="isEnrolled(course.id) ? 'enrolled-btn' : 'enroll-btn'"
-                [disabled]="isEnrolled(course.id)"
-                (click)="enrollInCourse(course.id)">
+              <button *ngIf="userRole === 'student'" [class]="isEnrolled(course.id) ? 'enrolled-btn' : 'enroll-btn'"
+                [disabled]="isEnrolled(course.id)" (click)="enrollInCourse(course.id)">
                 {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll Now' }}
               </button>
             </div>
@@ -108,14 +97,8 @@
     </div>
 
     <!-- Grid Pagination -->
-    <mat-paginator 
-      #gridPaginator
-      [length]="filteredCourses.length"
-      [pageSizeOptions]="[5, 10, 15, 20]" 
-      [pageSize]="gridPageSize"
-      [pageIndex]="gridPageIndex"
-      (page)="onGridPageChange($event)"
-      showFirstLastButtons
+    <mat-paginator #gridPaginator [length]="filteredCourses.length" [pageSizeOptions]="[5, 10, 15, 20]"
+      [pageSize]="gridPageSize" [pageIndex]="gridPageIndex" (page)="onGridPageChange($event)" showFirstLastButtons
       aria-label="Select page of courses">
     </mat-paginator>
   </div>
@@ -153,7 +136,7 @@
       <!-- Duration Column -->
       <ng-container matColumnDef="duration">
         <mat-header-cell *matHeaderCellDef mat-sort-header="duration">Duration</mat-header-cell>
-        <mat-cell class="duration-cell" *matCellDef="let course">{{ course.duration }}h</mat-cell>
+        <mat-cell class="duration-cell" *matCellDef="let course">{{ getTotalDuration(course) }} min</mat-cell>
       </ng-container>
 
       <!-- Rating Column -->
@@ -188,13 +171,9 @@
             <button mat-button color="primary" [routerLink]="['/courses', course.id]">
               View Details
             </button>
-            <button 
-              *ngIf="userRole === 'student'"
-              [class]="isEnrolled(course.id) ? 'enrolled-button' : 'enroll-button'"
-              [disabled]="isEnrolled(course.id)"
-              mat-raised-button 
-              [color]="isEnrolled(course.id) ? 'primary' : 'accent'"
-              (click)="enrollInCourse(course.id)">
+            <button *ngIf="userRole === 'student'" [class]="isEnrolled(course.id) ? 'enrolled-button' : 'enroll-button'"
+              [disabled]="isEnrolled(course.id)" mat-raised-button
+              [color]="isEnrolled(course.id) ? 'primary' : 'accent'" (click)="enrollInCourse(course.id)">
               {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll' }}
             </button>
           </div>
@@ -205,13 +184,8 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
 
-    <mat-paginator 
-    class="table-paginator"
-      #paginator
-      [pageSizeOptions]="[5, 10, 15, 20]" 
-      [pageSize]="5"
-      showFirstLastButtons
-      aria-label="Select page of courses">
+    <mat-paginator class="table-paginator" #paginator [pageSizeOptions]="[5, 10, 15, 20]" [pageSize]="5"
+      showFirstLastButtons aria-label="Select page of courses">
     </mat-paginator>
   </div>
 

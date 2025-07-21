@@ -4,6 +4,7 @@ import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map, switchMap, tap, finalize } from 'rxjs/operators';
 import { Course, Enrollment } from '../core/models/course.model';
 import { LoadingService } from './loading.service';
+import { LoginActivity } from '../core/models/course.model';
 
 @Injectable({
   providedIn: 'root'
@@ -245,9 +246,7 @@ export class CourseService {
     );
   }
 
-  // Rest of your existing methods remain the same
   updateEnrollmentProgress(enrollmentId: string, progress: number, completedLessons: string[]): Observable<Enrollment> {
-    this.loadingService.show();
     return this.http.get<Enrollment>(`${this.enrollmentsUrl}/${enrollmentId}`).pipe(
       map(enrollment => ({
         ...enrollment,
@@ -269,7 +268,6 @@ export class CourseService {
         this.http.put<Enrollment>(this.enrollmentsUrl, updatedEnrollment, this.httpOptions).subscribe();
       }),
       catchError(this.handleError<Enrollment>('updateEnrollmentProgress')),
-      finalize(() => this.loadingService.hide())
     );
   }
 
@@ -319,4 +317,13 @@ export class CourseService {
       return of(result as T);
     };
   }
+
+  // Get student login activities
+getStudentLoginActivities(studentId: string): Observable<LoginActivity[]> {
+  return this.http.get<LoginActivity[]>('api/loginActivities')
+    .pipe(
+      map(activities => activities.filter(activity => activity.studentId === studentId)),
+      catchError(this.handleError<LoginActivity[]>('getStudentLoginActivities', []))
+    );
+}
 }

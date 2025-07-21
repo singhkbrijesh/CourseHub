@@ -28,6 +28,7 @@ export interface Course {
   learningOutcomes?: string[];
   tags?: string[];
   prerequisiteCourses?: string[];
+  analytics?: CourseAnalytics;
 }
 
 export interface Lesson {
@@ -60,4 +61,45 @@ export interface Enrollment {
     role: 'admin' | 'instructor' | 'student';
     createdAt: Date;
     isActive: boolean;
-  }
+}
+  
+export interface InstructorStats {
+  totalCourses: number;
+  totalStudents: number;
+  averageRating: number;
+  pendingApprovals: number;
+  activeCourses: number;
+  totalEnrollments: number;
+  completionRate: number;
+}
+
+export interface CourseAnalytics {
+  courseId: string;
+  courseName: string;
+  enrollmentCount: number;
+  completionRate: number;
+  averageRating: number;
+  monthlyEnrollments: number[];
+  studentProgress: {
+    completed: number;
+    inProgress: number;
+    notStarted: number;
+  };
+}
+
+export interface InstructorNotification {
+  id: string;
+  type: 'enrollment' | 'completion' | 'approval' | 'review';
+  message: string;
+  courseId?: string;
+  studentId?: string;
+  timestamp: Date;
+  isRead: boolean;
+  instructorId: string;
+}
+
+export interface LoginActivity {
+  id: string;
+  studentId: string;
+  loginTime: Date;
+}

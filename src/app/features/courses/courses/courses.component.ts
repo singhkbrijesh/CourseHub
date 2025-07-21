@@ -100,6 +100,11 @@ export class CoursesComponent implements OnInit, AfterViewInit {
     this.connectPaginatorAndSort();
   }
 
+  getTotalDuration(course: Course): number {
+  if (!course || !course.lessons) return 0;
+  return course.lessons.reduce((total, lesson) => total + (lesson.duration || 0), 0);
+}
+
   private updateAvailableFilters() {
   // Get unique categories and levels from currently filtered courses (excluding current category/level filters)
   const coursesToCheck = this.courses.filter(course => {
@@ -452,10 +457,10 @@ private matchesCommonSearchTerms(course: Course, searchTerm: string): boolean {
           // Update the local enrolledCourseIds array immediately
           this.enrolledCourseIds.push(courseId);
           
-          // CRITICAL: Reload courses to get updated enrollment counts
+          // Reload courses to get updated enrollment counts
           this.loadCourses();
           
-          // Also reload enrollments to get fresh data from API
+          // Reload enrollments to get fresh data from API
           this.loadUserEnrollments();
         },
         error: (error) => {

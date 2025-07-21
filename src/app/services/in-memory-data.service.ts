@@ -28,7 +28,7 @@ export class InMemoryDataService implements InMemoryDbService {
         level: 'Intermediate',
         duration: 40,
         rating: 4.5,
-        enrollmentCount: 150,
+        enrollmentCount: 2,
         thumbnail: 'assets/images/angular.jpeg',
         status: 'approved',
         createdAt: new Date('2024-01-01'),
@@ -201,7 +201,7 @@ export class InMemoryDataService implements InMemoryDbService {
         level: 'Beginner',
         duration: 35,
         rating: 4.6,
-        enrollmentCount: 320,
+        enrollmentCount: 1,
         thumbnail: 'assets/images/digital-marketing.jpeg',
         status: 'approved',
         createdAt: new Date('2024-01-03'),
@@ -642,7 +642,7 @@ export class InMemoryDataService implements InMemoryDbService {
         level: 'Beginner',
         duration: 70,
         rating: 4.7,
-        enrollmentCount: 250,
+        enrollmentCount: 0,
         thumbnail: 'assets/images/webdevbootcamp.jpeg',
         status: 'approved',
         createdAt: new Date('2024-01-08'),
@@ -1020,6 +1020,206 @@ export class InMemoryDataService implements InMemoryDbService {
       }
     ];
 
-    return { courses, enrollments, users };
+    const instructorStats = [
+    {
+      id: 'stats1',
+      instructorId: 'instructor1',
+      totalCourses: 3,
+      totalStudents: 570,
+      averageRating: 4.6,
+      pendingApprovals: 1,
+      activeCourses: 2,
+      totalEnrollments: 650,
+      completionRate: 75
+    },
+    {
+      id: 'stats2',
+      instructorId: 'instructor2',
+      totalCourses: 2,
+      totalStudents: 380,
+      averageRating: 4.7,
+      pendingApprovals: 0,
+      activeCourses: 2,
+      totalEnrollments: 380,
+      completionRate: 80
+    },
+    {
+      id: 'stats3',
+      instructorId: 'instructor3',
+      totalCourses: 1,
+      totalStudents: 220,
+      averageRating: 4.8,
+      pendingApprovals: 0,
+      activeCourses: 1,
+      totalEnrollments: 220,
+      completionRate: 85
+    },
+    {
+      id: 'stats4',
+      instructorId: 'instructor4',
+      totalCourses: 1,
+      totalStudents: 320,
+      averageRating: 4.6,
+      pendingApprovals: 0,
+      activeCourses: 1,
+      totalEnrollments: 320,
+      completionRate: 70
+    },
+    {
+      id: 'stats5',
+      instructorId: 'instructor5',
+      totalCourses: 2,
+      totalStudents: 340,
+      averageRating: 4.8,
+      pendingApprovals: 1,
+      activeCourses: 2,
+      totalEnrollments: 340,
+      completionRate: 88
+    }
+  ];
+
+  const instructorNotifications = [
+    {
+      id: 'notif1',
+      instructorId: 'instructor1',
+      type: 'enrollment',
+      message: 'New student enrolled in Angular Complete Course',
+      courseId: '1',
+      studentId: 'student1',
+      timestamp: new Date(),
+      isRead: false
+    },
+    {
+      id: 'notif2',
+      instructorId: 'instructor1',
+      type: 'completion',
+      message: 'Student completed Web Development Bootcamp',
+      courseId: '9',
+      studentId: 'student2',
+      timestamp: new Date(Date.now() - 3600000),
+      isRead: true
+    },
+    {
+      id: 'notif3',
+      instructorId: 'instructor1',
+      type: 'review',
+      message: 'New 5-star review received for Angular Complete Course',
+      courseId: '1',
+      studentId: 'student3',
+      timestamp: new Date(Date.now() - 7200000),
+      isRead: false
+    },
+    {
+      id: 'notif4',
+      instructorId: 'instructor2',
+      type: 'enrollment',
+      message: 'New student enrolled in React Complete Course',
+      courseId: '2',
+      studentId: 'student1',
+      timestamp: new Date(Date.now() - 1800000),
+      isRead: false
+    },
+    {
+      id: 'notif5',
+      instructorId: 'instructor2',
+      type: 'approval',
+      message: 'Your course "Cloud Computing Essentials" has been approved',
+      courseId: '10',
+      timestamp: new Date(Date.now() - 86400000),
+      isRead: true
+    },
+    {
+      id: 'notif6',
+      instructorId: 'instructor3',
+      type: 'enrollment',
+      message: 'New student enrolled in Data Science and Machine Learning',
+      courseId: '11',
+      studentId: 'student2',
+      timestamp: new Date(Date.now() - 10800000),
+      isRead: false
+    }
+  ];
+
+  const loginActivities = [
+    {
+      id: 'login_1',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000 + 9 * 60 * 60 * 1000) // 6 days ago, 9:00 AM
+    },
+    {
+      id: 'login_2',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000) // 5 days ago, 2:00 PM
+    },
+    {
+      id: 'login_3',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000) // 4 days ago, 10:00 AM
+    },
+    {
+      id: 'login_4',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000 + 19 * 60 * 60 * 1000) // 4 days ago, 7:00 PM
+    },
+    {
+      id: 'login_5',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000) // 3 days ago, 8:00 AM
+    },
+    {
+      id: 'login_6',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000 + 15 * 60 * 60 * 1000) // 1 day ago, 3:00 PM
+    },
+    {
+      id: 'login_7',
+      studentId: 'student1',
+      loginTime: new Date(Date.now() - 2 * 60 * 60 * 1000) // Today, 2 hours ago
+    },
+    {
+      id: 'login_8',
+      studentId: 'student2',
+      loginTime: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000 + 10 * 60 * 60 * 1000) // 5 days ago, 10:00 AM
+    },
+    {
+      id: 'login_9',
+      studentId: 'student2',
+      loginTime: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 16 * 60 * 60 * 1000) // 3 days ago, 4:00 PM
+    },
+    {
+      id: 'login_10',
+      studentId: 'student3',
+      loginTime: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000 + 11 * 60 * 60 * 1000) // 6 days ago, 11:00 AM
+    }
+  ];
+
+  return { 
+    courses, 
+    enrollments, 
+    users, 
+    instructorStats, 
+    instructorNotifications,
+    loginActivities
+  };
   }
+
+  put(reqInfo: any): any {
+  if (reqInfo.collectionName === 'courses') {
+    const courses = reqInfo.collection;
+    const courseIndex = courses.findIndex((course: any) => course.id === reqInfo.id);
+    
+    if (courseIndex !== -1) {
+      // Replace the course with updated data
+      courses[courseIndex] = { ...reqInfo.req.body };
+      console.log('In-memory DB: Course updated successfully');
+      
+      return reqInfo.utils.createResponse$(() => ({
+        body: courses[courseIndex],
+        status: 200
+      }));
+    }
+  }
+  
+  return undefined; // Let default handling occur for other collections
+}
 }

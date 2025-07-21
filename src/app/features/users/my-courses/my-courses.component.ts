@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { CourseService } from '../../../services/course.service';
 import { LoadingService } from '../../../services/loading.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 @Component({
   selector: 'app-my-courses',
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, MatProgressBarModule],
   templateUrl: './my-courses.component.html',
   styleUrl: './my-courses.component.scss'
 })
@@ -135,6 +136,13 @@ export class MyCoursesComponent implements OnInit {
   }
 
   continueCourse(courseId: string) {
-    this.router.navigate(['/courses', courseId]);
+  // Navigate with state indicating source is my-courses
+  this.router.navigate(['/courses', courseId], {
+    state: { fromMyCourses: true }
+  });
   }
+  
+  onImageError(event: any): void {
+  event.target.src = 'assets/images/defaultcourse.jpeg';
+}
 }

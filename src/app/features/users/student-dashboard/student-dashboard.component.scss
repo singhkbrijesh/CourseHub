@@ -170,6 +170,29 @@
 
 .progress-section {
     margin-bottom: 20px;
+
+    .course-progress-bar {
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 8px;
+
+        // Customize Material progress bar colors
+        ::ng-deep .mat-progress-bar-fill::after {
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+        }
+
+        ::ng-deep .mat-progress-bar-buffer {
+            background: #e0e0e0;
+        }
+    }
+
+    .progress-text {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+        display: block;
+        text-align: left;
+    }
 }
 
 .progress-bar {
@@ -417,5 +440,183 @@ body.dark-theme {
             width: 100%;
             text-align: center;
         }
+    }
+}
+
+.dashboard-header {
+    margin-bottom: 40px;
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-section {
+        flex: 1;
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 0;
+        }
+    }
+}
+
+// Compact Recent Logins Styles
+.recent-logins-compact {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    max-width: 250px;
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 12px 0;
+        color: #333;
+    }
+
+    .login-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .login-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #f0f0f0;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .login-time {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .login-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+    }
+}
+
+
+// Dark theme for compact logins
+body.dark-theme {
+    .dashboard-header {
+        .welcome-section {
+            h1 {
+                color: #fff;
+            }
+
+            p {
+                color: #ccc;
+            }
+        }
+    }
+
+    .recent-logins-compact {
+        background: #2d2d2d;
+
+        h3 {
+            color: #fff;
+        }
+
+        .login-item {
+            border-bottom-color: #555;
+
+            .login-time {
+                color: #fff;
+            }
+
+            .login-date {
+                color: #ccc;
+            }
+        }
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .dashboard-header {
+        .header-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .welcome-section {
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    }
+
+    .recent-logins-compact {
+        width: 100%;
+        max-width: none;
+
+        .login-list {
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .login-item {
+            flex-direction: column;
+            gap: 2px;
+            border-bottom: none;
+            border-right: 1px solid #f0f0f0;
+            padding: 6px 12px;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+    }
+
+    body.dark-theme {
+        .recent-logins-compact .login-item {
+            border-right-color: #555;
+        }
+    }
+}
+
+.restart-btn {
+    background: #FF6B35;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #e55a2b;
+        transform: translateY(-2px);
+    }
+
+    &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
     }
 }
