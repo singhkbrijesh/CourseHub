@@ -87,7 +87,7 @@
                 View Details
               </button>
               <button *ngIf="userRole === 'student'" [class]="isEnrolled(course.id) ? 'enrolled-btn' : 'enroll-btn'"
-                [disabled]="isEnrolled(course.id)" (click)="enrollInCourse(course.id)">
+                (click)="enrollInCourse(course.id)">
                 {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll Now' }}
               </button>
             </div>

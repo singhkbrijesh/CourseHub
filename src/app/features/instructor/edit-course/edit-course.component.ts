@@ -391,12 +391,12 @@ onSubmit() {
       createdAt: this.originalCourse?.createdAt || new Date()
     };
 
-    console.log('Sending complete updated course:', updatedCourseData);
+    // console.log('Sending complete updated course:', updatedCourseData);
 
     // Submit to service
     this.instructorService.updateCourse(this.courseId, updatedCourseData).subscribe({
       next: (response) => {
-        console.log('Course updated successfully:', response);
+        // console.log('Course updated successfully:', response);
         this.isUploading = false;
         this.snackBar.open('Course updated successfully!', 'Close', { duration: 3000 });
         this.router.navigate(['/instructor/my-courses']);

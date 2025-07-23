@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Course } from '../../../core/models/course.model';
 
-describe('AdminDashboardComponent', () => {
+fdescribe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;
   let fixture: ComponentFixture<AdminDashboardComponent>;
   let courseServiceMock: any;

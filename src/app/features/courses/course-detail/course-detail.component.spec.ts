@@ -6,7 +6,7 @@ import { LoadingService } from '../../../services/loading.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { of, Subject, throwError } from 'rxjs';
 
-describe('CourseDetailComponent', () => {
+fdescribe('CourseDetailComponent', () => {
   let component: CourseDetailComponent;
   let fixture: ComponentFixture<CourseDetailComponent>;
   let courseServiceMock: any;

@@ -62,7 +62,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
     const userData = localStorage.getItem('user');
     if (userData) {
       this.currentUser = JSON.parse(userData);
-      console.log('Current user loaded:', this.currentUser);
+      // console.log('Current user loaded:', this.currentUser);
     } else {
       console.error('No user data found in localStorage');
     }
@@ -76,14 +76,14 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Loading dashboard data for instructor:', this.currentUser.id);
+    // console.log('Loading dashboard data for instructor:', this.currentUser.id);
 
     // Load instructor statistics
     this.instructorService.getInstructorStats(this.currentUser.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (stats) => {
-          console.log('Instructor stats loaded:', stats);
+          // console.log('Instructor stats loaded:', stats);
           this.instructorStats = stats;
           this.loading = false;
         },
@@ -98,7 +98,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (courses) => {
-          console.log('Instructor courses loaded:', courses);
+          // console.log('Instructor courses loaded:', courses);
           // Sort by creation date and take the 3 most recent
           this.recentCourses = courses
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -114,7 +114,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (notifications) => {
-          console.log('Notifications loaded:', notifications);
+          // console.log('Notifications loaded:', notifications);
           this.notifications = notifications.slice(0, 5); // Show only latest 5 notifications
         },
         error: (error) => {

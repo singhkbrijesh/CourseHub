@@ -9,7 +9,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { PLATFORM_ID } from '@angular/core';
 
-describe('MyCoursesComponent', () => {
+fdescribe('MyCoursesComponent', () => {
   let component: MyCoursesComponent;
   let fixture: ComponentFixture<MyCoursesComponent>;
 

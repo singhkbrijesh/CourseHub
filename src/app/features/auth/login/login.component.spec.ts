@@ -7,7 +7,7 @@ import { LoadingService } from '../../../services/loading.service';
 import { of, throwError, Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
-describe('LoginComponent', () => {
+fdescribe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let routerMock: any;

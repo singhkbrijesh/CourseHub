@@ -1211,7 +1211,7 @@ export class InMemoryDataService implements InMemoryDbService {
     if (courseIndex !== -1) {
       // Replace the course with updated data
       courses[courseIndex] = { ...reqInfo.req.body };
-      console.log('In-memory DB: Course updated successfully');
+      // console.log('In-memory DB: Course updated successfully');
       
       return reqInfo.utils.createResponse$(() => ({
         body: courses[courseIndex],

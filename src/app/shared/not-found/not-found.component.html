@@ -1,16 +1,55 @@
-<div class="not-found-container">
-    <div class="error-content">
-        <div class="error-code">404</div>
-        <h1>Page Not Found</h1>
-        <p>The page you're looking for doesn't exist or has been moved.</p>
-
-        <div class="error-actions">
-            <button class="btn-primary" (click)="goHome()">
-                Go to Homepage
-            </button>
-            <button class="btn-secondary" (click)="goBack()">
-                Go Back
-            </button>
+<div class="not-found-wrapper">
+    <div class="not-found-container">
+        <div class="error-illustration">
+            <div class="error-code">
+                <span class="four">4</span>
+                <span class="zero">0</span>
+                <span class="four">4</span>
+            </div>
+            <div class="error-icon">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                        fill="#e74c3c" />
+                </svg>
+            </div>
         </div>
+
+        <div class="error-content">
+            <h1 class="error-title">Oops! Page Not Found</h1>
+            <p class="error-description">
+                The page you're looking for seems to have wandered off.
+                Don't worry, it happens to the best of us!
+            </p>
+
+            <div class="error-suggestions">
+                <ul>
+                    <li>Check if the URL is typed correctly</li>
+                    <li>The page might have been moved or deleted</li>
+                    <li>Try going back to the homepage</li>
+                </ul>
+            </div>
+
+            <div class="error-actions">
+                <button class="btn btn-primary" (click)="goHome()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor" />
+                    </svg>
+                    Go to Homepage
+                </button>
+                <button class="btn btn-secondary" (click)="goBack()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.42-1.41L7.83 13H20v-2z" fill="currentColor" />
+                    </svg>
+                    Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="background-decoration">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
     </div>
 </div>

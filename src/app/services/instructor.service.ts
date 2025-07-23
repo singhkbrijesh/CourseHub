@@ -143,13 +143,13 @@ export class InstructorService {
   }
 
 updateCourse(courseId: string, courseData: Course): Observable<Course> {
-  console.log('InstructorService: Updating course', courseId, courseData);
+  // console.log('InstructorService: Updating course', courseId, courseData);
   
   // Use PUT request to actually update the course in the database
   return this.http.put<Course>(`${this.apiUrl}/courses/${courseId}`, courseData, this.httpOptions)
     .pipe(
       map(updatedCourse => {
-        console.log('InstructorService: Received updated course from API:', updatedCourse);
+        // console.log('InstructorService: Received updated course from API:', updatedCourse);
         
         // Update the local courses array immediately
         const currentCourses = this.instructorCoursesSubject.value;
@@ -157,7 +157,7 @@ updateCourse(courseId: string, courseData: Course): Observable<Course> {
           course.id === courseId ? updatedCourse : course
         );
         
-        console.log('InstructorService: Broadcasting updated courses:', updatedCourses);
+        // console.log('InstructorService: Broadcasting updated courses:', updatedCourses);
         this.instructorCoursesSubject.next(updatedCourses);
         
         return updatedCourse;

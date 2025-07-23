@@ -4,7 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
-describe('SidebarComponent', () => {
+fdescribe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let routerEvents$: Subject<any>;

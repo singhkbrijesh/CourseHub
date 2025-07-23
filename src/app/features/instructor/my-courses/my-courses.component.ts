@@ -38,7 +38,7 @@ export class MyCoursesComponent implements OnInit {
   
   // Subscribe to course updates FIRST
   this.instructorService.instructorCourses$.subscribe(courses => {
-    console.log('MyCoursesComponent: Courses updated via subscription:', courses);
+    // console.log('MyCoursesComponent: Courses updated via subscription:', courses);
     this.courses = courses;
     if (courses.length > 0 || !this.loading) {
       this.loading = false;
@@ -61,7 +61,7 @@ export class MyCoursesComponent implements OnInit {
     this.loading = true;
     this.instructorService.getInstructorCourses(this.currentUser.id).subscribe({
       next: (courses) => {
-        console.log('MyCoursesComponent: Loaded instructor courses:', courses);
+        // console.log('MyCoursesComponent: Loaded instructor courses:', courses);
         this.courses = courses;
         this.loading = false;
       },

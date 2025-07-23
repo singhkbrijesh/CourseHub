@@ -232,7 +232,6 @@ export class CreateCourseComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.thumbnailPreview = e.target?.result as string;
-        console.log(this.thumbnailPreview);
       };
       reader.readAsDataURL(file);
     }
@@ -301,12 +300,12 @@ export class CreateCourseComponent implements OnInit {
       updatedAt: new Date()
     };
 
-    console.log('Creating course with data:', courseData);
+    // console.log('Creating course with data:', courseData);
 
     // Submit to service
     this.instructorService.createCourse(courseData).subscribe({
       next: (response) => {
-        console.log('Course created successfully:', response);
+        // console.log('Course created successfully:', response);
         this.isUploading = false;
         this.snackBar.open('Course created successfully!', 'Close', { duration: 3000 });
         this.router.navigate(['/instructor/my-courses']);

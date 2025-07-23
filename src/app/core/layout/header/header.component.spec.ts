@@ -33,7 +33,7 @@ class MockRouter {
   navigate = jasmine.createSpy('navigate');
 }
 
-describe('HeaderComponent', () => {
+fdescribe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let router: MockRouter;

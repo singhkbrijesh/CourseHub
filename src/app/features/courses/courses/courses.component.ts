@@ -443,12 +443,6 @@ private matchesCommonSearchTerms(course: Course, searchTerm: string): boolean {
 
   enrollInCourse(courseId: string) {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    
-    if (user.role === 'student' && user.id) {
-      if (this.isEnrolled(courseId)) {
-        alert('You are already enrolled in this course!');
-        return;
-      }
 
       this.courseService.enrollInCourse(courseId, user.id).subscribe({
         next: (enrollment) => {
@@ -472,10 +466,5 @@ private matchesCommonSearchTerms(course: Course, searchTerm: string): boolean {
           }
         }
       });
-    } else if (!user.id) {
-      alert('Please login to enroll in courses.');
-    } else {
-      alert('Only students can enroll in courses. Please login as a student.');
-    }
   }
 }
