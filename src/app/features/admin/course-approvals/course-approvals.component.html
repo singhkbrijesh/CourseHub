@@ -1,1 +1,28 @@
-<p>course-approvals works!</p>
+<div class="approvals-container">
+    <h2>Pending Course Approvals</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Instructor</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let course of pendingCourses">
+                <td>{{ course.title }}</td>
+                <td>{{ course.instructor || course.instructorInfo?.name }}</td>
+                <td>{{ course.createdAt | date:'short' }}</td>
+                <td>
+                    <span [ngClass]="course.status">{{ course.status | titlecase }}</span>
+                </td>
+                <td>
+                    <button mat-raised-button color="primary" (click)="approveCourse(course)">Approve</button>
+                    <button mat-raised-button color="warn" (click)="rejectCourse(course)">Reject</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

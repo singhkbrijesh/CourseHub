@@ -395,18 +395,23 @@ onSubmit() {
 
     // Submit to service
     this.instructorService.updateCourse(this.courseId, updatedCourseData).subscribe({
-      next: (response) => {
-        // console.log('Course updated successfully:', response);
-        this.isUploading = false;
-        this.snackBar.open('Course updated successfully!', 'Close', { duration: 3000 });
-        this.router.navigate(['/instructor/my-courses']);
-      },
-      error: (error) => {
-        console.error('Error updating course:', error);
-        this.isUploading = false;
-        this.snackBar.open('Error updating course. Please try again.', 'Close', { duration: 3000 });
-      }
-    });
+  next: (response) => {
+    this.isUploading = false;
+    this.snackBar.open('Course updated successfully!', 'Close', { duration: 3000 });
+    // Redirect based on current route
+    const url = this.router.url;
+    if (url.startsWith('/admin')) {
+      this.router.navigate(['/admin/manage-courses']);
+    } else {
+      this.router.navigate(['/instructor/my-courses']);
+    }
+  },
+  error: (error) => {
+    console.error('Error updating course:', error);
+    this.isUploading = false;
+    this.snackBar.open('Error updating course. Please try again.', 'Close', { duration: 3000 });
+  }
+});
   } else {
     this.markFormGroupTouched(this.basicInfoForm);
     this.markFormGroupTouched(this.detailsForm);

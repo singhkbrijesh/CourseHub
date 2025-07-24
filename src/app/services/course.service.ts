@@ -61,13 +61,13 @@ export class CourseService {
   getCourseById(id: string): Observable<Course> {
     this.loadingService.show();
     // First try to get from current state
-    const currentCourses = this.coursesSubject.value;
-    const existingCourse = currentCourses.find(c => c.id === id);
+    // const currentCourses = this.coursesSubject.value;
+    // const existingCourse = currentCourses.find(c => c.id === id);
     
-    if (existingCourse) {
-      this.loadingService.hide();
-      return of(existingCourse);
-    }
+    // if (existingCourse) {
+    //   this.loadingService.hide();
+    //   return of(existingCourse);
+    // }
 
     // If not found, fetch from API
     const url = `${this.apiUrl}/${id}`;
@@ -317,6 +317,10 @@ export class CourseService {
       return of(result as T);
     };
   }
+
+  deleteCourse(courseId: string) {
+  return this.http.delete(`${this.apiUrl}/${courseId}`, this.httpOptions);
+}
 
   // Get student login activities
 getStudentLoginActivities(studentId: string): Observable<LoginActivity[]> {
