@@ -69,9 +69,16 @@ private buildUserBreadcrumbs(segments: string[]) {
   if (segments.length > 1) {
     const secondSegment = segments[1];
 
-    // Handle user routes
+    // Skip adding dashboard breadcrumb if we're currently on dashboard page
+    if (secondSegment === 'dashboard') {
+      // Don't add anything more - we're on the dashboard page itself
+      // Make the dashboard breadcrumb non-clickable since it's the current page
+      this.breadcrumbs[0].isClickable = false;
+      return;
+    }
+
+    // Handle user routes (excluding dashboard)
     const routeMap: { [key: string]: string } = {
-      'dashboard': 'Dashboard',
       'my-courses': 'My Courses',
       'profile': 'Profile',
       'settings': 'Settings',
@@ -79,50 +86,81 @@ private buildUserBreadcrumbs(segments: string[]) {
       'progress': 'Progress'
     };
 
-    // Skip dashboard if it's the current route (since we already added it as home)
-    if (secondSegment !== 'dashboard') {
-      const routeLabel = routeMap[secondSegment] || this.formatLabel(secondSegment);
-      const isLast = segments.length === 2;
+    const routeLabel = routeMap[secondSegment] || this.formatLabel(secondSegment);
+    const isLast = segments.length === 2;
 
-      this.breadcrumbs.push({
-        label: routeLabel,
-        path: `/users/${secondSegment}`,
-        isClickable: !isLast
-      });
+    this.breadcrumbs.push({
+      label: routeLabel,
+      path: `/users/${secondSegment}`,
+      isClickable: !isLast
+    });
 
-      // Handle additional segments if any (like course IDs, etc.)
-      if (segments.length > 2) {
-        for (let i = 2; i < segments.length; i++) {
-          const isLastSegment = i === segments.length - 1;
-          const segmentPath = '/' + segments.slice(0, i + 1).join('/');
-          
-          this.breadcrumbs.push({
-            label: this.formatLabel(segments[i]),
-            path: segmentPath,
-            isClickable: !isLastSegment
-          });
-        }
+    // Handle additional segments if any (like course IDs, etc.)
+    if (segments.length > 2) {
+      for (let i = 2; i < segments.length; i++) {
+        const isLastSegment = i === segments.length - 1;
+        const segmentPath = '/' + segments.slice(0, i + 1).join('/');
+        
+        this.breadcrumbs.push({
+          label: this.formatLabel(segments[i]),
+          path: segmentPath,
+          isClickable: !isLastSegment
+        });
       }
     }
+  } else {
+    // If we're on /users (without dashboard), make it non-clickable
+    this.breadcrumbs[0].isClickable = false;
   }
 }
 
 private buildCourseDetailBreadcrumbs(segments: string[]) {
-  // Check navigation state to determine source
   const navigationState = history.state;
+  const userData = localStorage.getItem('user');
+  const currentUser = userData ? JSON.parse(userData) : null;
   
-  // Always add Dashboard as home
+  // Determine the appropriate dashboard based on user role
+  let dashboardPath = '/courses';
+  let dashboardLabel = 'Courses';
+  let myCoursesPath = '';
+  let myCoursesLabel = '';
+  
+  if (currentUser) {
+    switch (currentUser.role) {
+      case 'instructor':
+        dashboardPath = '/instructor/dashboard';
+        dashboardLabel = 'Dashboard';
+        myCoursesPath = '/instructor/my-courses';
+        myCoursesLabel = 'My Courses';
+        break;
+      case 'student':
+        dashboardPath = '/users/dashboard';
+        dashboardLabel = 'Dashboard';
+        myCoursesPath = '/users/my-courses';
+        myCoursesLabel = 'My Courses';
+        break;
+      case 'admin':
+        dashboardPath = '/admin/dashboard';
+        dashboardLabel = 'Admin Dashboard';
+        break;
+      default:
+        dashboardPath = '/courses';
+        dashboardLabel = 'Courses';
+    }
+  }
+  
+  // Always add the appropriate dashboard as home
   this.breadcrumbs.push({
-    label: 'Dashboard',
-    path: '/users/dashboard',
+    label: dashboardLabel,
+    path: dashboardPath,
     isClickable: true
   });
 
-  // Only add "My Courses" if user came from My Courses page
-  if (navigationState?.fromMyCourses) {
+  // Only add "My Courses" if user specifically came from My Courses page
+  if (navigationState?.fromMyCourses && myCoursesPath) {
     this.breadcrumbs.push({
-      label: 'My Courses',
-      path: '/users/my-courses',
+      label: myCoursesLabel,
+      path: myCoursesPath,
       isClickable: true
     });
   }
@@ -146,76 +184,86 @@ private formatCourseLabel(courseId: string): string {
 }
 
   private buildInstructorBreadcrumbs(segments: string[]) {
-    // Always add Instructor as first breadcrumb (clickable)
-    this.breadcrumbs.push({
-      label: 'Instructor',
-      path: '/instructor/dashboard',
-      isClickable: true
-    });
+  // Always add Instructor Dashboard as first breadcrumb (clickable)
+  this.breadcrumbs.push({
+    label: 'Dashboard',
+    path: '/instructor/dashboard',
+    isClickable: true
+  });
 
-    if (segments.length > 1) {
-      const secondSegment = segments[1];
+  if (segments.length > 1) {
+    const secondSegment = segments[1];
 
-      // Handle edit-course route specially
-      if (secondSegment === 'edit-course') {
-        // Add "My Courses" breadcrumb
+    // Skip adding dashboard breadcrumb if we're currently on dashboard page
+    if (secondSegment === 'dashboard') {
+      // Don't add anything more - we're on the dashboard page itself
+      // Make the dashboard breadcrumb non-clickable since it's the current page
+      this.breadcrumbs[0].isClickable = false;
+      return;
+    }
+
+    // Handle edit-course route specially
+    if (secondSegment === 'edit-course') {
+      // Add "My Courses" breadcrumb
+      this.breadcrumbs.push({
+        label: 'My Courses',
+        path: '/instructor/my-courses',
+        isClickable: true
+      });
+
+      // Add "Edit Course" breadcrumb (not clickable as it's current page context)
+      this.breadcrumbs.push({
+        label: 'Edit Course',
+        path: `/instructor/edit-course/${segments[2] || ''}`,
+        isClickable: false
+      });
+
+      // Add Course ID if it exists
+      if (segments[2]) {
         this.breadcrumbs.push({
-          label: 'My Courses',
-          path: '/instructor/my-courses',
-          isClickable: true
+          label: `Course ${segments[2]}`,
+          path: `/instructor/edit-course/${segments[2]}`,
+          isClickable: false // This is the current page
         });
+      }
+    } else {
+      // Handle other instructor routes (excluding dashboard)
+      const routeMap: { [key: string]: string } = {
+        'my-courses': 'My Courses',
+        'create-course': 'Create Course',
+        'analytics': 'Analytics',
+        'manage-resources': 'Manage Resources',
+        'approval-status': 'Approval Status'
+      };
 
-        // Add "Edit Course" breadcrumb (not clickable as it's current page context)
-        this.breadcrumbs.push({
-          label: 'Edit Course',
-          path: `/instructor/edit-course/${segments[2] || ''}`,
-          isClickable: false
-        });
+      const routeLabel = routeMap[secondSegment] || this.formatLabel(secondSegment);
+      const isLast = segments.length === 2;
 
-        // Add Course ID if it exists
-        if (segments[2]) {
+      this.breadcrumbs.push({
+        label: routeLabel,
+        path: `/instructor/${secondSegment}`,
+        isClickable: !isLast
+      });
+
+      // Handle additional segments if any
+      if (segments.length > 2) {
+        for (let i = 2; i < segments.length; i++) {
+          const isLastSegment = i === segments.length - 1;
+          const segmentPath = '/' + segments.slice(0, i + 1).join('/');
+          
           this.breadcrumbs.push({
-            label: `Course ${segments[2]}`,
-            path: `/instructor/edit-course/${segments[2]}`,
-            isClickable: false // This is the current page
+            label: this.formatLabel(segments[i]),
+            path: segmentPath,
+            isClickable: !isLastSegment
           });
-        }
-      } else {
-        // Handle other instructor routes
-        const routeMap: { [key: string]: string } = {
-          'dashboard': 'Dashboard',
-          'my-courses': 'My Courses',
-          'create-course': 'Create Course',
-          'analytics': 'Analytics',
-          'manage-resources': 'Manage Resources',
-          'approval-status': 'Approval Status'
-        };
-
-        const routeLabel = routeMap[secondSegment] || this.formatLabel(secondSegment);
-        const isLast = segments.length === 2;
-
-        this.breadcrumbs.push({
-          label: routeLabel,
-          path: `/instructor/${secondSegment}`,
-          isClickable: !isLast
-        });
-
-        // Handle additional segments if any
-        if (segments.length > 2) {
-          for (let i = 2; i < segments.length; i++) {
-            const isLastSegment = i === segments.length - 1;
-            const segmentPath = '/' + segments.slice(0, i + 1).join('/');
-            
-            this.breadcrumbs.push({
-              label: this.formatLabel(segments[i]),
-              path: segmentPath,
-              isClickable: !isLastSegment
-            });
-          }
         }
       }
     }
+  } else {
+    // If we're on /instructor (without dashboard), make it non-clickable
+    this.breadcrumbs[0].isClickable = false;
   }
+}
 
   private buildDefaultBreadcrumbs(segments: string[]) {
     this.breadcrumbs = segments.map((segment, index) => {

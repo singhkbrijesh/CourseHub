@@ -937,7 +937,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 'admin1',
         name: 'John Doe',
-        email: 'John@coursehub.com',
+        email: 'john@coursehub.com',
         password: 'admin@24',
         role: 'admin'
       },

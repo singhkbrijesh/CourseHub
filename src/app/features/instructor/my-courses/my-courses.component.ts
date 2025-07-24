@@ -71,6 +71,11 @@ export class MyCoursesComponent implements OnInit {
       }
     });
   }
+  }
+  
+  getTotalDuration(course: Course): number {
+  if (!course.lessons) return 0;
+  return course.lessons.reduce((total, lesson) => total + (lesson.duration || 0), 0);
 }
 
   createNewCourse() {
@@ -82,8 +87,11 @@ export class MyCoursesComponent implements OnInit {
   }
 
   viewCourse(courseId: string) {
-    this.router.navigate(['/courses', courseId]);
-  }
+  // Navigate with state indicating source is instructor my-courses
+  this.router.navigate(['/courses', courseId], {
+    state: { fromMyCourses: true, fromInstructor: true }
+  });
+}
 
   getStatusColor(status: string): string {
     switch (status) {

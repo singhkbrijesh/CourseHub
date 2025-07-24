@@ -146,9 +146,11 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
 
   // Navigate to course management page
   navigateToCourse(courseId: string) {
-    // Navigate to course detail or edit page
-    this.router.navigate(['/courses', courseId]);
-  }
+  // Navigate with state indicating source is instructor dashboard
+  this.router.navigate(['/courses', courseId], {
+    state: { fromInstructorDashboard: true, fromInstructor: true }
+  });
+}
 
   // Get color for course status badge
   getStatusColor(status: string): string {
