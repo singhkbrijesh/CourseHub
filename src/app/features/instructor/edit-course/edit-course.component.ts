@@ -335,7 +335,7 @@ onSubmit() {
     const updatedCourseData: Course = {
       // Keep ALL original course data first
       ...this.originalCourse!,
-      
+
       // Then update only the specific fields
       id: this.courseId,
       title: this.basicInfoForm.value.title,
@@ -343,18 +343,18 @@ onSubmit() {
       category: this.basicInfoForm.value.category,
       level: this.basicInfoForm.value.level,
       duration: this.basicInfoForm.value.duration,
-      
+
       // Update arrays with proper filtering
       requirements: this.requirements.controls
         .map(control => control.value.requirement)
         .filter(req => req && req.trim()),
-        
+
       learningOutcomes: this.learningOutcomes.controls
         .map(control => control.value.outcome)
         .filter(outcome => outcome && outcome.trim()),
-        
+
       tags: this.parseTags(this.detailsForm.value.tags || ''),
-      
+
       // Update lessons with proper structure
       lessons: this.lessons.controls.map((control, index) => ({
         id: this.originalCourse?.lessons[index]?.id || `lesson_${Date.now()}_${index}`,
@@ -365,13 +365,13 @@ onSubmit() {
         order: index + 1,
         isPreview: control.value.isPreview || false
       })),
-      
+
       // Preserve thumbnail - use new if uploaded, otherwise keep original
       thumbnail: this.thumbnailPreview || this.originalCourse?.thumbnail || 'assets/images/defaultcourse.jpeg',
-      
+
       // Update timestamp
       updatedAt: new Date(),
-      
+
       // Ensure all required fields are present
       instructor: this.originalCourse?.instructor || this.currentUser.name || 'Unknown Instructor',
       instructorId: this.originalCourse?.instructorId || this.currentUser.id || 'unknown',
@@ -387,31 +387,30 @@ onSubmit() {
       },
       rating: this.originalCourse?.rating || 0,
       enrollmentCount: this.originalCourse?.enrollmentCount || 0,
-      status: this.originalCourse?.status || 'pending',
+      // Change status to pending if previously rejected, otherwise keep original or default to pending
+      status: this.originalCourse?.status === 'rejected' ? 'pending' : (this.originalCourse?.status || 'pending'),
       createdAt: this.originalCourse?.createdAt || new Date()
     };
 
-    // console.log('Sending complete updated course:', updatedCourseData);
-
     // Submit to service
     this.instructorService.updateCourse(this.courseId, updatedCourseData).subscribe({
-  next: (response) => {
-    this.isUploading = false;
-    this.snackBar.open('Course updated successfully!', 'Close', { duration: 3000 });
-    // Redirect based on current route
-    const url = this.router.url;
-    if (url.startsWith('/admin')) {
-      this.router.navigate(['/admin/manage-courses']);
-    } else {
-      this.router.navigate(['/instructor/my-courses']);
-    }
-  },
-  error: (error) => {
-    console.error('Error updating course:', error);
-    this.isUploading = false;
-    this.snackBar.open('Error updating course. Please try again.', 'Close', { duration: 3000 });
-  }
-});
+      next: (response) => {
+        this.isUploading = false;
+        this.snackBar.open('Course updated successfully!', 'Close', { duration: 3000 });
+        // Redirect based on current route
+        const url = this.router.url;
+        if (url.startsWith('/admin')) {
+          this.router.navigate(['/admin/manage-courses']);
+        } else {
+          this.router.navigate(['/instructor/my-courses']);
+        }
+      },
+      error: (error) => {
+        console.error('Error updating course:', error);
+        this.isUploading = false;
+        this.snackBar.open('Error updating course. Please try again.', 'Close', { duration: 3000 });
+      }
+    });
   } else {
     this.markFormGroupTouched(this.basicInfoForm);
     this.markFormGroupTouched(this.detailsForm);

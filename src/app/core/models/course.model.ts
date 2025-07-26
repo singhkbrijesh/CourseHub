@@ -29,6 +29,7 @@ export interface Course {
   tags?: string[];
   prerequisiteCourses?: string[];
   analytics?: CourseAnalytics;
+  rejectionMessage?: RejectionMessage; // For rejected courses
 }
 
 export interface Lesson {
@@ -88,7 +89,7 @@ export interface CourseAnalytics {
   };
 }
 
-export interface InstructorNotification {
+export interface RejectionMessage {
   rejectionReason?: string;
 }
 

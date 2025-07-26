@@ -26,7 +26,7 @@ export class ManageCoursesComponent implements OnInit {
 
   loadCourses() {
     this.courseService.getCourses().subscribe(courses => {
-      this.courses = courses;
+      this.courses = courses.filter(c => c.status === 'approved');
     });
   }
 

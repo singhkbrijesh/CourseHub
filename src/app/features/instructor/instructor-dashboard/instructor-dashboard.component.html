@@ -106,6 +106,10 @@
                   <span class="status-badge" [class]="getStatusColor(course.status)">
                     {{ course.status | titlecase }}
                   </span>
+                  <small *ngIf="course.status === 'rejected' && course.rejectionMessage" class="rejection-message">
+                    <mat-icon color="warn" style="vertical-align: middle;">error_outline</mat-icon>
+                    {{ course.rejectionMessage.rejectionReason }}
+                  </small>
                 </div>
                 <small class="course-date">Created: {{ course.createdAt | date:'shortDate' }}</small>
               </div>

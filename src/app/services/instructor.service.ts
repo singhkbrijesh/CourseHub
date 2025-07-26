@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, map, of, forkJoin, catchError, throwError, switchMap } from 'rxjs';
-import { Course, InstructorStats, InstructorNotification, Enrollment } from '../core/models/course.model';
+import { Course, InstructorStats, Enrollment } from '../core/models/course.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +22,8 @@ export class InstructorService {
   private instructorCoursesSubject = new BehaviorSubject<Course[]>([]);
   public instructorCourses$ = this.instructorCoursesSubject.asObservable();
 
-  private notificationsSubject = new BehaviorSubject<InstructorNotification[]>([]);
-  public notifications$ = this.notificationsSubject.asObservable();
+  // private notificationsSubject = new BehaviorSubject<InstructorNotification[]>([]);
+  // public notifications$ = this.notificationsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -33,9 +33,9 @@ export class InstructorService {
     return forkJoin({
       courses: this.http.get<Course[]>(`${this.apiUrl}/courses`),
       enrollments: this.http.get<Enrollment[]>(`${this.apiUrl}/enrollments`),
-      notifications: this.http.get<InstructorNotification[]>(`${this.apiUrl}/instructorNotifications`)
+      // notifications: this.http.get<InstructorNotification[]>(`${this.apiUrl}/instructorNotifications`)
     }).pipe(
-      map(({ courses, enrollments, notifications }) => {
+      map(({ courses, enrollments }) => {
         // Filter courses by instructor
         const instructorCourses = courses.filter(course => course.instructorId === instructorId);
         

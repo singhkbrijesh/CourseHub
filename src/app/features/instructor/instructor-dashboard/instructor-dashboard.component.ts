@@ -9,7 +9,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { Subject, takeUntil } from 'rxjs';
 
 import { InstructorService } from '../../../services/instructor.service';
-import { Course, InstructorStats, InstructorNotification } from '../../../core/models/course.model';
+import { Course, InstructorStats } from '../../../core/models/course.model';
 
 @Component({
   selector: 'app-instructor-dashboard',
@@ -31,7 +31,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
   currentUser: any = {};
   instructorStats: InstructorStats | null = null;
   recentCourses: Course[] = [];
-  notifications: InstructorNotification[] = [];
+  // notifications: InstructorNotification[] = [];
   loading = true;
   
   // Subject for managing subscriptions
@@ -95,7 +95,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
 
     // Load instructor's courses (only show first 3)
     this.instructorService.getInstructorCourses(this.currentUser.id)
-      .pipe(takeUntil(this.destroy$))
+      // .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (courses) => {
           // console.log('Instructor courses loaded:', courses);
@@ -103,6 +103,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
           this.recentCourses = courses
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
             .slice(0, 3);
+          console.log(this.recentCourses);
         },
         error: (error) => {
           console.error('Error loading instructor courses:', error);

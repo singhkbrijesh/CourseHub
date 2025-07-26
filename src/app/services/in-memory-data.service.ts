@@ -1078,12 +1078,6 @@ export class InMemoryDataService implements InMemoryDbService {
     }
   ];
 
-  const instructorNotifications = [
-    {
-      rejectionReason: 'Course content needs more depth and examples.',
-    }
-  ];
-
   const loginActivities = [
     {
       id: 'login_1',
@@ -1142,7 +1136,7 @@ export class InMemoryDataService implements InMemoryDbService {
     enrollments, 
     users, 
     instructorStats, 
-    instructorNotifications,
+    // instructorNotifications,
     loginActivities
   };
   }

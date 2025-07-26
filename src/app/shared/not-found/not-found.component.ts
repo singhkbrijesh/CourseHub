@@ -26,7 +26,7 @@ export class NotFoundComponent {
       if (user?.role) {
         switch (user.role) {
           case 'admin':
-            this.router.navigate(['/admin/admin-dashboard']);
+            this.router.navigate(['/admin/dashboard']);
             break;
           case 'instructor':
             this.router.navigate(['/instructor/dashboard']);

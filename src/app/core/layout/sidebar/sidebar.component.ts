@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     switch (role) {
       case 'admin':
         this.menuItems = [
-          { label: 'Admin Dashboard', route: '/admin/admin-dashboard' },
+          { label: 'Admin Dashboard', route: '/admin/dashboard' },
           { label: 'Manage Users', route: '/admin/manage-users' },
           { label: 'Course Approvals', route: '/admin/course-approvals' },
           { label: 'Manage Courses', route: '/admin/manage-courses' },

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map, switchMap, tap, finalize } from 'rxjs/operators';
-import { Course, Enrollment } from '../core/models/course.model';
+import { Course, Enrollment, User } from '../core/models/course.model';
 import { LoadingService } from './loading.service';
 import { LoginActivity } from '../core/models/course.model';
 
@@ -329,5 +329,21 @@ getStudentLoginActivities(studentId: string): Observable<LoginActivity[]> {
       map(activities => activities.filter(activity => activity.studentId === studentId)),
       catchError(this.handleError<LoginActivity[]>('getStudentLoginActivities', []))
     );
+  }
+  
+  getAllUsers(): Observable<User[]> {
+  return this.http.get<User[]>('api/users');
+}
+
+deleteUser(userId: string): Observable<any> {
+  return this.http.delete(`api/users/${userId}`);
+}
+
+deleteEnrollments(Id: string): Observable<any> {
+  return this.http.delete(`api/enrollments/${Id}`);
+}
+
+deleteCoursesByInstructor(instructorId: string): Observable<any> {
+  return this.http.delete(`api/courses?instructorId=${instructorId}`);
 }
 }

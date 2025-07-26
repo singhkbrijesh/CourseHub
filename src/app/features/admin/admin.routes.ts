@@ -18,8 +18,8 @@ export const ADMIN_ROUTES: Routes = [
       roles: ['admin']
     },
     children: [
-      { path: '', redirectTo: 'admin-dashboard', pathMatch: 'full' },
-      { path: 'admin-dashboard', component: AdminDashboardComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'manage-users', component: ManageUsersComponent },
       { path: 'course-approvals', component: CourseApprovalsComponent },
       { path: 'manage-courses', component: ManageCoursesComponent },

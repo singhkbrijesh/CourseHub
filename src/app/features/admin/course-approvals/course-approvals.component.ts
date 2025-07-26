@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../../services/course.service';
 import { Course } from '../../../core/models/course.model';
 import { CommonModule } from '@angular/common';
+import { ConfirmDialogData, ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-course-approvals',
@@ -12,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class CourseApprovalsComponent implements OnInit {
   pendingCourses: Course[] = [];
 
-  constructor(private courseService: CourseService) {}
+  constructor(private courseService: CourseService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadPendingCourses();
@@ -32,9 +34,23 @@ export class CourseApprovalsComponent implements OnInit {
   }
 
   rejectCourse(course: Course) {
-    const updated: Course = { ...course, status: 'rejected' as 'rejected' };
+  const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+    width: '400px',
+    data: {
+      title: 'Reject Course',
+      message: 'Please enter the reason for rejecting this course.',
+      requireReason: true,
+      confirmButtonText: 'Reject',
+      cancelButtonText: 'Cancel'
+    } as ConfirmDialogData
+  });
+
+  dialogRef.afterClosed().subscribe((reason: string) => {
+    if (!reason) return;
+    const updated: Course = { ...course, status: 'rejected', rejectionMessage: { rejectionReason: reason } };
     this.courseService.updateCourse(updated).subscribe(() => {
       this.loadPendingCourses();
     });
-  }
+  });
+}
 }
