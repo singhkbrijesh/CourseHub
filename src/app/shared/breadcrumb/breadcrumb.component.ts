@@ -31,18 +31,22 @@ export class BreadcrumbComponent {
   setBreadcrumbs() {
   const path = this.router.url.split('?')[0]; // Remove query params
   const segments = path.split('/').filter(x => x);
-  
+
   // Filter out auth-related segments
-  const filteredSegments = segments.filter(segment => 
-    segment.toLowerCase() !== 'auth' && 
-    segment.toLowerCase() !== 'login' && 
+  const filteredSegments = segments.filter(segment =>
+    segment.toLowerCase() !== 'auth' &&
+    segment.toLowerCase() !== 'login' &&
     segment.toLowerCase() !== 'register'
   );
 
   this.breadcrumbs = [];
 
+  // Special handling for admin routes
+  if (filteredSegments[0] === 'admin') {
+    this.buildAdminBreadcrumbs(filteredSegments);
+  }
   // Special handling for instructor routes
-  if (filteredSegments[0] === 'instructor') {
+  else if (filteredSegments[0] === 'instructor') {
     this.buildInstructorBreadcrumbs(filteredSegments);
   }
   // Special handling for user routes
@@ -141,7 +145,7 @@ private buildCourseDetailBreadcrumbs(segments: string[]) {
         break;
       case 'admin':
         dashboardPath = '/admin/dashboard';
-        dashboardLabel = 'Admin Dashboard';
+        dashboardLabel = 'Dashboard';
         break;
       default:
         dashboardPath = '/courses';
@@ -262,6 +266,100 @@ private formatCourseLabel(courseId: string): string {
   } else {
     // If we're on /instructor (without dashboard), make it non-clickable
     this.breadcrumbs[0].isClickable = false;
+  }
+  }
+  
+  private buildAdminBreadcrumbs(segments: string[]) {
+  // Always add Admin Dashboard as first breadcrumb (clickable)
+  this.breadcrumbs.push({
+    label: 'Dashboard',
+    path: '/admin/dashboard',
+    isClickable: true
+  });
+
+  // If on /admin or /admin/dashboard, show only one crumb and return
+  // This check MUST be before any other logic!
+  if (
+    segments.length === 1 || // /admin
+    (segments.length === 2 && segments[1] === 'dashboard') // /admin/dashboard
+  ) {
+    this.breadcrumbs[0].isClickable = false;
+    return;
+  }
+
+  // Now safe to process other routes
+  const secondSegment = segments[1];
+
+  // Special handling for edit-course route
+  if (secondSegment === 'edit-course' && segments.length > 2) {
+    this.breadcrumbs.push({
+      label: 'Manage Courses',
+      path: '/admin/manage-courses',
+      isClickable: true
+    });
+    this.breadcrumbs.push({
+      label: 'Edit Course',
+      path: `/admin/edit-course/${segments[2]}`,
+      isClickable: false
+    });
+    this.breadcrumbs.push({
+      label: `Course ${segments[2]}`,
+      path: `/admin/edit-course/${segments[2]}`,
+      isClickable: false
+    });
+    return;
+  }
+
+  // If route is /admin/manage-courses/edit-course/:id
+  if (secondSegment === 'manage-courses' && segments[2] === 'edit-course' && segments.length > 3) {
+    this.breadcrumbs.push({
+      label: 'Manage Courses',
+      path: '/admin/manage-courses',
+      isClickable: true
+    });
+    this.breadcrumbs.push({
+      label: 'Edit Course',
+      path: `/admin/manage-courses/edit-course/${segments[3]}`,
+      isClickable: false
+    });
+    this.breadcrumbs.push({
+      label: `Course ${segments[3]}`,
+      path: `/admin/manage-courses/edit-course/${segments[3]}`,
+      isClickable: false
+    });
+    return;
+  }
+
+  // Default: Use route map for other admin routes
+  const routeMap: { [key: string]: string } = {
+    'admin-dashboard': 'Dashboard',
+    'course-approvals': 'Course Approvals',
+    'manage-courses': 'Manage Courses',
+    'reports': 'Reports',
+    'edit-course': 'Edit Course'
+  };
+
+  const routeLabel = routeMap[secondSegment] || this.formatLabel(secondSegment);
+  const isLast = segments.length === 2;
+
+  this.breadcrumbs.push({
+    label: routeLabel,
+    path: `/admin/${secondSegment}`,
+    isClickable: !isLast
+  });
+
+  // Handle additional segments (like course IDs) for other admin routes
+  if (segments.length > 2) {
+    for (let i = 2; i < segments.length; i++) {
+      const isLastSegment = i === segments.length - 1;
+      const segmentPath = '/' + segments.slice(0, i + 1).join('/');
+
+      this.breadcrumbs.push({
+        label: this.formatLabel(segments[i]),
+        path: segmentPath,
+        isClickable: !isLastSegment
+      });
+    }
   }
 }
 

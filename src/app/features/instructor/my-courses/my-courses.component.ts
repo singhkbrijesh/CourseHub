@@ -81,9 +81,9 @@ export class MyCoursesComponent implements OnInit {
   createNewCourse() {
     this.router.navigate(['/instructor/create-course']);
   }
-
+  
   editCourse(courseId: string) {
-    this.router.navigate(['/instructor/edit-course', courseId]);
+    this.router.navigate(['/instructor/edit-course', courseId], { state: { from: 'instructor-my-courses' } });
   }
 
   viewCourse(courseId: string) {

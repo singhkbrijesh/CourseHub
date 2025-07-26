@@ -294,7 +294,7 @@ export class CreateCourseComponent implements OnInit {
       enrollmentCount: 0,
       thumbnail: this.selectedThumbnail ? 
         `assets/images/${this.selectedThumbnail.name}` : 
-        'assets/images/defaultcourse.jpeg',
+        'assets/images/default-course.jpeg',
       status: 'pending',
       createdAt: new Date(),
       updatedAt: new Date()

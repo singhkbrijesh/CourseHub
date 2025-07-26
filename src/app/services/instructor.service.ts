@@ -45,11 +45,6 @@ export class InstructorService {
           courseIds.includes(enrollment.courseId)
         );
         
-        // Filter notifications for instructor
-        const instructorNotifications = notifications.filter(notification => 
-          notification.instructorId === instructorId
-        );
-        
         // Calculate dynamic statistics
         const totalCourses = instructorCourses.length;
         const totalStudents = new Set(instructorEnrollments.map(e => e.studentId)).size;
@@ -65,7 +60,8 @@ export class InstructorService {
         
         // Count pending approvals
         const pendingApprovals = instructorCourses.filter(course => course.status === 'pending').length;
-        
+        const rejectedCourses = instructorCourses.filter(c => c.status === 'rejected').length;
+
         // Count active courses
         const activeCourses = instructorCourses.filter(course => course.status === 'approved').length;
         
@@ -74,6 +70,7 @@ export class InstructorService {
           totalStudents,
           averageRating,
           pendingApprovals,
+          rejectedCourses,
           activeCourses,
           totalEnrollments,
           completionRate
@@ -99,40 +96,40 @@ export class InstructorService {
   }
 
   // Get notifications for instructor - NOW DYNAMIC
-  getNotifications(instructorId: string): Observable<InstructorNotification[]> {
-    return this.http.get<InstructorNotification[]>(`${this.apiUrl}/instructorNotifications`)
-      .pipe(
-        map(allNotifications => {
-          // Filter notifications for this instructor
-          const instructorNotifications = allNotifications.filter(notification => 
-            notification.instructorId === instructorId
-          );
+  // getNotifications(instructorId: string): Observable<InstructorNotification[]> {
+  //   return this.http.get<InstructorNotification[]>(`${this.apiUrl}/instructorNotifications`)
+  //     .pipe(
+  //       map(allNotifications => {
+  //         // Filter notifications for this instructor
+  //         const instructorNotifications = allNotifications.filter(notification => 
+  //           notification.instructorId === instructorId
+  //         );
           
-          // Sort by timestamp (newest first)
-          instructorNotifications.sort((a, b) => 
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-          );
+  //         // Sort by timestamp (newest first)
+  //         instructorNotifications.sort((a, b) => 
+  //           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  //         );
           
-          this.notificationsSubject.next(instructorNotifications);
-          return instructorNotifications;
-        })
-      );
-  }
+  //         this.notificationsSubject.next(instructorNotifications);
+  //         return instructorNotifications;
+  //       })
+  //     );
+  // }
 
   // Mark notification as read
-  markNotificationAsRead(notificationId: string): Observable<void> {
-    // Find and update the notification
-    const currentNotifications = this.notificationsSubject.value;
-    const updatedNotifications = currentNotifications.map(notification => 
-      notification.id === notificationId ? { ...notification, isRead: true } : notification
-    );
-    this.notificationsSubject.next(updatedNotifications);
+  // markNotificationAsRead(notificationId: string): Observable<void> {
+  //   // Find and update the notification
+  //   const currentNotifications = this.notificationsSubject.value;
+  //   const updatedNotifications = currentNotifications.map(notification => 
+  //     notification.id === notificationId ? { ...notification, isRead: true } : notification
+  //   );
+  //   this.notificationsSubject.next(updatedNotifications);
     
-    // In a real app, you would also update the backend here
-    // return this.http.patch<void>(`${this.apiUrl}/instructorNotifications/${notificationId}`, { isRead: true });
+  //   // In a real app, you would also update the backend here
+  //   // return this.http.patch<void>(`${this.apiUrl}/instructorNotifications/${notificationId}`, { isRead: true });
     
-    return of(); // Return empty observable for now
-  }
+  //   return of(); // Return empty observable for now
+  // }
 
   // Create new course
   createCourse(courseData: Partial<Course>): Observable<Course> {

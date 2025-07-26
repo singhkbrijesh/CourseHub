@@ -68,6 +68,7 @@ export interface InstructorStats {
   totalStudents: number;
   averageRating: number;
   pendingApprovals: number;
+  rejectedCourses: number;
   activeCourses: number;
   totalEnrollments: number;
   completionRate: number;
@@ -88,14 +89,7 @@ export interface CourseAnalytics {
 }
 
 export interface InstructorNotification {
-  id: string;
-  type: 'enrollment' | 'completion' | 'approval' | 'review';
-  message: string;
-  courseId?: string;
-  studentId?: string;
-  timestamp: Date;
-  isRead: boolean;
-  instructorId: string;
+  rejectionReason?: string;
 }
 
 export interface LoginActivity {

@@ -83,7 +83,7 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (stats) => {
-          // console.log('Instructor stats loaded:', stats);
+          console.log('Instructor stats loaded:', stats);
           this.instructorStats = stats;
           this.loading = false;
         },
@@ -109,39 +109,6 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Load notifications (only show first 5)
-    this.instructorService.getNotifications(this.currentUser.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (notifications) => {
-          // console.log('Notifications loaded:', notifications);
-          this.notifications = notifications.slice(0, 5); // Show only latest 5 notifications
-        },
-        error: (error) => {
-          console.error('Error loading notifications:', error);
-        }
-      });
-  }
-
-  // Count how many notifications are unread
-  getUnreadNotificationCount(): number {
-    return this.notifications.filter(notification => !notification.isRead).length;
-  }
-
-  // Mark a notification as read when clicked
-  markNotificationAsRead(notification: InstructorNotification) {
-    if (!notification.isRead) {
-      this.instructorService.markNotificationAsRead(notification.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            notification.isRead = true;
-          },
-          error: (error) => {
-            console.error('Error marking notification as read:', error);
-          }
-        });
-    }
   }
 
   // Navigate to course management page

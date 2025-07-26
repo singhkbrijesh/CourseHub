@@ -938,84 +938,84 @@ export class InMemoryDataService implements InMemoryDbService {
         id: 'admin1',
         name: 'John Doe',
         email: 'john@coursehub.com',
-        password: 'admin@24',
+        password: 'pass@24',
         role: 'admin'
       },
       {
         id: 'instructor1',
         name: 'Jose Portilla',
         email: 'jose@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor2',
         name: 'Jane Smith',
         email: 'jane@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor3',
         name: 'Michael Brown',
         email: 'michael@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor4',
         name: 'Mike Johnson',
         email: 'mike@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor5',
         name: 'Dr. Sarah Chen',
         email: 'sarah.chen@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor6',
         name: 'Alex Rodriguez',
         email: 'alex@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor7',
         name: 'Emily Davis',
         email: 'emily@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'instructor8',
         name: 'Dr. Alan Kumar',
         email: 'alan@coursehub.com',
-        password: 'instructor@24',
+        password: 'pass@24',
         role: 'instructor'
       },
       {
         id: 'student1',
         name: 'Student User',
         email: 'student@coursehub.com',
-        password: 'student@24',
+        password: 'pass@24',
         role: 'student'
       },
       {
         id: 'student2',
         name: 'Farhan',
         email: 'student2@coursehub.com',
-        password: 'student@24',
+        password: 'pass@24',
         role: 'student'
       },
       {
         id: 'student3',
         name: 'Raju Rastogi',
         email: 'student3@coursehub.com',
-        password: 'student@24',
+        password: 'pass@24',
         role: 'student'
       }
     ];
@@ -1080,63 +1080,7 @@ export class InMemoryDataService implements InMemoryDbService {
 
   const instructorNotifications = [
     {
-      id: 'notif1',
-      instructorId: 'instructor1',
-      type: 'enrollment',
-      message: 'New student enrolled in Angular Complete Course',
-      courseId: '1',
-      studentId: 'student1',
-      timestamp: new Date(),
-      isRead: false
-    },
-    {
-      id: 'notif2',
-      instructorId: 'instructor1',
-      type: 'completion',
-      message: 'Student completed Web Development Bootcamp',
-      courseId: '9',
-      studentId: 'student2',
-      timestamp: new Date(Date.now() - 3600000),
-      isRead: true
-    },
-    {
-      id: 'notif3',
-      instructorId: 'instructor1',
-      type: 'review',
-      message: 'New 5-star review received for Angular Complete Course',
-      courseId: '1',
-      studentId: 'student3',
-      timestamp: new Date(Date.now() - 7200000),
-      isRead: false
-    },
-    {
-      id: 'notif4',
-      instructorId: 'instructor2',
-      type: 'enrollment',
-      message: 'New student enrolled in React Complete Course',
-      courseId: '2',
-      studentId: 'student1',
-      timestamp: new Date(Date.now() - 1800000),
-      isRead: false
-    },
-    {
-      id: 'notif5',
-      instructorId: 'instructor2',
-      type: 'approval',
-      message: 'Your course "Cloud Computing Essentials" has been approved',
-      courseId: '10',
-      timestamp: new Date(Date.now() - 86400000),
-      isRead: true
-    },
-    {
-      id: 'notif6',
-      instructorId: 'instructor3',
-      type: 'enrollment',
-      message: 'New student enrolled in Data Science and Machine Learning',
-      courseId: '11',
-      studentId: 'student2',
-      timestamp: new Date(Date.now() - 10800000),
-      isRead: false
+      rejectionReason: 'Course content needs more depth and examples.',
     }
   ];
 

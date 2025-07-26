@@ -135,7 +135,7 @@
       </mat-card>
 
       <!-- Quick Statistics Card -->
-      <mat-card class="quick-stats-card" *ngIf="instructorStats">
+      <!-- <mat-card class="quick-stats-card" *ngIf="instructorStats">
         <mat-card-header>
           <mat-card-title>Quick Overview</mat-card-title>
         </mat-card-header>
@@ -157,7 +157,7 @@
             <span class="value">{{ instructorStats.completionRate }}%</span>
           </div>
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
     </div>
 
     <!-- Right Column - Notifications and Actions -->
@@ -198,7 +198,7 @@
       </mat-card> -->
 
       <!-- Quick Actions Card -->
-      <mat-card class="quick-actions-card">
+      <!-- <mat-card class="quick-actions-card">
         <mat-card-header>
           <mat-card-title>Quick Actions</mat-card-title>
         </mat-card-header>
@@ -220,6 +220,25 @@
               <mat-icon>folder</mat-icon>
               <span>Manage Resources</span>
             </button>
+          </div>
+        </mat-card-content>
+      </mat-card> -->
+      <mat-card class="quick-stats-card" *ngIf="instructorStats">
+        <mat-card-header>
+          <mat-card-title>Quick Overview</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="quick-stat">
+            <span class="label">Approved Courses:</span>
+            <span class="value approved">{{ instructorStats.activeCourses }}</span>
+          </div>
+          <div class="quick-stat">
+            <span class="label">Pending Approvals:</span>
+            <span class="value pending">{{ instructorStats.pendingApprovals }}</span>
+          </div>
+          <div class="quick-stat">
+            <span class="label">Rejected Courses:</span>
+            <span class="value rejected">{{ instructorStats.rejectedCourses }}</span>
           </div>
         </mat-card-content>
       </mat-card>

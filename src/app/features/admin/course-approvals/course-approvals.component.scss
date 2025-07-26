@@ -1,0 +1,77 @@
+.approvals-container {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 24px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+    h2 {
+        margin-bottom: 24px;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #1976d2;
+        letter-spacing: 0.5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fafbfc;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+
+        th,
+        td {
+            padding: 14px 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #f1f5fb;
+            color: #1976d2;
+            font-weight: 600;
+            border-bottom: 2px solid #e3e8ee;
+        }
+
+        tr {
+            border-bottom: 1px solid #e3e8ee;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #f5faff;
+            }
+        }
+
+        td {
+            vertical-align: middle;
+        }
+    }
+
+    .pending {
+        color: #ff9800;
+        font-weight: 500;
+    }
+
+    .approved {
+        color: #43a047;
+        font-weight: 500;
+    }
+
+    .rejected {
+        color: #e53935;
+        font-weight: 500;
+    }
+
+    button[mat-raised-button] {
+        margin-right: 8px;
+        min-width: 90px;
+        font-weight: 500;
+        font-size: 0.97rem;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

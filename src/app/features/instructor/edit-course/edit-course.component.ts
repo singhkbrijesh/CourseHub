@@ -433,6 +433,14 @@ onSubmit() {
 
   // Navigation methods
   goBack() {
+  const from = history.state?.from;
+  if (from === 'admin-manage-courses') {
+    this.router.navigate(['/admin/manage-courses']);
+  } else if (from === 'instructor-my-courses') {
+    this.router.navigate(['/instructor/my-courses']);
+  } else {
+    // Fallback: go to instructor my-courses
     this.router.navigate(['/instructor/my-courses']);
   }
+}
 }

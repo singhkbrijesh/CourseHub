@@ -50,7 +50,7 @@ export class ManageCoursesComponent implements OnInit {
   }
 
   editCourse(courseId: string) {
-    this.router.navigate(['/admin/edit-course', courseId]);
+    this.router.navigate(['/admin/edit-course', courseId], { state: { from: 'admin-manage-courses' } });
   }
 
   deleteCourse(courseId: string) {
