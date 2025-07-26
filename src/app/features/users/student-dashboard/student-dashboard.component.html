@@ -60,7 +60,7 @@
     <div class="courses-grid">
       <div *ngFor="let course of enrolledCourses" class="course-card">
         <div class="course-thumbnail">
-          <img [src]="course.thumbnail" [alt]="course.title" onerror="this.src='assets/images/defaultcourse.jpeg'">
+          <img [src]="course.thumbnail" [alt]="course.title" (error)="onImageError($event)">
         </div>
 
         <div class="course-content">

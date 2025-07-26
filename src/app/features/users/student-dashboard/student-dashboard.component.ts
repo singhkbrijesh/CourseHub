@@ -116,5 +116,9 @@ export class StudentDashboardComponent implements OnInit {
   } else {
     return 'Continue';
   }
+  }
+  
+  onImageError(event: Event) {
+  (event.target as HTMLImageElement).src = 'assets/images/default-course.jpeg';
 }
 }
