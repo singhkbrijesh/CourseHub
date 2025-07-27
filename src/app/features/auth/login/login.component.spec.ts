@@ -57,7 +57,7 @@ fdescribe('LoginComponent', () => {
     component.loginForm.setValue({ email: 'admin@test.com', password: 'password' });
     authServiceMock.login.and.returnValue(of({ role: 'admin' }));
     component.onSubmit();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/admin/admin-dashboard']);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/admin/dashboard']);
   });
 
   it('should navigate to instructor dashboard on successful login as instructor', () => {

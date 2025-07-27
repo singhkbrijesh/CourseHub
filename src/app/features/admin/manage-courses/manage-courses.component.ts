@@ -1,21 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-manage-courses',
   templateUrl: './manage-courses.component.html',
   styleUrl: './manage-courses.component.scss',
-  imports: [MatIconModule, MatProgressBarModule, MatTableModule]
+  imports: [MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule]
 })
 export class ManageCoursesComponent implements OnInit {
   courses: Course[] = [];
   enrollments: Enrollment[] = [];
   displayedColumns: string[] = ['title', 'enrollments', 'progress', 'instructor', 'duration', 'actions'];
+  dataSource = new MatTableDataSource<Course>([]);
+  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private courseService: CourseService, private router: Router) {}
 
@@ -26,7 +32,10 @@ export class ManageCoursesComponent implements OnInit {
 
   loadCourses() {
     this.courseService.getCourses().subscribe(courses => {
-      this.courses = courses.filter(c => c.status === 'approved');
+      const approvedCourses = courses.filter(c => c.status === 'approved');
+      this.dataSource.data = approvedCourses;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 

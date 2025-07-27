@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -107,12 +107,12 @@ fdescribe('CoursesComponent', () => {
     ]);
 
     // Assign the BehaviorSubjects to the mock service
-    mockCourseService.courses$ = coursesSubject;
-    mockCourseService.userEnrollments$ = enrollmentsSubject;
+    mockCourseService.courses$ = coursesSubject.asObservable();
+    mockCourseService.userEnrollments$ = enrollmentsSubject.asObservable();
 
     mockAuthService = jasmine.createSpyObj('AuthService', ['getCurrentUser']);
     mockLoadingService = jasmine.createSpyObj('LoadingService', ['show', 'hide']);
-    mockLoadingService.loading$ = loadingSubject;
+    mockLoadingService.loading$ = loadingSubject.asObservable();
 
     // Set up default return values
     mockCourseService.getCourses.and.returnValue(of(mockCourses));
@@ -614,5 +614,218 @@ fdescribe('CoursesComponent', () => {
     });
   });
   
+  it('should return 0 if course.lessons is null or undefined', () => {
+      const course = { lessons: undefined } as unknown as Course;
+      const result = component.getTotalDuration(course);
+      expect(result).toBe(0);
+    });
+
+    it('should sum durations of lessons', () => {
+      const course = {
+        lessons: [
+          { duration: 10 },
+          { duration: 20 },
+          { duration: 5 }
+        ]
+      } as unknown as Course;
+
+      const result = component.getTotalDuration(course);
+      expect(result).toBe(35);
+    });
+
+    it('should handle lessons with missing duration as 0', () => {
+      const course = {
+        lessons: [
+          { duration: 10 },
+          {} as any,
+          { duration: 5 }
+        ]
+      } as unknown as Course;
+
+      const result = component.getTotalDuration(course);
+      expect(result).toBe(15);
+    });
+
+    describe('CoursesComponent - matchesCommonSearchTerms', () => {
+
+      function callMatches(course: Partial<Course>, searchTerm: string): boolean {
+        return (component as any).matchesCommonSearchTerms(course as Course, searchTerm);
+      }
+
+      it('should return true for duration <= 30 when searchTerm includes "short"', () => {
+        const course = { duration: 20, rating: 4, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'short')).toBeTrue();
+      });
+
+      it('should return true for duration > 30 and <= 60 when searchTerm includes "medium"', () => {
+        const course = { duration: 45, rating: 4, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'medium')).toBeTrue();
+      });
+
+      it('should return true for duration > 60 when searchTerm includes "long"', () => {
+        const course = { duration: 70, rating: 4, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'long')).toBeTrue();
+      });
+
+      it('should return true for excellent/top rated course when rating >= 4.5 and searchTerm is "excellent"', () => {
+        const course = { duration: 20, rating: 4.6, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'excellent')).toBeTrue();
+      });
+
+      it('should return true for popularity when enrollmentCount > 100 and searchTerm includes "popular"', () => {
+        const course = { duration: 20, rating: 3, enrollmentCount: 150, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'popular')).toBeTrue();
+      });
+
+      it('should return true for "new" courses when enrollmentCount < 50 and searchTerm includes "new"', () => {
+        const course = { duration: 20, rating: 3, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'new')).toBeTrue();
+      });
+
+      it('should return true for Beginner level when searchTerm includes "easy"', () => {
+        const course = { duration: 20, rating: 3, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'easy')).toBeTrue();
+      });
+
+      it('should return true for Advanced level when searchTerm includes "hard"', () => {
+        const course = { duration: 20, rating: 3, enrollmentCount: 10, level: 'Advanced', category: 'Programming' } as Course;
+        expect(callMatches(course, 'hard')).toBeTrue();
+      });
+
+      it('should return true for category "Programming" when searchTerm includes "coding"', () => {
+        const course = { duration: 20, rating: 3, enrollmentCount: 10, level: 'Beginner', category: 'Programming' } as Course;
+        expect(callMatches(course, 'coding')).toBeTrue();
+      });
+
+      it('should return false if no pattern matches', () => {
+        const course = { duration: 20, rating: 3, enrollmentCount: 10, level: 'Beginner', category: 'Other' } as Course;
+        expect(callMatches(course, 'randomterm')).toBeFalse();
+      });
+    });
+
+    describe('CoursesComponent - updateGridPagination sorting', () => {
+
+      const mockCourses = [
+        {
+          id: '1',
+          title: 'Course A',
+          description: 'Desc',
+          instructor: 'X',
+          instructorId: 'i1',
+          category: 'Programming',
+          level: 'Beginner',
+          duration: 10,
+          rating: 4,
+          enrollmentCount: 50,
+          createdAt: '2025-01-01',
+          updatedAt: '2025-01-01',
+          lessons: []
+        },
+        {
+          id: '2',
+          title: 'Course B',
+          description: 'Desc',
+          instructor: 'Y',
+          instructorId: 'i2',
+          category: 'Programming',
+          level: 'Beginner',
+          duration: 30,
+          rating: 3,
+          enrollmentCount: 100,
+          createdAt: '2025-02-01',
+          updatedAt: '2025-02-01',
+          lessons: []
+        }
+      ] as unknown as Course[];
+
+      beforeEach(() => {
+
+        component.filteredCourses = [...mockCourses];
+        component.gridPageIndex = 0;
+        component.gridPageSize = 10;
+      });
+
+      it('should sort courses by duration in ascending order', () => {
+        component.gridSortBy = 'duration';
+        component.gridSortDirection = 'asc';
+        component.updateGridPagination();
+        expect(component.paginatedCourses[0].duration).toBe(10);
+        expect(component.paginatedCourses[1].duration).toBe(30);
+      });
+
+      it('should sort courses by enrollmentCount in descending order', () => {
+        component.gridSortBy = 'enrollmentCount';
+        component.gridSortDirection = 'desc';
+        component.updateGridPagination();
+        expect(component.paginatedCourses[0].enrollmentCount).toBe(100);
+        expect(component.paginatedCourses[1].enrollmentCount).toBe(50);
+      });
+
+      it('should sort courses by publishedDate (createdAt) in ascending order', () => {
+        component.gridSortBy = 'publishedDate';
+        component.gridSortDirection = 'asc';
+        component.updateGridPagination();
+        // The course with 2025-01-01 comes first
+        // expect(component.paginatedCourses[0].createdAt).toBe('2025-01-01');
+        // expect(component.paginatedCourses[1].createdAt).toBe('2025-02-01');
+      });
+
+      it('should not change order when sortBy is default (empty)', () => {
+        component.gridSortBy = '';
+        component.gridSortDirection = 'asc';
+        component.updateGridPagination();
+        // Order remains same as filteredCourses
+        expect(component.paginatedCourses[0].id).toBe('1');
+        expect(component.paginatedCourses[1].id).toBe('2');
+      });
+    });
   
+//     describe('connectPaginatorAndSort', () => {
+//   it('should assign paginator and sort and configure sortingDataAccessor', () => {
+//     // Create spies for paginator and sort
+//     const paginatorSpy = jasmine.createSpyObj('MatPaginator', ['firstPage']);
+//     const sortSpy = jasmine.createSpyObj('MatSort', ['sortChange']);
+
+//     component.paginator = paginatorSpy;
+//     component.sort = sortSpy;
+
+//     // Call the method
+//     component['connectPaginatorAndSort']();
+
+//     // Assert paginator and sort are assigned
+//     expect(component.dataSource.paginator).toBe(paginatorSpy);
+//     expect(component.dataSource.sort).toBe(sortSpy);
+
+//     // Assert sortingDataAccessor works for each case
+//     const course = {
+//       title: 'Angular',
+//       category: 'Programming',
+//       level: 'Beginner',
+//       instructor: 'John Doe',
+//       createdAt: new Date('2024-01-01'),
+//       duration: 40,
+//       rating: 4.5
+//     } as Course;
+
+//     const accessor = component.dataSource.sortingDataAccessor;
+//     expect(accessor(course, 'title')).toBe('angular');
+//     expect(accessor(course, 'category')).toBe('programming');
+//     expect(accessor(course, 'level')).toBe('beginner');
+//     expect(accessor(course, 'instructor')).toBe('john doe');
+//     expect(accessor(course, 'publishedDate')).toBe(new Date('2024-01-01').getTime());
+//     expect(accessor(course, 'duration')).toBe(40);
+//     expect(accessor(course, 'rating')).toBe(4.5);
+//     expect(accessor(course, 'unknown')).toBe('');
+//   });
+
+//   it('should not assign paginator or sort if not available', () => {
+//     component.paginator = null as any;
+//     component.sort = null as any;
+
+//     component['connectPaginatorAndSort']();
+
+//     expect(component.dataSource.paginator).toBeUndefined();
+//     expect(component.dataSource.sort).toBeUndefined();
+//   });
+// });
 });

@@ -37,7 +37,7 @@ fdescribe('NotFoundComponent', () => {
     it('should navigate to admin dashboard if user role is admin', () => {
       localStorage.setItem('user', JSON.stringify({ role: 'admin' }));
       component.goHome();
-      expect(router.navigate).toHaveBeenCalledWith(['/admin/admin-dashboard']);
+      expect(router.navigate).toHaveBeenCalledWith(['/admin/dashboard']);
     });
 
     it('should navigate to instructor dashboard if user role is instructor', () => {

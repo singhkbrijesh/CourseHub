@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from '@angular/material/input';
 
 export interface ConfirmDialogData {
   title: string;
@@ -14,7 +15,7 @@ export interface ConfirmDialogData {
 
 @Component({
   selector: 'app-confirmation-modal',
-  imports: [MatDialogModule, MatFormFieldModule, CommonModule, FormsModule],
+  imports: [MatDialogModule, MatFormFieldModule, CommonModule, FormsModule, MatInputModule],
   templateUrl: './confirmation-modal.component.html',
   styleUrl: './confirmation-modal.component.scss'
 })

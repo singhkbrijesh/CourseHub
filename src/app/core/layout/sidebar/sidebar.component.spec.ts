@@ -122,7 +122,7 @@ fdescribe('SidebarComponent', () => {
     component.setMenuItems('admin');
     expect(component.menuItems.length).toBe(5);
     expect(component.menuItems[0].label).toBe('Admin Dashboard');
-    expect(component.menuItems[0].route).toBe('/admin/admin-dashboard');
+    expect(component.menuItems[0].route).toBe('/admin/dashboard');
   });
 
   it('should set instructor menu items for instructor role', () => {

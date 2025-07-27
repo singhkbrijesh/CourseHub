@@ -11,17 +11,17 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TitleCasePipe, DatePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
   styleUrl: './manage-users.component.scss',
-  imports: [MatPaginatorModule, MatSortModule, MatIconModule, MatTableModule, MatDialogModule, TitleCasePipe, DatePipe]
+  imports: [MatPaginatorModule, MatSortModule, MatIconModule, MatTableModule, MatDialogModule, TitleCasePipe]
 })
 export class ManageUsersComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'email', 'role', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['name', 'email', 'role', 'actions'];
   dataSource = new MatTableDataSource<User>([]);
   users: User[] = [];
 
