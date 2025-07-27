@@ -60,8 +60,7 @@ export interface Enrollment {
     name: string;
     email: string;
     role: 'admin' | 'instructor' | 'student';
-    createdAt: Date;
-    isActive: boolean;
+    active?: boolean;
 }
   
 export interface InstructorStats {

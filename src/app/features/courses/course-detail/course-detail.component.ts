@@ -286,7 +286,7 @@ export class CourseDetailComponent implements OnInit {
   const videoId = this.getYouTubeVideoId(lesson.videoUrl);
   if (!videoId) {
     if (isPlatformBrowser(this.platformId)) {
-      alert('Invalid YouTube URL. Please contact support.');
+      alert('Invalid YouTube URL.');
     }
     return;
   }

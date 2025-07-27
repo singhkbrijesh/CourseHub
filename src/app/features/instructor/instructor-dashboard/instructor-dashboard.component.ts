@@ -31,7 +31,6 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
   currentUser: any = {};
   instructorStats: InstructorStats | null = null;
   recentCourses: Course[] = [];
-  // notifications: InstructorNotification[] = [];
   loading = true;
   
   // Subject for managing subscriptions
@@ -128,31 +127,6 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
       case 'rejected': return 'error';
       default: return 'default';
     }
-  }
-
-  // Get icon for notification type
-  getNotificationIcon(type: string): string {
-    switch (type) {
-      case 'enrollment': return 'person_add';
-      case 'completion': return 'check_circle';
-      case 'approval': return 'verified';
-      case 'review': return 'star';
-      default: return 'notifications';
-    }
-  }
-
-  // Format timestamp to show time ago
-  formatTimeAgo(date: Date): string {
-    const now = new Date();
-    const notificationDate = new Date(date);
-    const diffInMs = now.getTime() - notificationDate.getTime();
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInHours / 24);
-
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    return notificationDate.toLocaleDateString();
   }
 
   // Refresh dashboard data

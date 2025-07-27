@@ -137,96 +137,12 @@
           <button mat-button routerLink="/instructor/my-courses">View All Courses</button>
         </mat-card-actions>
       </mat-card>
-
-      <!-- Quick Statistics Card -->
-      <!-- <mat-card class="quick-stats-card" *ngIf="instructorStats">
-        <mat-card-header>
-          <mat-card-title>Quick Overview</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="quick-stat">
-            <span class="label">Active Courses:</span>
-            <span class="value">{{ instructorStats.activeCourses }}</span>
-          </div>
-          <div class="quick-stat">
-            <span class="label">Pending Approvals:</span>
-            <span class="value pending">{{ instructorStats.pendingApprovals }}</span>
-          </div>
-          <div class="quick-stat">
-            <span class="label">Total Enrollments:</span>
-            <span class="value">{{ instructorStats.totalEnrollments }}</span>
-          </div>
-          <div class="quick-stat">
-            <span class="label">Completion Rate:</span>
-            <span class="value">{{ instructorStats.completionRate }}%</span>
-          </div>
-        </mat-card-content>
-      </mat-card> -->
     </div>
 
-    <!-- Right Column - Notifications and Actions -->
+    <!-- Right Column - Actions -->
     <div class="right-column">
-      <!-- Notifications Card -->
-      <!-- <mat-card class="notifications-card">
-        <mat-card-header>
-          <mat-card-title>
-            Recent Activity
-            <span class="notification-badge" *ngIf="getUnreadNotificationCount() > 0"
-              [matBadge]="getUnreadNotificationCount()" matBadgeColor="warn">
-            </span>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content> -->
-      <!-- Show notifications if they exist -->
-      <!-- <div class="notifications-list" *ngIf="notifications.length > 0; else noNotifications">
-            <div class="notification-item" *ngFor="let notification of notifications"
-              [class.unread]="!notification.isRead" (click)="markNotificationAsRead(notification)">
-              <div class="notification-icon">
-                <mat-icon>{{ getNotificationIcon(notification.type) }}</mat-icon>
-              </div>
-              <div class="notification-content">
-                <p>{{ notification.message }}</p>
-                <span class="notification-time">{{ formatTimeAgo(notification.timestamp) }}</span>
-              </div>
-            </div>
-          </div> -->
-
-      <!-- Show this when no notifications exist -->
-      <!-- <ng-template #noNotifications>
-        <div class="empty-state">
-          <mat-icon>notifications_none</mat-icon>
-          <p>No recent notifications</p>
-        </div>
-      </ng-template>
-      </mat-card-content>
-      </mat-card> -->
 
       <!-- Quick Actions Card -->
-      <!-- <mat-card class="quick-actions-card">
-        <mat-card-header>
-          <mat-card-title>Quick Actions</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="action-buttons">
-            <button mat-stroked-button routerLink="/instructor/create-course" class="action-btn">
-              <mat-icon>add_circle</mat-icon>
-              <span>Create Course</span>
-            </button>
-            <button mat-stroked-button routerLink="/instructor/my-courses" class="action-btn">
-              <mat-icon>library_books</mat-icon>
-              <span>My Courses</span>
-            </button>
-            <button mat-stroked-button routerLink="/instructor/analytics" class="action-btn">
-              <mat-icon>analytics</mat-icon>
-              <span>View Analytics</span>
-            </button>
-            <button mat-stroked-button routerLink="/instructor/manage-resources" class="action-btn">
-              <mat-icon>folder</mat-icon>
-              <span>Manage Resources</span>
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card> -->
       <mat-card class="quick-stats-card" *ngIf="instructorStats">
         <mat-card-header>
           <mat-card-title>Quick Overview</mat-card-title>

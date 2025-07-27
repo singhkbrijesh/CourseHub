@@ -266,71 +266,6 @@
     }
 }
 
-// Notifications Card styling
-.notifications-card {
-    .notifications-list {
-        .notification-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-
-            &:hover {
-                background: var(--hover-background);
-            }
-
-            // Highlight unread notifications
-            &.unread {
-                background: rgba(25, 118, 210, 0.05);
-                border-left: 3px solid var(--primary-color);
-            }
-
-            .notification-icon {
-                mat-icon {
-                    font-size: 20px;
-                    color: var(--text-secondary);
-                }
-            }
-
-            .notification-content {
-                flex: 1;
-
-                p {
-                    margin: 0 0 4px 0;
-                    font-size: 0.9rem;
-                    color: var(--text-color);
-                    line-height: 1.4;
-                }
-
-                .notification-time {
-                    font-size: 0.8rem;
-                    color: var(--text-secondary);
-                }
-            }
-        }
-    }
-
-    // Empty state for notifications
-    .empty-state {
-        text-align: center;
-        padding: 20px;
-
-        mat-icon {
-            font-size: 36px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
-        p {
-            margin: 0;
-            color: var(--text-secondary);
-        }
-    }
-}
-
 // Quick Actions Card styling
 .quick-actions-card {
     .action-buttons {
@@ -385,16 +320,6 @@ body.dark-theme {
         .course-item {
             &:hover {
                 background: #333;
-            }
-        }
-
-        .notification-item {
-            &:hover {
-                background: #333;
-            }
-
-            &.unread {
-                background: rgba(25, 118, 210, 0.1);
             }
         }
     }

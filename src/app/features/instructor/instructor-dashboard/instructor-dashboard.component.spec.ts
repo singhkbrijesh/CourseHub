@@ -90,19 +90,6 @@ fdescribe('InstructorDashboardComponent', () => {
       expect(component.getStatusColor('other')).toBe('default');
     });
 
-    it('getNotificationIcon should return correct icons', () => {
-      expect(component.getNotificationIcon('enrollment')).toBe('person_add');
-      expect(component.getNotificationIcon('completion')).toBe('check_circle');
-      expect(component.getNotificationIcon('approval')).toBe('verified');
-      expect(component.getNotificationIcon('review')).toBe('star');
-      expect(component.getNotificationIcon('other')).toBe('notifications');
-    });
-
-    it('formatTimeAgo should format recent dates', () => {
-      const now = new Date();
-      expect(component.formatTimeAgo(now)).toBe('Just now');
-    });
-
     it('getCoursesDisplay should return stats if available', () => {
       component.instructorStats = { activeCourses: 3, pendingApprovals: 1 } as any;
       expect(component.getCoursesDisplay()).toBe('3 active, 1 pending');
@@ -141,47 +128,46 @@ fdescribe('InstructorDashboardComponent', () => {
     expect(component.recentCourses).toEqual([]);
   });
   
-  describe('InstructorDashboardComponent - formatTimeAgo', () => {
-  let component: InstructorDashboardComponent;
+//   let component: InstructorDashboardComponent;
 
-  beforeEach(() => {
-    component = new InstructorDashboardComponent({} as any, {} as any);
-  });
+//   beforeEach(() => {
+//     component = new InstructorDashboardComponent({} as any, {} as any);
+//   });
 
-  it('should return "xh ago" when diffInHours < 24 and >= 1', () => {
-    // Arrange: create a date 5 hours ago
-    const fiveHoursAgo = new Date();
-    fiveHoursAgo.setHours(fiveHoursAgo.getHours() - 5);
+//   it('should return "xh ago" when diffInHours < 24 and >= 1', () => {
+//     // Arrange: create a date 5 hours ago
+//     const fiveHoursAgo = new Date();
+//     fiveHoursAgo.setHours(fiveHoursAgo.getHours() - 5);
 
-    // Act
-    const result = component.formatTimeAgo(fiveHoursAgo);
+//     // Act
+//     const result = component.formatTimeAgo(fiveHoursAgo);
 
-    // Assert
-    expect(result).toBe('5h ago');
-  });
+//     // Assert
+//     expect(result).toBe('5h ago');
+//   });
 
-  it('should return "xd ago" when diffInDays < 7 and diffInHours >= 24', () => {
-    // Arrange: create a date 3 days ago
-    const threeDaysAgo = new Date();
-    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+//   it('should return "xd ago" when diffInDays < 7 and diffInHours >= 24', () => {
+//     // Arrange: create a date 3 days ago
+//     const threeDaysAgo = new Date();
+//     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
 
-    // Act
-    const result = component.formatTimeAgo(threeDaysAgo);
+//     // Act
+//     const result = component.formatTimeAgo(threeDaysAgo);
 
-    // Assert
-    expect(result).toBe('3d ago');
-  });
+//     // Assert
+//     expect(result).toBe('3d ago');
+//   });
 
-  it('should return a formatted date string when diffInDays >= 7', () => {
-    // Arrange: create a date 10 days ago
-    const tenDaysAgo = new Date();
-    tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
+//   it('should return a formatted date string when diffInDays >= 7', () => {
+//     // Arrange: create a date 10 days ago
+//     const tenDaysAgo = new Date();
+//     tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
 
-    // Act
-    const result = component.formatTimeAgo(tenDaysAgo);
+//     // Act
+//     const result = component.formatTimeAgo(tenDaysAgo);
 
-    // Assert: since result is locale dependent, just check it's a date string
-    expect(result).toContain((tenDaysAgo.getMonth() + 1).toString()); // loose check
-  });
-});
+//     // Assert: since result is locale dependent, just check it's a date string
+//     expect(result).toContain((tenDaysAgo.getMonth() + 1).toString()); // loose check
+//   });
+// });
 });

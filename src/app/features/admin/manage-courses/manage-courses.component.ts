@@ -7,6 +7,8 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-manage-courses',
@@ -23,7 +25,7 @@ export class ManageCoursesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private courseService: CourseService, private router: Router) {}
+  constructor(private courseService: CourseService, private router: Router, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadCourses();
@@ -63,12 +65,24 @@ export class ManageCoursesComponent implements OnInit {
   }
 
   deleteCourse(courseId: string) {
-    if (confirm('Are you sure you want to delete this course?')) {
+  const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+    width: '350px',
+    data: {
+      title: 'Delete Course',
+      message: 'Are you sure you want to delete this course?',
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel'
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
       this.courseService.deleteCourse(courseId).subscribe(() => {
         this.loadCourses();
       });
     }
-  }
+  });
+}
 
   downloadCSV() {
   const headers = [
@@ -78,7 +92,7 @@ export class ManageCoursesComponent implements OnInit {
     'Instructor',
     'Duration (min)'
   ];
-  const rows = this.courses.map(course => [
+  const rows = this.dataSource.data.map(course => [
     `"${course.title}"`,
     course.enrollmentCount || 0,
     this.getOverallProgress(course) + '%',

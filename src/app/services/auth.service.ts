@@ -10,6 +10,7 @@ export interface User {
   email: string;
   password: string;
   role: 'admin' | 'instructor' | 'student';
+  active: boolean;
 }
 
 @Injectable({
@@ -26,16 +27,18 @@ export class AuthService {
 
   login(email: string, password: string): Observable<User> {
   this.loadingService.show();
-  
+
   return this.http.get<User[]>(this.usersUrl).pipe(
     map(users => {
       const user = users.find(u => u.email === email && u.password === password);
       if (user) {
+        if (user.active === false) { // <-- Block deactivated users
+          throw new Error('Your account is deactivated.');
+        }
         if (isPlatformBrowser(this.platformId)) {
           localStorage.setItem('user', JSON.stringify(user));
           window.dispatchEvent(new Event('userChanged'));
         }
-        // Return only the logged-in user's data
         return user;
       } else {
         throw new Error('Invalid credentials');
@@ -43,7 +46,7 @@ export class AuthService {
     }),
     catchError(error => {
       console.error('Login error:', error);
-      return throwError(() => new Error('Login failed'));
+      return throwError(() => new Error(error.message || 'Login failed'));
     }),
     finalize(() => this.loadingService.hide())
   );
@@ -63,7 +66,8 @@ export class AuthService {
         // If email doesn't exist, create the user
         const newUser = {
           ...userData,
-          id: `${userData.role}_${Date.now()}`
+          id: `${userData.role}_${Date.now()}`,
+          active: true
         };
 
         return this.http.post<User>(this.usersUrl, newUser).pipe(

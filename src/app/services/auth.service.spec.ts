@@ -21,7 +21,8 @@ fdescribe('AuthService', () => {
     name: 'John',
     email: 'john@example.com',
     password: '123',
-    role: 'student'
+    role: 'student',
+    active: true
   };
 
   beforeEach(() => {

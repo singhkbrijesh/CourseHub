@@ -11,17 +11,18 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
   styleUrl: './manage-users.component.scss',
-  imports: [MatPaginatorModule, MatSortModule, MatIconModule, MatTableModule, MatDialogModule, TitleCasePipe]
+  imports: [MatPaginatorModule, MatSortModule, MatIconModule, MatTableModule, MatDialogModule, TitleCasePipe, MatTooltipModule, CommonModule]
 })
 export class ManageUsersComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'email', 'role', 'actions'];
+  displayedColumns: string[] = ['name', 'email', 'role', 'active', 'actions'];
   dataSource = new MatTableDataSource<User>([]);
   users: User[] = [];
 
@@ -44,7 +45,9 @@ export class ManageUsersComponent implements OnInit {
 
   loadUsers() {
   this.courseService.getAllUsers().subscribe(users => {
-    const filtered = users.filter(u => u.role !== 'admin');
+    const filtered = users
+      .filter(u => u.role !== 'admin')
+      .map(u => ({ ...u, active: u.active !== false }));
     this.users = filtered;
     this.dataSource.data = filtered;
     // Re-attach paginator and sort after data update
@@ -129,5 +132,22 @@ export class ManageUsersComponent implements OnInit {
       });
     });
   }
+  }
+  
+  toggleUserActive(user: User) {
+  const updatedUser = { ...user, active: !user.active };
+  this.courseService.updateUserStatus(updatedUser).subscribe({
+    next: (savedUser) => {
+      if (savedUser && typeof savedUser.active !== 'undefined') {
+        user.active = savedUser.active;
+      } else {
+        user.active = updatedUser.active; // fallback if API returns null
+      }
+      this.dataSource.data = [...this.users];
+    },
+    error: () => {
+      alert('Failed to update user status.');
+    }
+  });
 }
 }

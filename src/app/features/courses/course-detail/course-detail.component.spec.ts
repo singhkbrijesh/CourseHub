@@ -237,7 +237,7 @@ describe('CourseDetailComponent - handleKeyboardEvent', () => {
       spyOn(component, 'getYouTubeVideoId').and.returnValue('');
       const lesson = { videoUrl: 'https://youtube.com/invalid' };
       component.playVideoEmbedded(lesson);
-      expect(window.alert).toHaveBeenCalledWith('Invalid YouTube URL. Please contact support.');
+      expect(window.alert).toHaveBeenCalledWith('Invalid YouTube URL.');
     });
 
     it('should set safeVideoUrl and isVideoPlaying on valid videoUrl', () => {

@@ -20,12 +20,26 @@
             <td mat-cell *matCellDef="let user">{{ user.role | titlecase }}</td>
         </ng-container>
 
+        <!-- Add this before actions column -->
+        <ng-container matColumnDef="active">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let user">
+                <span [ngClass]="user.active ? 'active-label' : 'inactive-label'">
+                    {{ user.active ? 'Active' : 'Inactive' }}
+                </span>
+            </td>
+        </ng-container>
+
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let user">
                 <button mat-icon-button color="warn" (click)="confirmDeleteUser(user)">
                     <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" [matTooltip]="user.active ? 'Deactivate User' : 'Activate User'"
+                    (click)="toggleUserActive(user)">
+                    <mat-icon>{{ user.active ? 'toggle_on' : 'toggle_off' }}</mat-icon>
                 </button>
             </td>
         </ng-container>

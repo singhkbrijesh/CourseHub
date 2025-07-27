@@ -345,5 +345,10 @@ deleteEnrollments(Id: string): Observable<any> {
 
 deleteCoursesByInstructor(instructorId: string): Observable<any> {
   return this.http.delete(`api/courses?instructorId=${instructorId}`);
+  }
+  
+  updateUserStatus(user: User) {
+  // Update the full user object
+  return this.http.put<User>(`api/users/${user.id}`, user);
 }
 }

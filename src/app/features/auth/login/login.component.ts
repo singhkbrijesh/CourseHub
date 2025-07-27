@@ -56,7 +56,7 @@ export class LoginComponent {
           this.router.navigate(['/courses']);
         }
       },
-      error: err => this.errorMessage = 'Invalid email or password'
+      error: err => this.errorMessage = err.message // <-- Show deactivation message
     });
   }
 
