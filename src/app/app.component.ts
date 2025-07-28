@@ -37,8 +37,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Subscribe to loading service
     this.loadingServiceSub = this.loadingService.loading$.subscribe(
-      loading => this.loading = loading
-    );
+  loading => {
+    Promise.resolve().then(() => this.loading = loading);
+  }
+);
 
     // Show initial loader
     this.loadingService.show();
