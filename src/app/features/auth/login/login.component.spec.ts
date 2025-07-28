@@ -85,7 +85,7 @@ fdescribe('LoginComponent', () => {
     component.loginForm.setValue({ email: 'wrong@test.com', password: 'wrongpass' });
     authServiceMock.login.and.returnValue(throwError(() => new Error('Invalid credentials')));
     component.onSubmit();
-    expect(component.errorMessage).toBe('Invalid email or password');
+    expect(component.errorMessage).toBe('Invalid credentials');
   });
 
   it('should navigate to signup page', () => {

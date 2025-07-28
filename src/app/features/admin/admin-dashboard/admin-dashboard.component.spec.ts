@@ -59,4 +59,28 @@ fdescribe('AdminDashboardComponent', () => {
     expect(component.totalUsers).toBe(0);
     expect(component.totalEnrollments).toBe(0);
   });
+
+  describe('DashboardComponent - initUserChart', () => {
+
+  it('should set userChartOptions correctly based on usersByRole', () => {
+    // Arrange: set usersByRole with some data
+    component.usersByRole = {
+      student: 5,
+      instructor: 3
+    };
+
+    // Act: call initUserChart
+    component.initUserChart();
+
+    // Assert: verify chart options
+    expect(component.userChartOptions).toBeDefined();
+    expect(component.userChartOptions.series).toEqual([5, 3]);
+    expect(component.userChartOptions.labels).toEqual(['student', 'instructor']);
+    expect(component.userChartOptions.chart.type).toBe('pie');
+    expect(component.userChartOptions.chart.height).toBe(300);
+    expect(component.userChartOptions.title.text).toBe('Users by Role');
+    expect(component.userChartOptions.legend.position).toBe('bottom');
+    expect(component.userChartOptions.responsive[0].breakpoint).toBe(480);
+  });
+});
 });

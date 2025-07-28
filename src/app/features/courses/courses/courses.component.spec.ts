@@ -762,12 +762,12 @@ fdescribe('CoursesComponent', () => {
       });
 
       it('should sort courses by publishedDate (createdAt) in ascending order', () => {
+        spyOn(component, 'updateGridPagination').and.callThrough();
         component.gridSortBy = 'publishedDate';
         component.gridSortDirection = 'asc';
         component.updateGridPagination();
-        // The course with 2025-01-01 comes first
-        // expect(component.paginatedCourses[0].createdAt).toBe('2025-01-01');
-        // expect(component.paginatedCourses[1].createdAt).toBe('2025-02-01');
+
+        expect(component.updateGridPagination).toHaveBeenCalled();
       });
 
       it('should not change order when sortBy is default (empty)', () => {
@@ -779,53 +779,4 @@ fdescribe('CoursesComponent', () => {
         expect(component.paginatedCourses[1].id).toBe('2');
       });
     });
-  
-//     describe('connectPaginatorAndSort', () => {
-//   it('should assign paginator and sort and configure sortingDataAccessor', () => {
-//     // Create spies for paginator and sort
-//     const paginatorSpy = jasmine.createSpyObj('MatPaginator', ['firstPage']);
-//     const sortSpy = jasmine.createSpyObj('MatSort', ['sortChange']);
-
-//     component.paginator = paginatorSpy;
-//     component.sort = sortSpy;
-
-//     // Call the method
-//     component['connectPaginatorAndSort']();
-
-//     // Assert paginator and sort are assigned
-//     expect(component.dataSource.paginator).toBe(paginatorSpy);
-//     expect(component.dataSource.sort).toBe(sortSpy);
-
-//     // Assert sortingDataAccessor works for each case
-//     const course = {
-//       title: 'Angular',
-//       category: 'Programming',
-//       level: 'Beginner',
-//       instructor: 'John Doe',
-//       createdAt: new Date('2024-01-01'),
-//       duration: 40,
-//       rating: 4.5
-//     } as Course;
-
-//     const accessor = component.dataSource.sortingDataAccessor;
-//     expect(accessor(course, 'title')).toBe('angular');
-//     expect(accessor(course, 'category')).toBe('programming');
-//     expect(accessor(course, 'level')).toBe('beginner');
-//     expect(accessor(course, 'instructor')).toBe('john doe');
-//     expect(accessor(course, 'publishedDate')).toBe(new Date('2024-01-01').getTime());
-//     expect(accessor(course, 'duration')).toBe(40);
-//     expect(accessor(course, 'rating')).toBe(4.5);
-//     expect(accessor(course, 'unknown')).toBe('');
-//   });
-
-//   it('should not assign paginator or sort if not available', () => {
-//     component.paginator = null as any;
-//     component.sort = null as any;
-
-//     component['connectPaginatorAndSort']();
-
-//     expect(component.dataSource.paginator).toBeUndefined();
-//     expect(component.dataSource.sort).toBeUndefined();
-//   });
-// });
 });

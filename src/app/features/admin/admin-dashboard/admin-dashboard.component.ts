@@ -95,7 +95,7 @@ public userChartOptions: any = {
       this.initEnrollmentChart();
     });
 
-    // Users analytics (mocked, replace with real user service if available)
+    // Users analytics
     this.http.get<any[]>('/api/users').subscribe(users => {
       users = users.filter(u => u.role !== 'admin');
       this.totalUsers = users.length;

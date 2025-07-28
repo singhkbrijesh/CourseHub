@@ -30,8 +30,11 @@ fdescribe('ManageUsersComponent', () => {
       'deleteCourse',
       'deleteUser',
       'getStudentEnrollments',
-      'getCourses'
+      'getCourses',
+      'updateUserStatus'
     ]);
+
+    courseServiceSpy.updateUserStatus.and.returnValue(of(null as any));
 
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
@@ -200,5 +203,58 @@ fdescribe('ManageUsersComponent', () => {
     expect(component.dataSource.paginator).toBe(component.paginator);
     expect(component.dataSource.sort).toBe(component.sort);
   });
+
+  describe('toggleUserActive', () => {
+  it('should toggle user active status and update table when API returns savedUser', () => {
+    const user: User = { id: '1', name: 'Alice', email: 'alice@test.com', role: 'student', active: true };
+    const savedUser = { ...user, active: false };
+    component.users = [user];
+    component.dataSource.data = [user];
+
+    courseServiceSpy.updateUserStatus.and.returnValue(of(savedUser));
+
+    component.toggleUserActive(user);
+
+    expect(courseServiceSpy.updateUserStatus).toHaveBeenCalledWith({ ...user, active: false });
+    expect(user.active).toBe(false);
+    expect(component.dataSource.data).toEqual([user]);
+  });
+
+  it('should toggle user active status and update table when API returns null', () => {
+    const user: User = { id: '2', name: 'Bob', email: 'bob@test.com', role: 'instructor', active: false };
+    component.users = [user];
+    component.dataSource.data = [user];
+
+    courseServiceSpy.updateUserStatus.and.returnValue(of(null as any));
+
+    component.toggleUserActive(user);
+
+    expect(courseServiceSpy.updateUserStatus).toHaveBeenCalledWith({ ...user, active: true });
+    expect(user.active).toBe(true);
+    expect(component.dataSource.data).toEqual([user]);
+  });
+
+  it('should alert on error', () => {
+    const user: User = { id: '3', name: 'Carol', email: 'carol@test.com', role: 'student', active: true };
+    component.users = [user];
+    component.dataSource.data = [user];
+
+    spyOn(window, 'alert');
+    // courseServiceSpy.updateUserStatus.and.returnValue(of().pipe(() => { throw new Error('Failed'); }));
+
+    // Use throwError for observable error
+    // courseServiceSpy.updateUserStatus.and.returnValue(of().pipe(() => { throw new Error('Failed'); }));
+
+    courseServiceSpy.updateUserStatus.and.returnValue({
+      subscribe: (handlers: any) => {
+        if (handlers.error) handlers.error();
+      }
+    } as any);
+
+    component.toggleUserActive(user);
+
+    expect(window.alert).toHaveBeenCalledWith('Failed to update user status.');
+  });
+});
 
 });
