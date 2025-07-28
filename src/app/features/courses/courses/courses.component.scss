@@ -287,9 +287,10 @@
         align-items: center;
         gap: 8px;
 
-        .stars {
-            color: #ffc107;
-            font-size: 1.1rem;
+        .label {
+            font-weight: 600;
+            color: var(--text-color);
+            min-width: 80px;
         }
 
         .rating-value {

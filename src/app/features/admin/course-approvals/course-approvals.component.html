@@ -1,33 +1,56 @@
 <div class="approvals-container">
     <h2>Pending Course Approvals</h2>
 
-    <ng-container *ngIf="pendingCourses.length > 0; else noRequests">
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Instructor</th>
-                    <th>Submitted</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let course of pendingCourses">
-                    <td>{{ course.title }}</td>
-                    <td>{{ course.instructor || course.instructorInfo?.name }}</td>
-                    <td>{{ course.createdAt | date:'short' }}</td>
-                    <td>
-                        <span [ngClass]="course.status">{{ course.status | titlecase }}</span>
-                    </td>
-                    <td>
-                        <button mat-raised-button color="primary" (click)="approveCourse(course)">Approve</button>
-                        <button mat-raised-button color="warn" (click)="rejectCourse(course)">Reject</button>
-                    </td>
-                </tr>
-            </tbody>
+    <ng-container *ngIf="dataSource.data.length > 0; else noRequests">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
+
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="title">Title</th>
+                <td mat-cell *matCellDef="let course">{{ course.title }}</td>
+            </ng-container>
+
+            <!-- Instructor Column -->
+            <ng-container matColumnDef="instructor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="instructor">Instructor</th>
+                <td mat-cell *matCellDef="let course">{{ course.instructor || course.instructorInfo?.name }}</td>
+            </ng-container>
+
+            <!-- Submitted Column -->
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="createdAt">Submitted</th>
+                <td mat-cell *matCellDef="let course">{{ course.createdAt | date:'short' }}</td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let course">
+                    <span [ngClass]="course.status">{{ course.status | titlecase }}</span>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let course">
+                    <button mat-raised-button color="primary" (click)="approveCourse(course)">Approve</button>
+                    <button mat-raised-button color="warn" (click)="rejectCourse(course)">Reject</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </ng-container>
+
+    <ng-template #noRequests>
+        <div class="no-requests-message">
+            <p>No pending course approval requests.</p>
+        </div>
+    </ng-template>
 
     <ng-template #noRequests>
         <div class="no-requests-message">

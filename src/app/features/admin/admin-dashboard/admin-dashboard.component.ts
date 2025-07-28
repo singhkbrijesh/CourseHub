@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../../services/course.service';
 import { Course } from '../../../core/models/course.model';
@@ -23,14 +23,14 @@ export type ChartOptions = {
   standalone: true,
   imports: [CommonModule, NgApexchartsModule],
   templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.scss'
+  styleUrl: './admin-dashboard.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class AdminDashboardComponent implements OnInit {
   totalCourses = 0;
   totalUsers = 0;
   totalEnrollments = 0;
   pendingApprovals = 0;
-  recentCourses: Course[] = [];
   courseStatusData: { [status: string]: number } = {};
   enrollmentsByCategory: { [category: string]: number } = {};
   usersByRole: { [role: string]: number } = {};
@@ -63,8 +63,8 @@ public userChartOptions: any = {
 
   // Chart options
   @ViewChild("statusChart") statusChart!: ChartComponent;
-@ViewChild("enrollmentChart") enrollmentChart!: ChartComponent;
-@ViewChild("userChart") userChart!: ChartComponent;
+  @ViewChild("enrollmentChart") enrollmentChart!: ChartComponent;
+  @ViewChild("userChart") userChart!: ChartComponent;
 
   constructor(private courseService: CourseService, private http: HttpClient) {}
 
@@ -76,7 +76,6 @@ public userChartOptions: any = {
     this.courseService.getCourses().subscribe(courses => {
       this.totalCourses = courses.length;
       this.pendingApprovals = courses.filter(c => c.status === 'pending').length;
-      this.recentCourses = courses.slice(0, 5);
       this.totalEnrollments = courses.reduce((sum, c) => sum + (c.enrollmentCount || 0), 0);
 
       // Course status analytics

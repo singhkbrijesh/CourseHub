@@ -48,9 +48,6 @@ fdescribe('AdminDashboardComponent', () => {
     expect(courseServiceMock.getCourses).toHaveBeenCalled();
     expect(component.totalCourses).toBe(6);
     expect(component.pendingApprovals).toBe(3);
-    expect(component.recentCourses.length).toBe(5);
-    expect(component.recentCourses[0].title).toBe('Angular Basics');
-    expect(component.recentCourses[4].title).toBe('Python Basics');
   });
 
   it('should set totalUsers and totalEnrollments with mock values', () => {

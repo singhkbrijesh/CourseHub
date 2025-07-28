@@ -117,9 +117,10 @@
                 color: var(--text-secondary);
                 font-size: 0.9rem;
 
-                .stars {
-                    color: #ffd700;
-                    font-size: 1.1rem;
+                .label {
+                    font-weight: 600;
+                    color: var(--text-color);
+                    min-width: 80px;
                 }
 
                 .rating {

@@ -13,6 +13,7 @@ import { CourseService } from '../../../services/course.service';
 import { AuthService } from '../../../services/auth.service';
 import { LoadingService } from '../../../services/loading.service';
 import { Course } from '../../../core/models/course.model';
+import { HasRoleDirective } from '../../../shared/has-role.directive';
 
 @Component({
   selector: 'app-courses',
@@ -27,7 +28,8 @@ import { Course } from '../../../core/models/course.model';
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    HasRoleDirective
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss',

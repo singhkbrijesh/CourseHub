@@ -46,7 +46,7 @@ fdescribe('SidebarComponent', () => {
       }
     });
 
-    expect(component.menuItems.length).toBe(5);
+    expect(component.menuItems.length).toBe(4);
     expect(component.menuItems[0].label).toBe('Admin Dashboard');
   });
 
@@ -120,7 +120,7 @@ fdescribe('SidebarComponent', () => {
 
   it('should set admin menu items for admin role', () => {
     component.setMenuItems('admin');
-    expect(component.menuItems.length).toBe(5);
+    expect(component.menuItems.length).toBe(4);
     expect(component.menuItems[0].label).toBe('Admin Dashboard');
     expect(component.menuItems[0].route).toBe('/admin/dashboard');
   });

@@ -6,7 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
 
@@ -15,7 +15,7 @@ import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/c
   templateUrl: './manage-courses.component.html',
   styleUrl: './manage-courses.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule]
+  imports: [MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatSortModule]
 })
 export class ManageCoursesComponent implements OnInit {
   courses: Course[] = [];
@@ -32,6 +32,26 @@ export class ManageCoursesComponent implements OnInit {
     this.loadCourses();
     this.loadEnrollments();
   }
+
+  ngAfterViewInit() {
+  this.dataSource.paginator = this.paginator;
+  this.dataSource.sort = this.sort;
+
+  this.dataSource.sortingDataAccessor = (item, property) => {
+    switch (property) {
+      case 'instructor':
+        return item.instructor || item.instructorInfo?.name || '';
+      case 'enrollments':
+        return item.enrollmentCount || 0;
+      case 'progress':
+        return this.getOverallProgress(item); // Use your method for sorting
+      case 'duration':
+        return this.getTotalDuration(item);
+      default:
+        return (item as any)[property];
+    }
+  };
+}
 
   loadCourses() {
     this.courseService.getCourses().subscribe(courses => {

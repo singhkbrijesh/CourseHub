@@ -8,11 +8,12 @@ import { Course, Lesson } from '../../../core/models/course.model';
 import { InstructorInfoCardComponent } from "../instructor-info-card/instructor-info-card.component";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatIcon } from "@angular/material/icon";
+import { HasRoleDirective } from '../../../shared/has-role.directive';
 
 @Component({
   selector: 'app-course-detail',
   standalone: true,
-  imports: [CommonModule, MatProgressBarModule, InstructorInfoCardComponent, MatIcon],
+  imports: [CommonModule, MatProgressBarModule, InstructorInfoCardComponent, MatIcon, HasRoleDirective],
   templateUrl: './course-detail.component.html',
   styleUrl: './course-detail.component.scss'
 })

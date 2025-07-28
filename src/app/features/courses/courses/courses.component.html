@@ -75,7 +75,7 @@
 
           <div class="course-stats">
             <div class="rating">
-              <span class="stars">★★★★☆</span>
+              <span class="label">Rating:</span>
               <span class="rating-value">{{ course.rating }}/5</span>
             </div>
             <div class="enrollment-count">{{ course.enrollmentCount }} enrolled</div>
@@ -86,7 +86,7 @@
               <button class="view-btn" [routerLink]="['/courses', course.id]">
                 View Details
               </button>
-              <button *ngIf="userRole === 'student'" [class]="isEnrolled(course.id) ? 'enrolled-btn' : 'enroll-btn'"
+              <button *hasRole="'student'" [class]="isEnrolled(course.id) ? 'enrolled-btn' : 'enroll-btn'"
                 (click)="enrollInCourse(course.id)">
                 {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll Now' }}
               </button>
@@ -171,7 +171,7 @@
             <button mat-button color="primary" [routerLink]="['/courses', course.id]">
               View Details
             </button>
-            <button *ngIf="userRole === 'student'" [class]="isEnrolled(course.id) ? 'enrolled-button' : 'enroll-button'"
+            <button *hasRole="'student'" [class]="isEnrolled(course.id) ? 'enrolled-button' : 'enroll-button'"
               [disabled]="isEnrolled(course.id)" mat-raised-button
               [color]="isEnrolled(course.id) ? 'primary' : 'accent'" (click)="enrollInCourse(course.id)">
               {{ isEnrolled(course.id) ? 'Enrolled' : 'Enroll' }}

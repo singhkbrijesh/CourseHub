@@ -35,7 +35,7 @@
 
         <div class="course-stats">
           <div class="stat">
-            <span class="stars">★★★★☆</span>
+            <span class="label">Rating:</span>
             <span class="rating">{{ course.rating }}/5</span>
           </div>
           <div class="stat">
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Enrollment Section -->
-    <div class="enrollment-section" *ngIf="currentUser?.role === 'student'">
+    <div class="enrollment-section" *hasRole="'student'">
       <div class="enrollment-card" *ngIf="!isEnrolled">
         <button class="enroll-btn" (click)="enrollInCourse()">
           Enroll Now

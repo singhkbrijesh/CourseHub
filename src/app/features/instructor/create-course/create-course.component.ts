@@ -272,74 +272,85 @@ removePdf(lessonIndex: number) {
   onSubmit() {
   if (this.basicInfoForm.valid && this.detailsForm.valid && this.lessonsForm.valid) {
     this.isUploading = true;
-
-    // Generate a unique ID for the new course
     const courseId = 'course_' + Date.now();
 
-    // Prepare course data with all required fields
-    const courseData: Course = {
-      id: courseId,
-      title: this.basicInfoForm.value.title,
-      description: this.basicInfoForm.value.description,
-      category: this.basicInfoForm.value.category,
-      level: this.basicInfoForm.value.level,
-      duration: this.basicInfoForm.value.duration,
-      instructor: this.currentUser.name || 'Unknown Instructor',
-      instructorId: this.currentUser.id || 'unknown',
-      instructorInfo: {
-        name: this.currentUser.name || 'Unknown Instructor',
-        title: 'Course Instructor',
-        rating: 0,
-        totalReviews: 0,
-        totalStudents: 0,
-        totalCourses: 0,
-        bio: 'Experienced instructor passionate about teaching.',
-      },
-      requirements: this.requirements.controls.map(control => control.value.requirement).filter(req => req.trim()),
-      learningOutcomes: this.learningOutcomes.controls.map(control => control.value.outcome).filter(outcome => outcome.trim()),
-      tags: this.parseTags(this.detailsForm.value.tags || ''),
-      lessons: this.lessons.controls.map((control, index) => {
-        const pdfFile = control.value.pdf;
-        let pdfUrl = '';
-        if (pdfFile instanceof File) {
-          // creating a URL (will not persist after reload)
-          pdfUrl = URL.createObjectURL(pdfFile);
-        }
-        return {
-          id: `lesson_${Date.now()}_${index}`,
-          title: control.value.title,
-          description: control.value.description,
-          videoUrl: control.value.videoUrl || '',
-          duration: control.value.duration,
-          order: index + 1,
-          isPreview: control.value.isPreview || false,
-          pdfUrl // <-- add this property
+    // 1. Fetch all courses from the API
+    this.instructorService.getInstructorCourses(this.currentUser.id).subscribe({
+      next: (courses) => {
+        // 2. Try to find instructorInfo from any existing course
+        let instructorInfo = {
+          name: this.currentUser.name || 'Unknown Instructor',
+          title: 'Course Instructor',
+          rating: 0,
+          totalReviews: 0,
+          totalStudents: 0,
+          totalCourses: 0,
+          bio: 'Experienced instructor passionate about teaching.',
         };
-      }),
-      rating: 0,
-      enrollmentCount: 0,
-      thumbnail: this.selectedThumbnail ? 
-        `assets/images/${this.selectedThumbnail.name}` : 
-        'assets/images/default-course.jpeg',
-      status: 'pending',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
 
-    // console.log('Creating course with data:', courseData);
+        const existingCourse = courses.find(c => c.instructorId === this.currentUser.id && c.instructorInfo);
+        if (existingCourse && existingCourse.instructorInfo) {
+          instructorInfo = existingCourse.instructorInfo;
+        }
 
-    // Submit to service
-    this.instructorService.createCourse(courseData).subscribe({
-      next: (response) => {
-        // console.log('Course created successfully:', response);
-        this.isUploading = false;
-        this.snackBar.open('Course created successfully!', 'Close', { duration: 3000 });
-        this.router.navigate(['/instructor/my-courses']);
+        // 3. Prepare course data
+        const courseData: Course = {
+          id: courseId,
+          title: this.basicInfoForm.value.title,
+          description: this.basicInfoForm.value.description,
+          category: this.basicInfoForm.value.category,
+          level: this.basicInfoForm.value.level,
+          duration: this.basicInfoForm.value.duration,
+          instructor: this.currentUser.name || 'Unknown Instructor',
+          instructorId: this.currentUser.id || 'unknown',
+          instructorInfo, // <-- Use the fetched instructorInfo
+          requirements: this.requirements.controls.map(control => control.value.requirement).filter(req => req.trim()),
+          learningOutcomes: this.learningOutcomes.controls.map(control => control.value.outcome).filter(outcome => outcome.trim()),
+          tags: this.parseTags(this.detailsForm.value.tags || ''),
+          lessons: this.lessons.controls.map((control, index) => {
+            const pdfFile = control.value.pdf;
+            let pdfUrl = '';
+            if (pdfFile instanceof File) {
+              pdfUrl = URL.createObjectURL(pdfFile);
+            }
+            return {
+              id: `lesson_${Date.now()}_${index}`,
+              title: control.value.title,
+              description: control.value.description,
+              videoUrl: control.value.videoUrl || '',
+              duration: control.value.duration,
+              order: index + 1,
+              isPreview: control.value.isPreview || false,
+              pdfUrl
+            };
+          }),
+          rating: 0,
+          enrollmentCount: 0,
+          thumbnail: this.selectedThumbnail ? 
+            `assets/images/${this.selectedThumbnail.name}` : 
+            'assets/images/default-course.jpeg',
+          status: 'pending',
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+
+        // 4. Submit to service
+        this.instructorService.createCourse(courseData).subscribe({
+          next: (response) => {
+            this.isUploading = false;
+            this.snackBar.open('Course created successfully!', 'Close', { duration: 3000 });
+            this.router.navigate(['/instructor/my-courses']);
+          },
+          error: (error) => {
+            console.error('Error creating course:', error);
+            this.isUploading = false;
+            this.snackBar.open('Error creating course. Please try again.', 'Close', { duration: 3000 });
+          }
+        });
       },
       error: (error) => {
-        console.error('Error creating course:', error);
         this.isUploading = false;
-        this.snackBar.open('Error creating course. Please try again.', 'Close', { duration: 3000 });
+        this.snackBar.open('Error fetching instructor info. Please try again.', 'Close', { duration: 3000 });
       }
     });
   } else {
@@ -348,7 +359,7 @@ removePdf(lessonIndex: number) {
     this.markFormGroupTouched(this.lessonsForm);
     this.snackBar.open('Please fill all required fields', 'Close', { duration: 3000 });
   }
-  }
+}
   
   private markFormGroupTouched(formGroup: any) {
   Object.keys(formGroup.controls).forEach(key => {
