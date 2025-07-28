@@ -7,11 +7,12 @@ import { LoadingService } from '../../../services/loading.service';
 import { Course, Lesson } from '../../../core/models/course.model';
 import { InstructorInfoCardComponent } from "../instructor-info-card/instructor-info-card.component";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-course-detail',
   standalone: true,
-  imports: [CommonModule, MatProgressBarModule, InstructorInfoCardComponent],
+  imports: [CommonModule, MatProgressBarModule, InstructorInfoCardComponent, MatIcon],
   templateUrl: './course-detail.component.html',
   styleUrl: './course-detail.component.scss'
 })
@@ -24,6 +25,9 @@ export class CourseDetailComponent implements OnInit {
   completedLessons: string[] = [];
   currentUser: any = {};
 
+  showPdf = false;
+  safePdfUrl: SafeResourceUrl | null = null;
+  
   isVideoPlaying = false;
   currentVideoUrl = '';
   safeVideoUrl: SafeResourceUrl | null = null;
@@ -246,7 +250,7 @@ export class CourseDetailComponent implements OnInit {
 }
 
   getYouTubeThumbnail(videoId: string): string {
-    if (!videoId) return 'assets/images/defaultcourse.jpeg';
+    if (!videoId) return 'assets/images/default-course.jpeg';
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   }
 
@@ -257,16 +261,16 @@ export class CourseDetailComponent implements OnInit {
   }
 
   getVideoThumbnail(lesson: any): string {
-    if (!lesson) return 'assets/images/defaultcourse.jpeg';
+    if (!lesson) return 'assets/images/default-course.jpeg';
     
     if (lesson.youtubeVideoId) {
       return this.getYouTubeThumbnail(lesson.youtubeVideoId);
     } else if (lesson.videoUrl) {
       const videoId = this.getYouTubeVideoId(lesson.videoUrl);
-      return videoId ? this.getYouTubeThumbnail(videoId) : 'assets/images/defaultcourse.jpeg';
+      return videoId ? this.getYouTubeThumbnail(videoId) : 'assets/images/default-course.jpeg';
     }
     
-    return 'assets/images/defaultcourse.jpeg';
+    return 'assets/images/default-course.jpeg';
   }
 
   playVideo(lesson: any) {
@@ -295,7 +299,16 @@ export class CourseDetailComponent implements OnInit {
   this.safeVideoUrl = this.getYouTubeEmbedUrl(videoId);
   this.currentVideoUrl = lesson.videoUrl;
   this.isVideoPlaying = true;
-}
+  }
+  
+  togglePdf() {
+    this.showPdf = !this.showPdf;
+    if (this.showPdf && this.selectedLesson?.pdfUrl) {
+      this.safePdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedLesson.pdfUrl);
+    } else {
+      this.safePdfUrl = null;
+    }
+  }
 
   closeVideo() {
     this.isVideoPlaying = false;

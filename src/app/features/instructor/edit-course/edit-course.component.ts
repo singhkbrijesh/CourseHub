@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,7 +41,8 @@ import { Course } from '../../../core/models/course.model';
     MatCheckboxModule
   ],
   templateUrl: './edit-course.component.html',
-  styleUrl: './edit-course.component.scss'
+  styleUrl: './edit-course.component.scss',
+  encapsulation: ViewEncapsulation.None 
 })
 export class EditCourseComponent implements OnInit {
   // Form groups for each step
@@ -367,7 +368,7 @@ onSubmit() {
       })),
 
       // Preserve thumbnail - use new if uploaded, otherwise keep original
-      thumbnail: this.thumbnailPreview || this.originalCourse?.thumbnail || 'assets/images/defaultcourse.jpeg',
+      thumbnail: this.thumbnailPreview || this.originalCourse?.thumbnail || 'assets/images/default-course.jpeg',
 
       // Update timestamp
       updatedAt: new Date(),
@@ -388,7 +389,11 @@ onSubmit() {
       rating: this.originalCourse?.rating || 0,
       enrollmentCount: this.originalCourse?.enrollmentCount || 0,
       // Change status to pending if previously rejected, otherwise keep original or default to pending
-      status: this.originalCourse?.status === 'rejected' ? 'pending' : (this.originalCourse?.status || 'pending'),
+      status:
+      this.originalCourse?.status === 'approved' ||
+      this.originalCourse?.status === 'rejected'
+        ? 'pending'
+        : (this.originalCourse?.status || 'pending'),
       createdAt: this.originalCourse?.createdAt || new Date()
     };
 

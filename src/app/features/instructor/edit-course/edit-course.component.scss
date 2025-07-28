@@ -213,3 +213,183 @@
         gap: 8px;
     }
 }
+
+body.dark-theme {
+    .edit-course-container {
+        background: transparent;
+        color: #fff;
+    }
+
+    .course-header .header-content h1,
+    .step-content h2,
+    .step-content h3 {
+        color: #fff;
+    }
+
+    mat-form-field {
+        background: #23272f;
+        color: #fff;
+
+        .mat-form-field-label {
+            color: #ccc !important;
+        }
+
+        .mat-input-element,
+        textarea.mat-input-element,
+        input.mat-input-element {
+            color: #fff !important;
+            caret-color: #fff;
+        }
+
+        .mat-select-value,
+        .mat-select-value-text {
+            color: #fff !important;
+        }
+
+        .mat-form-field-outline {
+            color: #555;
+        }
+
+        .mat-form-field-underline {
+            background: #555;
+        }
+
+        .mat-form-field-ripple {
+            background: #bb86fc;
+        }
+
+        .mat-form-field-suffix .mat-icon {
+            color: #81c784;
+        }
+
+        mat-error {
+            color: #e57373;
+        }
+    }
+
+    mat-select {
+        background: #23272f;
+        color: #fff;
+
+        .mat-select-arrow {
+            color: #fff;
+        }
+    }
+
+    .mat-select-panel {
+        background: #23272f;
+        color: #fff;
+
+        .mat-option {
+            color: #fff !important;
+
+            &:hover,
+            &.mat-active {
+                background: #333;
+            }
+        }
+    }
+
+    input,
+    textarea,
+    select {
+        color: #fff !important;
+        background: #23272f !important;
+    }
+
+    .mat-form-field-appearance-outline .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-floating-label {
+        color: #fff !important;
+    }
+
+    .mat-mdc-button .mdc-button__label,
+    .mat-mdc-button .mat-icon,
+    .mat-mdc-unelevated-button .mdc-button__label,
+    .mat-mdc-unelevated-button .mat-icon,
+    .mat-mdc-raised-button .mdc-button__label,
+    .mat-mdc-raised-button .mat-icon,
+    .mat-mdc-outlined-button .mdc-button__label,
+    .mat-mdc-outlined-button .mat-icon {
+        color: var(--text-color);
+    }
+
+    .mat-horizontal-stepper-wrapper {
+        background: var(--border-color);
+    }
+
+    .thumbnail-upload {
+        .upload-area {
+            border-color: #555;
+            background: #23272f;
+            color: #ccc;
+        }
+
+        .thumbnail-preview img {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .thumbnail-actions button {
+            background: #23272f;
+            color: #90caf9;
+            border: 1px solid #1976d2;
+
+            &:hover {
+                background: #1976d2;
+                color: #fff;
+            }
+        }
+    }
+
+    .lesson-card {
+        background: #23272f;
+        border-color: #444;
+
+        .lesson-header {
+            background: #333;
+            color: #fff;
+        }
+
+        .lesson-content {
+            background: #23272f;
+            color: #fff;
+        }
+    }
+
+    .add-lesson-btn {
+        border-color: #444;
+        background: #23272f;
+        color: #90caf9;
+
+        &:hover {
+            border-color: #bb86fc;
+            background: #23272f;
+        }
+    }
+
+    .step-actions {
+        border-top: 1px solid #444;
+
+        button {
+            background: #23272f;
+            color: #90caf9;
+
+            &:hover {
+                background: #333;
+                color: #fff;
+            }
+        }
+    }
+
+    .loading-overlay,
+    .loading-container {
+        background: rgba(0, 0, 0, 0.8);
+
+        mat-card {
+            background: #23272f;
+            color: #fff;
+
+            p {
+                color: #ccc;
+            }
+        }
+    }
+}

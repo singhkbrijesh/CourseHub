@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { Course, Enrollment } from '../../../core/models/course.model';
@@ -14,6 +14,7 @@ import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/c
   selector: 'app-manage-courses',
   templateUrl: './manage-courses.component.html',
   styleUrl: './manage-courses.component.scss',
+  encapsulation: ViewEncapsulation.None,
   imports: [MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule]
 })
 export class ManageCoursesComponent implements OnInit {

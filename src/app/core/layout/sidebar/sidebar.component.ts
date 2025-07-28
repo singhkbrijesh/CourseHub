@@ -69,7 +69,6 @@ export class SidebarComponent implements OnInit, OnChanges {
           { label: 'Manage Users', route: '/admin/manage-users' },
           { label: 'Course Approvals', route: '/admin/course-approvals' },
           { label: 'Manage Courses', route: '/admin/manage-courses' },
-          { label: 'Reports', route: '/admin/reports' }
         ];
         break;
       case 'instructor':

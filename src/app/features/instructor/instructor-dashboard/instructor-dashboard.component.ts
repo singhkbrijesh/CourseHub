@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -24,7 +24,8 @@ import { Course, InstructorStats } from '../../../core/models/course.model';
     MatBadgeModule
   ],
   templateUrl: './instructor-dashboard.component.html',
-  styleUrl: './instructor-dashboard.component.scss'
+  styleUrl: './instructor-dashboard.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class InstructorDashboardComponent implements OnInit, OnDestroy {
   // Properties to store our data

@@ -457,3 +457,108 @@ button:focus {
         border: 1px solid #ccc;
     }
 }
+
+body.dark-theme {
+    .my-courses-container {
+        background: transparent;
+
+        .course-card {
+            background: var(--card-background, #23272f);
+            border: 1px solid var(--border-color, #333);
+
+            &:hover {
+                border-color: var(--primary-color, #1976d2);
+                box-shadow: 0 8px 32px 0 rgba(25, 118, 210, 0.16), 0 2px 8px 0 rgba(25, 118, 210, 0.08);
+            }
+
+            .course-thumbnail {
+                background: #181a20;
+
+                img {
+                    border-top-left-radius: 18px;
+                    border-top-right-radius: 18px;
+                }
+
+                .course-status {
+                    mat-chip {
+                        background: #333;
+                        color: #eee;
+
+                        &.approved {
+                            background: #294436;
+                            color: #81c784;
+                        }
+
+                        &.pending {
+                            background: #4e3a1e;
+                            color: #ffd54f;
+                        }
+
+                        &.rejected {
+                            background: #442929;
+                            color: #e57373;
+                        }
+                    }
+                }
+            }
+
+            mat-card-content {
+                h3 {
+                    color: var(--text-color, #fff);
+                }
+
+                .course-description {
+                    color: var(--text-secondary, #b0b0b0);
+                }
+
+                .course-stats {
+                    .stat {
+                        color: #b0b0b0;
+
+                        mat-icon {
+                            color: #90caf9;
+                        }
+                    }
+                }
+            }
+
+            mat-card-actions {
+                background: transparent;
+
+                button {
+                    color: #90caf9;
+
+                    &:hover {
+                        background: #23272f;
+                    }
+                }
+            }
+        }
+
+        .empty-state {
+            mat-icon {
+                color: #90caf9;
+                opacity: 0.8;
+            }
+
+            h3 {
+                color: var(--text-color, #fff);
+            }
+
+            p {
+                color: var(--text-secondary, #b0b0b0);
+            }
+
+            button {
+                background: #23272f;
+                color: #90caf9;
+                border: 1px solid #1976d2;
+
+                &:hover {
+                    background: #1976d2;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

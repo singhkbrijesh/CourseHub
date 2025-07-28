@@ -75,3 +75,76 @@
         }
     }
 }
+
+body.dark-theme {
+    .approvals-container {
+        background: #23272f;
+        color: #fff;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+
+        h2 {
+            color: #90caf9;
+        }
+
+        table {
+            background: #2d2d2d;
+            color: #fff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+
+            th,
+            td {
+                color: #eee;
+            }
+
+            th {
+                background: #23272f;
+                color: #90caf9;
+                border-bottom: 2px solid #444;
+            }
+
+            tr {
+                border-bottom: 1px solid #444;
+
+                &:hover {
+                    background: #23272f;
+                }
+            }
+
+            td {
+                background: #2d2d2d;
+            }
+        }
+
+        .pending {
+            color: #ffb300;
+        }
+
+        .approved {
+            color: #81c784;
+        }
+
+        .rejected {
+            color: #e57373;
+        }
+
+        button[mat-raised-button] {
+            background: #23272f;
+            color: #90caf9;
+
+            &:hover {
+                background: #1565c0;
+                color: #fff;
+            }
+
+            &.mat-warn {
+                background: #442929;
+                color: #e57373;
+
+                &:hover {
+                    background: #d32f2f;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

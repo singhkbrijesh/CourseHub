@@ -1,7 +1,6 @@
 .manage-users-container {
     max-width: 100%;
-    margin: 40px auto;
-    background: #fff;
+    background: var(--border-color);
     border-radius: 12px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     padding: 32px 24px;
@@ -98,5 +97,126 @@ table {
     .mat-header-cell,
     .mat-cell {
         padding: 0 4px;
+    }
+}
+
+.users-table {
+    overflow-x: auto;
+
+    .mat-mdc-table {
+        width: 100%;
+        min-width: 800px;
+        background: var(--card-background);
+
+        .mat-mdc-header-cell {
+            font-weight: 600;
+            color: var(--text-color);
+            padding: 16px 12px;
+        }
+
+        .mat-mdc-cell {
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 12px;
+        }
+
+        .mat-mdc-row:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+    }
+
+    .mat-mdc-paginator {
+        background: var(--card-background);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .mat-sort-header-arrow {
+        color: var(--primary-color);
+    }
+
+    .mat-sort-header-sorted {
+        color: var(--primary-color);
+    }
+
+    .table-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-start;
+        min-width: 140px;
+        white-space: nowrap;
+
+        button {
+            flex-shrink: 0;
+            min-width: 40px;
+        }
+    }
+
+    .active-label {
+        color: #388e3c;
+        font-weight: 600;
+        background: #e8f5e9;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+
+    .inactive-label {
+        color: #d32f2f;
+        font-weight: 600;
+        background: #ffebee;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+// Dark theme overrides
+body.dark-theme {
+    .users-table {
+        .mat-mdc-table {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .mat-mdc-header-cell {
+            color: #ccc;
+            background: #23272f;
+            border-bottom: 2px solid #444;
+        }
+
+        .mat-mdc-cell {
+            color: #eee;
+            border-bottom: 1px solid #444;
+        }
+
+        .active-label {
+            background: #294436;
+            color: #81c784;
+        }
+
+        .inactive-label {
+            background: #442929;
+            color: #e57373;
+        }
+
+        .mat-mdc-table tbody,
+        .mat-mdc-table tfoot,
+        .mat-mdc-table thead,
+        .mat-mdc-cell,
+        .mat-mdc-footer-cell,
+        .mat-mdc-header-row,
+        .mat-mdc-row,
+        .mat-mdc-footer-row,
+        .mat-mdc-table .mat-mdc-header-cell {
+            background: var(--card-background) !important;
+        }
+
+
+    }
+
+    .mat-mdc-paginator-container {
+        background: var(--border-color) !important;
     }
 }

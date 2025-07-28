@@ -1,8 +1,7 @@
 .manage-courses-container {
-    max-width: 1200px;
-    margin: 32px auto;
+    max-width: 100%;
     padding: 32px 24px;
-    background: #fff;
+    background: var(--border-color);
     border-radius: 14px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 
@@ -135,5 +134,94 @@
         table td {
             padding: 8px 6px;
         }
+    }
+}
+
+body.dark-theme {
+    .courses-table {
+        .mat-mdc-table {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .mat-mdc-header-cell {
+            color: #ccc;
+            background: #23272f;
+            border-bottom: 2px solid #444;
+        }
+
+        .mat-mdc-cell {
+            color: #eee;
+            border-bottom: 1px solid #444;
+        }
+
+        .mat-mdc-row:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .course-title-cell {
+            .course-title {
+                color: #fff;
+            }
+        }
+    }
+
+    .mat-mdc-paginator {
+        background: var(--border-color);
+        border-top: 1px solid #444;
+
+        .mat-paginator-range-label {
+            color: #ccc;
+        }
+    }
+
+    .mat-sort-header-arrow,
+    .mat-sort-header-sorted {
+        color: #90caf9;
+    }
+
+    .level-beginner {
+        background-color: #294436 !important;
+        color: #81c784 !important;
+    }
+
+    .level-intermediate {
+        background-color: #4e3a1e !important;
+        color: #ffd54f !important;
+    }
+
+    .level-advanced {
+        background-color: #442929 !important;
+        color: #e57373 !important;
+    }
+
+    .table-actions {
+        button {
+            background: var(--border-color) !important;
+            color: #90caf9 !important;
+
+            &:hover {
+                background: #1565c0 !important;
+                color: #fff !important;
+            }
+        }
+
+        .enrolled-button {
+            background-color: #294436 !important;
+            color: #81c784 !important;
+        }
+    }
+
+    // Ensure all table sections use dark background
+    .mat-mdc-table tbody,
+    .mat-mdc-table tfoot,
+    .mat-mdc-table thead,
+    .mat-mdc-cell,
+    .mat-mdc-footer-cell,
+    .mat-mdc-header-row,
+    .mat-mdc-row,
+    .mat-mdc-footer-row,
+    .mat-mdc-table .mat-mdc-header-cell {
+        background: var(--border-color) !important;
     }
 }

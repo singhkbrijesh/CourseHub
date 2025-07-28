@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
@@ -11,7 +11,8 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
   selector: 'app-student-dashboard',
   imports: [CommonModule, RouterModule, MatProgressBarModule],
   templateUrl: './student-dashboard.component.html',
-  styleUrl: './student-dashboard.component.scss'
+  styleUrl: './student-dashboard.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class StudentDashboardComponent implements OnInit {
   user: any = {};

@@ -97,7 +97,7 @@
             <div class="course-item" *ngFor="let course of recentCourses" (click)="navigateToCourse(course.id)">
               <div class="course-thumbnail">
                 <img [src]="course.thumbnail" [alt]="course.title"
-                  onerror="this.src='assets/images/defaultcourse.jpeg'">
+                  onerror="this.src='assets/images/default-course.jpeg'">
               </div>
               <div class="course-info">
                 <h4>{{ course.title }}</h4>

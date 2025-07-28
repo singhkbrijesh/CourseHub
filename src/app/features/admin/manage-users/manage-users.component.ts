@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,11 +14,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LoadingService } from '../../../services/loading.service';
 
 @Component({
   selector: 'app-manage-users',
   templateUrl: './manage-users.component.html',
   styleUrl: './manage-users.component.scss',
+  encapsulation: ViewEncapsulation.None,
   imports: [MatPaginatorModule, MatSortModule, MatIconModule, MatTableModule, MatDialogModule, TitleCasePipe, MatTooltipModule, CommonModule]
 })
 export class ManageUsersComponent implements OnInit {
@@ -31,7 +33,8 @@ export class ManageUsersComponent implements OnInit {
 
   constructor(
     private courseService: CourseService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
@@ -44,15 +47,21 @@ export class ManageUsersComponent implements OnInit {
   }
 
   loadUsers() {
-  this.courseService.getAllUsers().subscribe(users => {
-    const filtered = users
-      .filter(u => u.role !== 'admin')
-      .map(u => ({ ...u, active: u.active !== false }));
-    this.users = filtered;
-    this.dataSource.data = filtered;
-    // Re-attach paginator and sort after data update
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+  this.loadingService.show();
+  this.courseService.getAllUsers().subscribe({
+    next: users => {
+      const filtered = users
+        .filter(u => u.role !== 'admin')
+        .map(u => ({ ...u, active: u.active !== false }));
+      this.users = filtered;
+      this.dataSource.data = filtered;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.loadingService.hide();
+    },
+    error: () => {
+      this.loadingService.hide();
+    }
   });
 }
 

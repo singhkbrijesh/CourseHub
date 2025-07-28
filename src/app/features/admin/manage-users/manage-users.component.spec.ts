@@ -240,10 +240,6 @@ fdescribe('ManageUsersComponent', () => {
     component.dataSource.data = [user];
 
     spyOn(window, 'alert');
-    // courseServiceSpy.updateUserStatus.and.returnValue(of().pipe(() => { throw new Error('Failed'); }));
-
-    // Use throwError for observable error
-    // courseServiceSpy.updateUserStatus.and.returnValue(of().pipe(() => { throw new Error('Failed'); }));
 
     courseServiceSpy.updateUserStatus.and.returnValue({
       subscribe: (handlers: any) => {

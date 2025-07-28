@@ -20,7 +20,7 @@
         <mat-card *ngFor="let course of courses" class="course-card">
             <div class="course-thumbnail">
                 <img [src]="course.thumbnail" [alt]="course.title"
-                    onerror="this.src='assets/images/defaultcourse.jpeg'">
+                    onerror="this.src='assets/images/default-course.jpeg'">
                 <div class="course-status">
                     <mat-chip [color]="getStatusColor(course.status)" selected>
                         {{ course.status | titlecase }}

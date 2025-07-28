@@ -284,3 +284,106 @@ mat-hint {
         font-weight: 500;
     }
 }
+
+body.dark-theme {
+    .create-course-container {
+        background: transparent;
+        color: #fff;
+    }
+
+    .course-header .header-content h1,
+    .step-content h2,
+    .step-content h3 {
+        color: #fff;
+    }
+
+    mat-form-field {
+        background: #23272f;
+        color: #fff;
+
+        .mat-form-field-label {
+            color: #ccc !important;
+        }
+
+        .mat-input-element,
+        textarea.mat-input-element,
+        input.mat-input-element {
+            color: #fff !important;
+            caret-color: #fff;
+        }
+
+        .mat-select-value,
+        .mat-select-value-text {
+            color: #fff !important;
+        }
+
+        .mat-form-field-outline {
+            color: #555;
+        }
+
+        .mat-form-field-underline {
+            background: #555;
+        }
+
+        .mat-form-field-ripple {
+            background: #bb86fc;
+        }
+
+        .mat-form-field-suffix .mat-icon {
+            color: #81c784;
+        }
+
+        mat-error {
+            color: #e57373;
+        }
+    }
+
+    mat-select {
+        background: #23272f;
+        color: #fff;
+
+        .mat-select-arrow {
+            color: #fff;
+        }
+    }
+
+    .mat-select-panel {
+        background: #23272f;
+        color: #fff;
+
+        .mat-option {
+            color: #fff !important;
+
+            &:hover,
+            &.mat-active {
+                background: #333;
+            }
+        }
+    }
+
+    input,
+    textarea,
+    select {
+        color: #fff !important;
+        background: #23272f !important;
+    }
+
+    .mat-form-field-appearance-outline .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-floating-label {
+        color: #fff !important; // or your desired color
+    }
+
+    .mat-mdc-button .mdc-button__label,
+    .mat-mdc-button .mat-icon,
+    .mat-mdc-unelevated-button .mdc-button__label,
+    .mat-mdc-unelevated-button .mat-icon,
+    .mat-mdc-raised-button .mdc-button__label,
+    .mat-mdc-raised-button .mat-icon,
+    .mat-mdc-outlined-button .mdc-button__label,
+    .mat-mdc-outlined-button .mat-icon {
+        color: var(--text-color);
+    }
+
+    .mat-horizontal-stepper-wrapper {
+        background: var(--border-color);
+    }
+}

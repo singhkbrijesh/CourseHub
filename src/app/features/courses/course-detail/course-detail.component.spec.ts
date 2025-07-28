@@ -172,7 +172,7 @@ describe('CourseDetailComponent - handleKeyboardEvent', () => {
 
   it('should return default thumbnail when lesson is null', () => {
     const result = component.getVideoThumbnail(null);
-    expect(result).toBe('assets/images/defaultcourse.jpeg');
+    expect(result).toBe('assets/images/default-course.jpeg');
   });
 
   it('should return youtube thumbnail when youtubeVideoId exists', () => {
@@ -198,13 +198,13 @@ describe('CourseDetailComponent - handleKeyboardEvent', () => {
     const lesson = { videoUrl: 'invalid-url' };
     const result = component.getVideoThumbnail(lesson);
     expect(component.getYouTubeVideoId).toHaveBeenCalledWith('invalid-url');
-    expect(result).toBe('assets/images/defaultcourse.jpeg');
+    expect(result).toBe('assets/images/default-course.jpeg');
   });
 
   it('should return default thumbnail when neither youtubeVideoId nor videoUrl exists', () => {
     const lesson = {};
     const result = component.getVideoThumbnail(lesson);
-    expect(result).toBe('assets/images/defaultcourse.jpeg');
+    expect(result).toBe('assets/images/default-course.jpeg');
   });
 });
   
@@ -453,7 +453,7 @@ describe('CourseDetailComponent - loadCurrentUser', () => {
 
   it('should return default thumbnail if videoId is empty', () => {
     const result = component.getYouTubeThumbnail('');
-    expect(result).toBe('assets/images/defaultcourse.jpeg');
+    expect(result).toBe('assets/images/default-course.jpeg');
   });
 
   it('should return valid thumbnail URL if videoId is provided', () => {

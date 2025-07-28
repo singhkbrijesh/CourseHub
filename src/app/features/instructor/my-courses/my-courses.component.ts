@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,8 @@ import { Course } from '../../../core/models/course.model';
     MatChipsModule
   ],
   templateUrl: './my-courses.component.html',
-  styleUrl: './my-courses.component.scss'
+  styleUrl: './my-courses.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class MyCoursesComponent implements OnInit {
   courses: Course[] = [];

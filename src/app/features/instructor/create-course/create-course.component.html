@@ -259,6 +259,17 @@
                                 </div>
 
                                 <div class="form-row">
+                                    <label>Lesson PDF (optional):</label>
+                                    <input type="file" accept="application/pdf" (change)="onPdfSelected($event, i)">
+                                    <span *ngIf="lesson.get('pdf')?.value">
+                                        {{ lesson.get('pdf')?.value.name || lesson.get('pdf')?.value }}
+                                        <button mat-icon-button color="warn" (click)="removePdf(i)" type="button">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </span>
+                                </div>
+
+                                <div class="form-row">
                                     <mat-checkbox formControlName="isPreview">
                                         Make this lesson available as preview
                                     </mat-checkbox>

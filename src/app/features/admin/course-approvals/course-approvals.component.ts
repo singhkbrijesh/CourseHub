@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CourseService } from '../../../services/course.service';
 import { Course } from '../../../core/models/course.model';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
   selector: 'app-course-approvals',
   templateUrl: './course-approvals.component.html',
   styleUrl: './course-approvals.component.scss',
+  encapsulation: ViewEncapsulation.None,
   imports: [CommonModule]
 })
 export class CourseApprovalsComponent implements OnInit {

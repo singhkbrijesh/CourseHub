@@ -43,6 +43,7 @@ export interface Lesson {
   content?: string;
   resources?: string[];
   order?: number;
+  pdfUrl?: string; // URL to the PDF file
 }
 
 export interface Enrollment {

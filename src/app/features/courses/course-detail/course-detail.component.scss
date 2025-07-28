@@ -1072,3 +1072,18 @@ body.dark-theme {
         }
     }
 }
+
+.lesson-pdf-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pdf-viewer {
+    margin-top: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #222;
+}

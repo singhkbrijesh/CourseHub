@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -38,7 +38,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule
   ],
   templateUrl: './create-course.component.html',
-  styleUrl: './create-course.component.scss'
+  styleUrl: './create-course.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateCourseComponent implements OnInit {
   // Form groups for each step
@@ -151,7 +152,8 @@ export class CreateCourseComponent implements OnInit {
       videoUrl: [''],
       duration: [15, [Validators.required, Validators.min(1)]],
       isPreview: [false],
-      order: [1]
+      order: [1],
+      pdf: [null]
     });
   }
 
@@ -242,6 +244,22 @@ export class CreateCourseComponent implements OnInit {
     this.thumbnailPreview = null;
   }
 
+  onPdfSelected(event: Event, lessonIndex: number) {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    const file = input.files[0];
+    if (file.type !== 'application/pdf') {
+      this.snackBar.open('Please select a PDF file', 'Close', { duration: 3000 });
+      return;
+    }
+    this.lessons.controls[lessonIndex].get('pdf')?.setValue(file);
+  }
+}
+
+removePdf(lessonIndex: number) {
+  this.lessons.controls[lessonIndex].get('pdf')?.setValue(null);
+}
+
   // Parse tags from comma-separated string
   parseTags(tagsString: string): string[] {
     return tagsString
@@ -276,20 +294,28 @@ export class CreateCourseComponent implements OnInit {
         totalStudents: 0,
         totalCourses: 0,
         bio: 'Experienced instructor passionate about teaching.',
-        avatar: 'assets/images/instructors/default-instructor.jpg'
       },
       requirements: this.requirements.controls.map(control => control.value.requirement).filter(req => req.trim()),
       learningOutcomes: this.learningOutcomes.controls.map(control => control.value.outcome).filter(outcome => outcome.trim()),
       tags: this.parseTags(this.detailsForm.value.tags || ''),
-      lessons: this.lessons.controls.map((control, index) => ({
-        id: `lesson_${Date.now()}_${index}`,
-        title: control.value.title,
-        description: control.value.description,
-        videoUrl: control.value.videoUrl || '',
-        duration: control.value.duration,
-        order: index + 1,
-        isPreview: control.value.isPreview || false
-      })),
+      lessons: this.lessons.controls.map((control, index) => {
+        const pdfFile = control.value.pdf;
+        let pdfUrl = '';
+        if (pdfFile instanceof File) {
+          // creating a URL (will not persist after reload)
+          pdfUrl = URL.createObjectURL(pdfFile);
+        }
+        return {
+          id: `lesson_${Date.now()}_${index}`,
+          title: control.value.title,
+          description: control.value.description,
+          videoUrl: control.value.videoUrl || '',
+          duration: control.value.duration,
+          order: index + 1,
+          isPreview: control.value.isPreview || false,
+          pdfUrl // <-- add this property
+        };
+      }),
       rating: 0,
       enrollmentCount: 0,
       thumbnail: this.selectedThumbnail ? 

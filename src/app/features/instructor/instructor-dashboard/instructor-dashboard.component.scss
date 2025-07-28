@@ -405,3 +405,127 @@ body.dark-theme {
         margin-bottom: 16px;
     }
 }
+
+body.dark-theme {
+    .dashboard-content {
+        background: transparent;
+
+        .left-column,
+        .right-column {
+            // No background, let cards stand out
+        }
+
+        .recent-courses-card,
+        .quick-stats-card {
+            background: #23272f !important;
+            color: #fff;
+
+            mat-card-header {
+
+                .mat-card-title,
+                .mat-card-subtitle {
+                    color: #90caf9 !important;
+                }
+            }
+
+            mat-card-content {
+                color: #eee;
+            }
+
+            mat-card-actions {
+                button[mat-button] {
+                    color: #90caf9 !important;
+                }
+            }
+        }
+
+        .courses-list {
+            .course-item {
+                background: #2d2d2d;
+                border: 1px solid #333;
+                color: #fff;
+
+                &:hover {
+                    background: #333;
+                    border-color: #1976d2;
+                }
+
+                .course-info {
+                    h4 {
+                        color: #fff;
+                    }
+
+                    p,
+                    .course-date {
+                        color: #b0b0b0;
+                    }
+                }
+
+                .course-status {
+                    .status-badge.success {
+                        background: #294436;
+                        color: #81c784;
+                    }
+
+                    .status-badge.warning {
+                        background: #4e3a1e;
+                        color: #ffd54f;
+                    }
+
+                    .status-badge.error {
+                        background: #442929;
+                        color: #e57373;
+                    }
+                }
+
+                .rejection-message {
+                    color: #e57373;
+                }
+            }
+        }
+
+        .empty-state {
+            mat-icon {
+                color: #90caf9;
+            }
+
+            h4 {
+                color: #fff;
+            }
+
+            p {
+                color: #b0b0b0;
+            }
+        }
+
+        .quick-stats-card {
+            .quick-stat {
+                border-bottom: 1px solid #333;
+
+                .label {
+                    color: #b0b0b0;
+                }
+
+                .value {
+                    color: #fff;
+                }
+
+                .value.approved {
+                    color: #81c784;
+                }
+
+                .value.pending {
+                    color: #ffd54f;
+                }
+
+                .value.rejected {
+                    color: #e57373;
+                }
+            }
+        }
+    }
+
+    .mat-mdc-card-subtitle {
+        color: var(--text-color)
+    }
+}
