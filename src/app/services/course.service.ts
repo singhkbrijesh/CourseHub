@@ -177,13 +177,13 @@ export class CourseService {
     this.loadingService.show();
     
     // First checking current state
-    const currentEnrollments = this.enrollmentsSubject.value;
-    if (currentEnrollments.length > 0) {
-      const userEnrollments = currentEnrollments.filter(e => e.studentId === studentId);
-      this.userEnrollmentsSubject.next(userEnrollments);
-      this.loadingService.hide();
-      return of(userEnrollments);
-    }
+    // const currentEnrollments = this.enrollmentsSubject.value;
+    // if (currentEnrollments.length > 0) {
+    //   const userEnrollments = currentEnrollments.filter(e => e.studentId === studentId);
+    //   this.userEnrollmentsSubject.next(userEnrollments);
+    //   this.loadingService.hide();
+    //   return of(userEnrollments);
+    // }
 
     // If no data in state, fetch from API
     return this.getEnrollments().pipe(

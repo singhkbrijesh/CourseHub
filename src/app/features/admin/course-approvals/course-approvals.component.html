@@ -17,9 +17,9 @@
             </ng-container>
 
             <!-- Submitted Column -->
-            <ng-container matColumnDef="createdAt">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header="createdAt">Submitted</th>
-                <td mat-cell *matCellDef="let course">{{ course.createdAt | date:'short' }}</td>
+            <ng-container matColumnDef="updatedAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="updatedAt">Submitted</th>
+                <td mat-cell *matCellDef="let course">{{ course.updatedAt | date:'short' }}</td>
             </ng-container>
 
             <!-- Status Column -->

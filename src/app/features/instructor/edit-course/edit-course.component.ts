@@ -87,8 +87,7 @@ export class EditCourseComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [Validators.required, Validators.minLength(20)]],
       category: ['', Validators.required],
-      level: ['', Validators.required],
-      duration: [30, [Validators.required, Validators.min(10)]]
+      level: ['', Validators.required]
     });
 
     // Step 2: Course Details
@@ -145,8 +144,7 @@ export class EditCourseComponent implements OnInit {
     title: course.title || '',
     description: course.description || '',
     category: course.category || '',
-    level: course.level || '',
-    duration: course.duration || 30
+    level: course.level || ''
   });
 
   // Set thumbnail preview
@@ -332,6 +330,10 @@ onSubmit() {
   if (this.basicInfoForm.valid && this.detailsForm.valid && this.lessonsForm.valid) {
     this.isUploading = true;
 
+    // Determine if editing as admin
+    const from = history.state?.from;
+    const isAdminEdit = from === 'admin-manage-courses';
+
     // Prepare complete updated course data - PRESERVE ALL FIELDS
     const updatedCourseData: Course = {
       // Keep ALL original course data first
@@ -343,7 +345,6 @@ onSubmit() {
       description: this.basicInfoForm.value.description,
       category: this.basicInfoForm.value.category,
       level: this.basicInfoForm.value.level,
-      duration: this.basicInfoForm.value.duration,
 
       // Update arrays with proper filtering
       requirements: this.requirements.controls
@@ -364,7 +365,7 @@ onSubmit() {
         videoUrl: control.value.videoUrl || '',
         duration: control.value.duration,
         order: index + 1,
-        isPreview: control.value.isPreview || false
+        isPreview: control.value.isPreview || false,
       })),
 
       // Preserve thumbnail - use new if uploaded, otherwise keep original
@@ -389,11 +390,14 @@ onSubmit() {
       rating: this.originalCourse?.rating || 0,
       enrollmentCount: this.originalCourse?.enrollmentCount || 0,
       // Change status to pending if previously rejected, otherwise keep original or default to pending
-      status:
-      this.originalCourse?.status === 'approved' ||
-      this.originalCourse?.status === 'rejected'
-        ? 'pending'
-        : (this.originalCourse?.status || 'pending'),
+      status: isAdminEdit
+        ? (this.originalCourse?.status || 'approved')
+        : (
+            this.originalCourse?.status === 'approved' ||
+            this.originalCourse?.status === 'rejected'
+              ? 'pending'
+              : (this.originalCourse?.status || 'pending')
+          ),
       createdAt: this.originalCourse?.createdAt || new Date()
     };
 
@@ -422,7 +426,8 @@ onSubmit() {
     this.markFormGroupTouched(this.lessonsForm);
     this.snackBar.open('Please fill all required fields', 'Close', { duration: 3000 });
   }
-}
+  }
+
 
   private markFormGroupTouched(formGroup: any) {
     Object.keys(formGroup.controls).forEach(key => {

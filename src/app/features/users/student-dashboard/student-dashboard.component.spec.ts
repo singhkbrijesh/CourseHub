@@ -135,7 +135,7 @@ fdescribe('StudentDashboardComponent', () => {
     courseServiceMock.enrollInCourse.and.returnValue(throwError(() => new Error('fail')));
     component.enrollInCourse('c4');
     tick();
-    expect(window.alert).toHaveBeenCalledWith('Failed to enroll in course. Please try again.');
+    expect(window.alert).toHaveBeenCalledWith('Failed to enroll in course or course not found. Please try again..');
   }));
 
   it('should update loading state from LoadingService', () => {

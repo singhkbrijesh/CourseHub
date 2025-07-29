@@ -137,8 +137,8 @@ updateCourse(courseId: string, courseData: Course): Observable<Course> {
                 );
                 
                 this.instructorCoursesSubject.next(updatedCourses);
-                
-                return of(courseData);
+
+                return of(courseData); // Creates an Observable that emits the courseData object and then completes. if PUT fails, we return the updated course data.
               } else {
                 return throwError(() => new Error('Course not found'));
               }

@@ -101,7 +101,6 @@
               </div>
               <div class="course-info">
                 <h4>{{ course.title }}</h4>
-                <p>{{ course.enrollmentCount || 0 }} students enrolled</p>
                 <div class="course-status">
                   <span class="status-badge" [class]="getStatusColor(course.status)">
                     {{ course.status | titlecase }}

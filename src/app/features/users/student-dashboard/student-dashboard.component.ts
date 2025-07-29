@@ -103,7 +103,7 @@ export class StudentDashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Enrollment failed:', error);
-        alert('Failed to enroll in course. Please try again.');
+        alert('Failed to enroll in course or course not found. Please try again..');
       }
     });
   }

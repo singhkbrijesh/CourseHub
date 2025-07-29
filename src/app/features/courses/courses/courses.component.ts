@@ -464,7 +464,7 @@ private matchesCommonSearchTerms(course: Course, searchTerm: string): boolean {
           if (error.message === 'Already enrolled in this course') {
             alert('You are already enrolled in this course!');
           } else {
-            alert('Failed to enroll in course. Please try again.');
+            alert('Failed to enroll in course or course not found. Please try again.');
           }
         }
       });

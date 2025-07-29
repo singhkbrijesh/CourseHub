@@ -1141,6 +1141,7 @@ export class InMemoryDataService implements InMemoryDbService {
   }
 
   put(reqInfo: any): any {
+    console.log(reqInfo);
   if (reqInfo.collectionName === 'courses') {
     const courses = reqInfo.collection;
     const courseIndex = courses.findIndex((course: any) => course.id === reqInfo.id);

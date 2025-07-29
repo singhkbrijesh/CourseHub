@@ -101,17 +101,23 @@ export class ManageUsersComponent implements OnInit {
             return this.courseService.updateCourse({ ...course, enrollmentCount: course.enrollmentCount - enrollmentsToDelete.filter(e => e.courseId === courseId).length });
           }
           return null;
-        }).filter(Boolean);
+        }).filter(Boolean); //to remove null or undefined values from updateCourseRequests
 
         // Delete enrollments, update courses, then delete courses and user
-        forkJoin([
-          ...enrollmentDeleteRequests,
-          ...updateCourseRequests,
-          ...courseIds.map(id => this.courseService.deleteCourse(id)),
-          this.courseService.deleteUser(user.id)
-        ]).subscribe({
-          next: () => this.loadUsers(),
-          error: () => this.loadUsers()
+        forkJoin({
+          enrollments: forkJoin(enrollmentDeleteRequests),
+          courses: forkJoin({updateCourseRequests}),
+            deletedCourses: forkJoin(courseIds.map(id => this.courseService.deleteCourse(id))),
+            user: this.courseService.deleteUser(user.id)
+          }).subscribe({
+          next: () => {
+            this.loadUsers();
+            this.loadingService.hide();
+          },
+          error: () => {
+            this.loadUsers();
+            this.loadingService.hide();
+          }
         });
       });
     });
@@ -130,13 +136,19 @@ export class ManageUsersComponent implements OnInit {
           return null;
         }).filter(Boolean);
 
-        forkJoin([
-          ...enrollmentDeleteRequests,
-          ...updateCourseRequests,
-          this.courseService.deleteUser(user.id)
-        ]).subscribe({
-          next: () => this.loadUsers(),
-          error: () => this.loadUsers()
+        forkJoin({
+          enrollments: forkJoin(enrollmentDeleteRequests),
+          courses: forkJoin({updateCourseRequests}),
+          user: this.courseService.deleteUser(user.id)
+        }).subscribe({
+          next: () => {
+            this.loadUsers();
+            this.loadingService.hide();
+          },
+          error: () => {
+            this.loadUsers();
+            this.loadingService.hide();
+          }
         });
       });
     });

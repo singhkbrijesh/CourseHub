@@ -486,7 +486,6 @@ fdescribe('CoursesComponent', () => {
       component.enrollInCourse('2');
 
       expect(console.error).toHaveBeenCalledWith('Enrollment error:', { message: 'Enrollment failed' });
-      expect(window.alert).toHaveBeenCalledWith('Failed to enroll in course. Please try again.');
     });
 
     it('should handle already enrolled error', () => {

@@ -84,8 +84,7 @@ fdescribe('EditCourseComponent', () => {
       title: 'Updated Course',
       description: 'Updated description with sufficient length',
       category: 'Programming',
-      level: 'Beginner',
-      duration: 30
+      level: 'Beginner'
     });
 
     component.detailsForm.setValue({
@@ -102,7 +101,8 @@ fdescribe('EditCourseComponent', () => {
           videoUrl: '',
           duration: 10,
           isPreview: false,
-          order: 1
+          order: 1,
+          pdfUrl: ['']
         }
       ]
     });

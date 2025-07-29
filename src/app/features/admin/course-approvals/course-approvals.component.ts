@@ -22,7 +22,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
   ]
 })
 export class CourseApprovalsComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['title', 'instructor', 'createdAt', 'status', 'actions'];
+  displayedColumns: string[] = ['title', 'instructor', 'updatedAt', 'status', 'actions'];
   dataSource = new MatTableDataSource<Course>([]);
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -39,7 +39,6 @@ export class CourseApprovalsComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-      this.setSortingAccessor();
     });
   }
 
@@ -52,22 +51,8 @@ export class CourseApprovalsComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.setSortingAccessor();
       });
     });
-  }
-
-  setSortingAccessor() {
-    this.dataSource.sortingDataAccessor = (item, property) => {
-      switch (property) {
-        case 'instructor':
-          return item.instructor || item.instructorInfo?.name || '';
-        case 'createdAt':
-          return new Date(item.createdAt).getTime();
-        default:
-          return (item as any)[property];
-      }
-    };
   }
 
   approveCourse(course: Course) {

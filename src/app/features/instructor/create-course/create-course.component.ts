@@ -17,6 +17,7 @@ import { InstructorService } from '../../../services/instructor.service';
 import { Course } from '../../../core/models/course.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-course',
@@ -85,8 +86,7 @@ export class CreateCourseComponent implements OnInit {
       ],
       description: ['', [Validators.required, Validators.minLength(20)]],
       category: ['', Validators.required],
-      level: ['', Validators.required],
-      duration: [30, [Validators.required, Validators.min(10)]]
+      level: ['', Validators.required]
     });
 
     // Step 2: Course Details
@@ -103,6 +103,7 @@ export class CreateCourseComponent implements OnInit {
 
     // Subscribe to title field status changes
     this.basicInfoForm.get('title')?.statusChanges.subscribe(status => {
+      console.log(status, this.basicInfoForm.get('title'));
       this.isTitleChecking = status === 'PENDING';
     });
   }

@@ -76,7 +76,6 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // console.log('Loading dashboard data for instructor:', this.currentUser.id);
 
     // Load instructor statistics
     this.instructorService.getInstructorStats(this.currentUser.id)
@@ -95,10 +94,8 @@ export class InstructorDashboardComponent implements OnInit, OnDestroy {
 
     // Load instructor's courses (only show first 3)
     this.instructorService.getInstructorCourses(this.currentUser.id)
-      // .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (courses) => {
-          // console.log('Instructor courses loaded:', courses);
           // Sort by creation date and take the 3 most recent
           this.recentCourses = courses
             .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
