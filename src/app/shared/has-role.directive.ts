@@ -1,7 +1,8 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[hasRole]'
+  selector: '[hasRole]',
+  standalone: true
 })
 export class HasRoleDirective {
   constructor(

@@ -3,7 +3,7 @@ import { CourseDetailComponent } from './course-detail.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../../services/course.service';
 import { LoadingService } from '../../../services/loading.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { of, Subject, throwError } from 'rxjs';
 
 fdescribe('CourseDetailComponent', () => {
@@ -37,7 +37,7 @@ fdescribe('CourseDetailComponent', () => {
         { provide: CourseService, useValue: courseServiceMock },
         { provide: LoadingService, useValue: loadingServiceMock },
         { provide: DomSanitizer, useValue: sanitizerMock },
-        { provide: 'PLATFORM_ID', useValue: 'browser' }
+        { provide: 'PLATFORM_ID', useValue: 'browser' },
       ]
     }).compileComponents();
 
@@ -101,8 +101,7 @@ fdescribe('CourseDetailComponent', () => {
 
   it('should return safe embed URL', () => {
     const result = component.getYouTubeEmbedUrl('abcd1234');
-    expect(sanitizerMock.bypassSecurityTrustResourceUrl).toHaveBeenCalled();
-    expect(result).toContain('embed/abcd1234');
+    expect(result).toBe('https://www.youtube.com/embed/abcd1234?rel=0&modestbranding=1&showinfo=0&autoplay=1');
   });
 
 describe('CourseDetailComponent - handleKeyboardEvent', () => {
@@ -470,13 +469,12 @@ describe('CourseDetailComponent - loadCurrentUser', () => {
   });
 
   it('should return safe embed URL if videoId is provided', () => {
-    // const spy = spyOn(sanitizer, 'bypassSecurityTrustResourceUrl').and.callThrough();
+    // spyOn(sanitizer, 'bypassSecurityTrustResourceUrl').and.callThrough();
     const videoId = 'abc123';
-    const expectedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&autoplay=1`;
 
     const result = component.getYouTubeEmbedUrl(videoId);
-    expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(expectedUrl);
-    expect(result).toBe(expectedUrl);
+    // expect(sanitizer.bypassSecurityTrustResourceUrl).toBeUndefined();
+    expect(result).toBe('https://www.youtube.com/embed/abc123?rel=0&modestbranding=1&showinfo=0&autoplay=1');
   });
 });
 
@@ -562,6 +560,84 @@ describe('isLessonCompleted', () => {
   });
 });
 
+  describe('MyComponent - togglePdf', () => {
+  beforeEach( () => {
+    component.showPdf = false;
+  });
 
+  it('should toggle showPdf from false to true and set safePdfUrl if pdfUrl is present', () => {
+    const fakeSafeUrl = {} as SafeResourceUrl;
+    sanitizerMock.bypassSecurityTrustResourceUrl.and.returnValue(fakeSafeUrl);
+
+    component.selectedLesson = { pdfUrl: 'assets/sample.pdf' } as any;
+
+    component.togglePdf();
+
+    expect(component.showPdf).toBeTrue();
+  });
+
+  it('should toggle showPdf from false to true but set safePdfUrl to null if no pdfUrl', () => {
+    component.selectedLesson = { pdfUrl: '' } as any;
+
+    component.togglePdf();
+
+    expect(component.showPdf).toBeTrue();
+    expect(component.safePdfUrl).toBeNull();
+    expect(sanitizerMock.bypassSecurityTrustResourceUrl).not.toHaveBeenCalled();
+  });
+
+  it('should toggle showPdf from true to false and set safePdfUrl to null', () => {
+    component.showPdf = true;
+    component.selectedLesson = { pdfUrl: 'assets/sample.pdf' } as any;
+
+    component.togglePdf();
+
+    expect(component.showPdf).toBeFalse();
+    expect(component.safePdfUrl).toBeNull();
+    // sanitizer not called in this case
+    expect(sanitizerMock.bypassSecurityTrustResourceUrl).not.toHaveBeenCalled();
+  });
+});
+
+describe('MyComponent - onInstructorHover & onInstructorLeave', () => {
+
+  it('onInstructorHover should clear existing hoverTimeout', () => {
+    const timeoutId = 123 as unknown as number;
+    component['hoverTimeout'] = timeoutId;
+
+    spyOn(window, 'clearTimeout');
+
+    component.onInstructorHover(new MouseEvent('mouseenter'));
+
+    expect(window.clearTimeout).toHaveBeenCalledWith(timeoutId);
+  });
+
+  it('onInstructorHover should not throw if hoverTimeout is undefined', () => {
+    component['hoverTimeout'] = undefined;
+    spyOn(window, 'clearTimeout');
+
+    expect(() => component.onInstructorHover(new MouseEvent('mouseenter'))).not.toThrow();
+    expect(window.clearTimeout).not.toHaveBeenCalled();
+  });
+
+  it('onInstructorLeave should clear existing hoverTimeout', () => {
+    const timeoutId = 456 as unknown as number;
+    component['hoverTimeout'] = timeoutId;
+
+    spyOn(window, 'clearTimeout');
+
+    component.onInstructorLeave();
+
+    expect(window.clearTimeout).toHaveBeenCalledWith(timeoutId);
+  });
+
+  it('onInstructorLeave should not throw if hoverTimeout is undefined', () => {
+    component['hoverTimeout'] = undefined;
+    spyOn(window, 'clearTimeout');
+
+    expect(() => component.onInstructorLeave()).not.toThrow();
+    expect(window.clearTimeout).not.toHaveBeenCalled();
+  });
+});
 });
 

@@ -4,8 +4,8 @@ import { CourseService } from '../../../services/course.service';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Course, Enrollment } from '../../../core/models/course.model';
 
 fdescribe('ManageCoursesComponent', () => {
@@ -49,7 +49,9 @@ fdescribe('ManageCoursesComponent', () => {
       imports: [MatTableModule, MatPaginatorModule, MatSortModule, ManageCoursesComponent],
       providers: [
         { provide: CourseService, useValue: courseServiceMock },
-        { provide: Router, useValue: routerMock }
+        { provide: Router, useValue: routerMock },
+        { provide: MatPaginator, useValue: {} },
+        { provide: MatSort, useValue: {} }
       ]
     }).compileComponents();
 
@@ -190,6 +192,59 @@ fdescribe('ManageCoursesComponent', () => {
   expect(clickSpy).toHaveBeenCalled();
   expect(appendSpy).toHaveBeenCalled();
   expect(removeSpy).toHaveBeenCalled();
+  });
+  
+  describe('MyComponent - ngAfterViewInit', () => {
+
+  beforeEach( () => {
+
+    // Mock required properties
+    component.dataSource = {} as any;
+    component.paginator = {} as MatPaginator;
+    component.sort = {} as MatSort;
+
+    // Mock these methods for accessor
+    spyOn(component, 'getOverallProgress').and.returnValue(75);
+    spyOn(component, 'getTotalDuration').and.returnValue(120);
+  });
+
+  it('should assign paginator, sort and configure sortingDataAccessor', () => {
+    component.ngAfterViewInit();
+
+    // Check paginator and sort assignment
+    expect(component.dataSource.paginator).toBe(component.paginator);
+    expect(component.dataSource.sort).toBe(component.sort);
+
+    // Verify that sortingDataAccessor is defined
+    expect(typeof component.dataSource.sortingDataAccessor).toBe('function');
+
+    const accessor = component.dataSource.sortingDataAccessor;
+
+    // Case: instructor (direct)
+    expect(accessor({ instructor: 'John' } as Course, 'instructor')).toBe('John');
+
+    // Case: instructor (from instructorInfo)
+    expect(accessor({ instructorInfo: { name: 'Jane' } } as Course, 'instructor')).toBe('Jane');
+
+    // Case: instructor (none available)
+    expect(accessor({} as Course, 'instructor')).toBe('');
+
+    // Case: enrollments
+    expect(accessor({ enrollmentCount: 10 } as Course, 'enrollments')).toBe(10);
+
+    // Case: progress (delegates to getOverallProgress)
+    const progressItem = { id: 1 } as unknown as Course;
+    expect(accessor(progressItem, 'progress')).toBe(75);
+    expect(component.getOverallProgress).toHaveBeenCalledWith(progressItem);
+
+    // Case: duration (delegates to getTotalDuration)
+    const durationItem = { id: 2 } as unknown as Course;
+    expect(accessor(durationItem, 'duration')).toBe(120);
+    expect(component.getTotalDuration).toHaveBeenCalledWith(durationItem);
+
+    // Case: default
+    expect(accessor({ title: 'Angular Basics' } as Course, 'title')).toBe('Angular Basics');
+  });
 });
 
 });

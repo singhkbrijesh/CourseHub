@@ -4,27 +4,27 @@ import { HasRoleDirective } from './has-role.directive';
 import { By } from '@angular/platform-browser';
 
 @Component({
+  standalone: true,
   template: `
     <div *hasRole="'admin'" id="admin-content">Admin Content</div>
     <div *hasRole="['student','instructor']" id="multi-content">Student or Instructor Content</div>
-  `
+  `,
+  imports: [HasRoleDirective]
 })
 class TestComponent {}
 
-describe('HasRoleDirective', () => {
+fdescribe('HasRoleDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
-    // Set up a mock user in localStorage
-    localStorage.setItem('user', JSON.stringify({ role: 'admin' }));
+  localStorage.setItem('user', JSON.stringify({ role: 'admin' }));
 
-    TestBed.configureTestingModule({
-      declarations: [],
-      imports: [TestComponent, HasRoleDirective],
-    });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+  TestBed.configureTestingModule({
+    imports: [TestComponent], // <-- FIXED
   });
+  fixture = TestBed.createComponent(TestComponent);
+  fixture.detectChanges();
+});
 
   afterEach(() => {
     localStorage.removeItem('user');
@@ -37,24 +37,27 @@ describe('HasRoleDirective', () => {
   });
 
   it('should not display content for disallowed roles', () => {
-    localStorage.setItem('user', JSON.stringify({ role: 'student' }));
-    fixture.detectChanges();
-    const adminContent = fixture.debugElement.query(By.css('#admin-content'));
-    expect(adminContent).toBeNull();
-  });
+  localStorage.setItem('user', JSON.stringify({ role: 'student' }));
+  fixture = TestBed.createComponent(TestComponent); // recreate
+  fixture.detectChanges();
+  const adminContent = fixture.debugElement.query(By.css('#admin-content'));
+  expect(adminContent).toBeNull();
+});
 
-  it('should display content for allowed roles in array', () => {
-    localStorage.setItem('user', JSON.stringify({ role: 'student' }));
-    fixture.detectChanges();
-    const multiContent = fixture.debugElement.query(By.css('#multi-content'));
-    expect(multiContent).toBeTruthy();
-    expect(multiContent.nativeElement.textContent).toContain('Student or Instructor Content');
-  });
+it('should display content for allowed roles in array', () => {
+  localStorage.setItem('user', JSON.stringify({ role: 'student' }));
+  fixture = TestBed.createComponent(TestComponent); // recreate
+  fixture.detectChanges();
+  const multiContent = fixture.debugElement.query(By.css('#multi-content'));
+  expect(multiContent).toBeTruthy();
+  expect(multiContent.nativeElement.textContent).toContain('Student or Instructor Content');
+});
 
-  it('should not display content if user role is not in allowed roles', () => {
-    localStorage.setItem('user', JSON.stringify({ role: 'guest' }));
-    fixture.detectChanges();
-    const multiContent = fixture.debugElement.query(By.css('#multi-content'));
-    expect(multiContent).toBeNull();
-  });
+it('should not display content if user role is not in allowed roles', () => {
+  localStorage.setItem('user', JSON.stringify({ role: 'guest' }));
+  fixture = TestBed.createComponent(TestComponent); // recreate
+  fixture.detectChanges();
+  const multiContent = fixture.debugElement.query(By.css('#multi-content'));
+  expect(multiContent).toBeNull();
+});
 });
