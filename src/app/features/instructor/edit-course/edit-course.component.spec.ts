@@ -102,7 +102,6 @@ fdescribe('EditCourseComponent', () => {
           duration: 10,
           isPreview: false,
           order: 1,
-          pdfUrl: ['']
         }
       ]
     });
