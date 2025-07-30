@@ -1,10 +1,24 @@
 <div class="manage-courses-container">
     <h2 style="display: flex; justify-content: space-between; align-items: center;">
         Manage Courses
-        <button mat-raised-button color="primary" (click)="downloadCSV()" style="margin-left:auto;">
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="downloadMenu" style="margin-left:auto;">
             <mat-icon>download</mat-icon>
-            Download CSV
+            Download Report
         </button>
+        <mat-menu #downloadMenu="matMenu">
+            <button mat-menu-item (click)="downloadCSV()">
+                <mat-icon>table_chart</mat-icon>
+                <span>CSV</span>
+            </button>
+            <button mat-menu-item (click)="downloadExcel()">
+                <mat-icon>grid_on</mat-icon>
+                <span>Excel</span>
+            </button>
+            <button mat-menu-item (click)="downloadPDF()">
+                <mat-icon>picture_as_pdf</mat-icon>
+                <span>PDF</span>
+            </button>
+        </mat-menu>
     </h2>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table manage-courses-table">

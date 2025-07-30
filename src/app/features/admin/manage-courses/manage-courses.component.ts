@@ -9,13 +9,18 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
+import { MatMenuModule } from '@angular/material/menu';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-manage-courses',
   templateUrl: './manage-courses.component.html',
   styleUrl: './manage-courses.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatSortModule]
+  imports: [MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatSortModule, MatMenuModule]
 })
 export class ManageCoursesComponent implements OnInit {
   courses: Course[] = [];
@@ -131,5 +136,53 @@ export class ManageCoursesComponent implements OnInit {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+}
+
+  downloadExcel() {
+  const headers = [
+    'Course Title',
+    'Enrollments',
+    'Overall Progress',
+    'Instructor',
+    'Duration (min)'
+  ];
+  const rows = this.dataSource.data.map(course => [
+    course.title,
+    course.enrollmentCount || 0,
+    this.getOverallProgress(course) + '%',
+    course.instructor || (course.instructorInfo?.name || ''),
+    this.getTotalDuration(course)
+  ]);
+  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Courses');
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+  saveAs(blob, 'courses.xlsx');
+}
+
+downloadPDF() {
+  const doc = new jsPDF();
+  const headers = [
+    'Course Title',
+    'Enrollments',
+    'Overall Progress',
+    'Instructor',
+    'Duration (min)'
+  ];
+  const rows = this.dataSource.data.map(course => [
+    course.title,
+    course.enrollmentCount || 0,
+    this.getOverallProgress(course) + '%',
+    course.instructor || (course.instructorInfo?.name || ''),
+    this.getTotalDuration(course)
+  ]);
+  autoTable(doc, {
+    head: [headers],
+    body: rows,
+    startY: 20,
+    styles: { fontSize: 8 }
+  });
+  doc.save('courses.pdf');
 }
 }
